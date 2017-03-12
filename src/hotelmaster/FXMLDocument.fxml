@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="720" prefWidth="1280" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hotelmaster.FXMLDocumentController">
+    <children>
+        <TabPane tabClosingPolicy="UNAVAILABLE">
+            <tabs>
+                <Tab text="Logowanie">
+                    <content>
+                        
+                    </content>
+                </Tab>
+                <Tab text="Pracownicy">
+                    <content>
+                        
+                    </content>
+                </Tab>
+                <Tab text="Pokoje">
+                    <content>
+                        
+                    </content>
+                </Tab>
+                <Tab text="Rezerwacje">
+                    <content>
+                        
+                    </content>
+                </Tab>
+                <Tab text="Goście">
+                    <content>
+                        
+                    </content>
+                </Tab>
+                <Tab text="Kalendarz">
+                    <content>
+                        
+                    </content>
+                </Tab>
+            </tabs>
+        </TabPane>
+    </children>
+</AnchorPane>
