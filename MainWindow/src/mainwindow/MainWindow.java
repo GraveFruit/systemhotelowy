@@ -7,9 +7,11 @@ package mainwindow;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.*;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.stage.Stage;
+import javafx.scene.layout.*;
+import javafx.stage.*;
 
 /**
  *
@@ -18,6 +20,7 @@ import javafx.stage.Stage;
 public class MainWindow extends Application {
     
     @Override
+    
     public void start(Stage stage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("FXMLDocument.fxml"));
         
@@ -26,7 +29,7 @@ public class MainWindow extends Application {
         stage.setScene(scene);
         stage.show();
     }
-
+    
     /**
      * @param args the command line arguments
      */
