@@ -5,12 +5,17 @@
  */
 package mainwindow;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Label;
+import javafx.scene.*;
+import javafx.scene.control.*;
+import javafx.stage.*;
+
 
 /**
  *
@@ -19,12 +24,43 @@ import javafx.scene.control.Label;
 public class FXMLDocumentController implements Initializable {
     
     @FXML
-    private Label label;
+    private Button hotel_info;
+    @FXML
+    private Button app_info;
+    @FXML  
+    private Button settings;
+   
+    @FXML
+    private void showInfoWindow(ActionEvent event) throws IOException {
+        Parent loader = FXMLLoader.load(getClass().getResource("InfoAplication.fxml"));
+        Scene info_scene= new Scene(loader);
+        Stage info_stage =new Stage();
+        info_stage.setScene(info_scene);
+        info_stage.initModality(Modality.APPLICATION_MODAL);
+        info_stage.initOwner(app_info.getScene().getWindow());
+        info_stage.showAndWait();
+    }
     
     @FXML
-    private void handleButtonAction(ActionEvent event) {
-        System.out.println("You clicked me!");
-        label.setText("Hello World!");
+    private void showHotelInfoWindow(ActionEvent event) throws IOException {
+        Parent loader = FXMLLoader.load(getClass().getResource("HotelInfo.fxml"));
+        Scene info_scene= new Scene(loader);
+        Stage info_stage =new Stage();
+        info_stage.setScene(info_scene);
+        info_stage.initModality(Modality.APPLICATION_MODAL);
+        info_stage.initOwner(hotel_info.getScene().getWindow());
+        info_stage.showAndWait();
+    }
+    
+    @FXML
+    private void showSettingsWindow(ActionEvent event) throws IOException {
+        Parent loader = FXMLLoader.load(getClass().getResource("Settings.fxml"));
+        Scene info_scene= new Scene(loader);
+        Stage info_stage =new Stage();
+        info_stage.setScene(info_scene);
+        info_stage.initModality(Modality.APPLICATION_MODAL);
+        info_stage.initOwner(settings.getScene().getWindow());
+        info_stage.showAndWait();
     }
     
     @Override
