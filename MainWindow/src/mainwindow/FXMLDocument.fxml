@@ -7,12 +7,15 @@
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane id="AnchorPane" prefHeight="650.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mainwindow.FXMLDocumentController">
@@ -68,15 +71,16 @@
                   <TabPane prefHeight="410.0" prefWidth="672.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <tabs>
                         <Tab text="Logowanie">
-                           <content>
+                             <content>
+                               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
                               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                  <children>
                                     <Button layoutX="369.0" layoutY="333.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="160.0" text="Zaloguj" />
                                     <PasswordField layoutX="349.0" layoutY="282.0" prefHeight="40.0" prefWidth="200.0" promptText="Hasło" />
                                     <TextField layoutX="349.0" layoutY="231.0" prefHeight="40.0" prefWidth="200.0" promptText="Login" />
-                                 </children></AnchorPane>
-                           </content>
-                        </Tab>
+                                  </children></AnchorPane>
+                             </content>
+                          </Tab>
                       <Tab text="Goście">
                         <content>
                           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
@@ -92,14 +96,82 @@
                               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
                            </content>
                         </Tab>
+                        <Tab text="Pokoje">
+                           <content>
+                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="476.0" prefWidth="703.0" />
+                           </content>
+                        </Tab>
                         <Tab text="Pracownicy">
                            <content>
-                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                 <children>
+                                    <SplitPane dividerPositions="0.7299107142857143" layoutX="106.0" layoutY="78.0" prefHeight="563.0" prefWidth="898.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                      <items>
+                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="561.0" prefWidth="569.0">
+                                             <children>
+                                                <TableView layoutX="207.0" layoutY="100.0" prefHeight="561.0" prefWidth="651.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                  <columns>
+                                                    <TableColumn prefWidth="75.0" text="Imię" />
+                                                      <TableColumn prefWidth="75.0" text="Nazwisko" />
+                                                    <TableColumn prefWidth="75.0" text="Wiek" />
+                                                      <TableColumn prefWidth="75.0" text="Adres" />
+                                                      <TableColumn prefWidth="75.0" text="Stanowisko" />
+                                                  </columns>
+                                                </TableView>
+                                             </children>
+                                          </AnchorPane>
+                                        <AnchorPane maxWidth="250.0" minHeight="0.0" minWidth="180.0" prefHeight="160.0" prefWidth="200.0">
+                                             <children>
+                                                <VBox alignment="CENTER" layoutX="7.0" prefHeight="561.0" prefWidth="239.0" spacing="50.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="7.0" AnchorPane.rightAnchor="-7.0" AnchorPane.topAnchor="0.0">
+                                                   <children>
+                                                      <Button fx:id="add_employee" mnemonicParsing="false" onAction="#add_employeewindow" prefHeight="43.0" prefWidth="123.0" text="Dodaj pracownika" />
+                                                      <Button layoutX="68.0" layoutY="269.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="123.0" text="Usuń pracownika" />
+                                                   </children>
+                                                </VBox>
+                                             </children>
+                                          </AnchorPane>
+                                      </items>
+                                    </SplitPane>
+                                 </children></AnchorPane>
                            </content>
                         </Tab>
                         <Tab text="Zadania">
                            <content>
-                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                 <children>
+                                    <SplitPane dividerPositions="0.6919642857142857" layoutX="191.0" layoutY="136.0" prefHeight="563.0" prefWidth="898.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                      <items>
+                                        <AnchorPane maxWidth="700.0" minHeight="0.0" minWidth="560.0" prefHeight="560.0" prefWidth="650.0">
+                                             <children>
+                                                <TableView layoutX="94.0" layoutY="36.0" prefHeight="561.0" prefWidth="611.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                  <columns>
+                                                      <TableColumn prefWidth="75.0" text="Pokój" />
+                                                    <TableColumn prefWidth="75.0" text="Pracownik" />
+                                                      <TableColumn prefWidth="75.0" text="Data" />
+                                                      <TableColumn prefWidth="75.0" text="Rodzaj" />
+                                                      <TableColumn prefWidth="75.0" text="Opis" />
+                                                      <TableColumn prefWidth="75.0" text="Status" />
+                                                  </columns>
+                                                </TableView>
+                                             </children>
+                                          </AnchorPane>
+                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                                             <children>
+                                                <VBox alignment="CENTER" layoutX="-7.0" layoutY="14.0" maxWidth="350.0" prefHeight="561.0" prefWidth="350.0" spacing="60.0" AnchorPane.bottomAnchor="-14.0" AnchorPane.leftAnchor="-7.0" AnchorPane.rightAnchor="7.0" AnchorPane.topAnchor="14.0">
+                                                   <children>
+                                                      <Button fx:id="add_task" mnemonicParsing="false" onAction="#add_taskwindow" prefHeight="40.0" prefWidth="135.0" text="Dodaj zadanie" />
+                                                      <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="135.0" text="Usuń zadanie" />
+                                                      <Button layoutX="79.0" layoutY="121.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="135.0" text="Wyświetl zadania" />
+                                                      <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="135.0" text="Zmień status" />
+                                                   </children>
+                                                   <opaqueInsets>
+                                                      <Insets />
+                                                   </opaqueInsets>
+                                                </VBox>
+                                             </children></AnchorPane>
+                                      </items>
+                                    </SplitPane>
+                                 </children></AnchorPane>
                            </content>
                         </Tab>
                         <Tab text="Raporty">

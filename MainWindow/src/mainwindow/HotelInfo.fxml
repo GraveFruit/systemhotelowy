@@ -4,11 +4,12 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="300.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="infobuttons.HotelInfoController">
+
+<AnchorPane id="AnchorPane" prefHeight="300.0" prefWidth="300.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.111" fx:controller="mainwindow.HotelInfoController">
    <children>
-      <Label layoutX="40.0" layoutY="49.0" prefHeight="153.0" prefWidth="227.0" text="Info  o hotelu">
+      <Label layoutX="40.0" layoutY="106.0" text="Info o hotelu">
          <font>
-            <Font size="33.0" />
+            <Font size="35.0" />
          </font>
       </Label>
    </children>
