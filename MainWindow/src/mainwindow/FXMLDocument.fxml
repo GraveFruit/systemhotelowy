@@ -89,19 +89,50 @@
                           </Tab>
                       <Tab text="Goście">
                         <content>
-                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                 <children>
+                                    <AnchorPane prefHeight="563.0" prefWidth="898.0">
+                                       <children>
+                                          <TableView prefHeight="563.0" prefWidth="898.0">
+                                            <columns>
+                                              <TableColumn prefWidth="75.0" text="Imię" />
+                                              <TableColumn prefWidth="75.0" text="Nazwisko" />
+                                                <TableColumn prefWidth="75.0" text="Pesel" />
+                                                <TableColumn prefWidth="75.0" text="Numer telefonu" />
+                                                <TableColumn prefWidth="75.0" text="Rezerwacje" />
+                                                <TableColumn prefWidth="75.0" text="Zadania" />
+                                                <TableColumn prefWidth="75.0" text="Usuń" />
+                                                <TableColumn prefWidth="75.0" text="Edytuj" />
+                                            </columns>
+                                          </TableView>
+                                       </children>
+                                    </AnchorPane>
+                                 </children></AnchorPane>
                         </content>
                       </Tab>
                       <Tab text="Rezerwacje">
                         <content>
-                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                 <children>
+                                    <AnchorPane prefHeight="563.0" prefWidth="898.0">
+                                       <children>
+                                          <TableView prefHeight="563.0" prefWidth="898.0">
+                                            <columns>
+                                              <TableColumn prefWidth="108.0" text="Numer rezerwacji" />
+                                                <TableColumn prefWidth="75.0" text="Status" />
+                                              <TableColumn minWidth="3.0" prefWidth="90.0" text="Numer pokoju" />
+                                                <TableColumn minWidth="8.0" prefWidth="102.0" text="Data przyjazdu" />
+                                                <TableColumn minWidth="0.0" prefWidth="87.0" text="Data wyjazdu" />
+                                                <TableColumn prefWidth="75.0" text="Gość" />
+                                                <TableColumn prefWidth="75.0" text="Usuń" />
+                                                <TableColumn prefWidth="75.0" text="Edytuj" />
+                                            </columns>
+                                          </TableView>
+                                       </children>
+                                    </AnchorPane>
+                                 </children></AnchorPane>
                         </content>
                       </Tab>
-                        <Tab text="Meldowanie">
-                           <content>
-                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-                           </content>
-                        </Tab>
                         <Tab text="Pokoje">
                            <content>
                               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="476.0" prefWidth="703.0">
@@ -126,6 +157,7 @@
                                                     <TableColumn prefWidth="75.0" text="Rodzaj" />
                                                       <TableColumn prefWidth="75.0" text="Piętro" />
                                                       <TableColumn prefWidth="75.0" text="Ilość łóżek" />
+                                                      <TableColumn prefWidth="75.0" text="Standard" />
                                                       <TableColumn prefWidth="75.0" text="Status" />
                                                   </columns>
                                                 </TableView>
