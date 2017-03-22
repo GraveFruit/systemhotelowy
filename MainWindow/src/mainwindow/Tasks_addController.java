@@ -14,7 +14,7 @@ import javafx.fxml.Initializable;
  *
  * @author Grzesiek
  */
-public class Add_taskController implements Initializable {
+public class Tasks_addController implements Initializable {
 
     /**
      * Initializes the controller class.

@@ -69,7 +69,7 @@ public class FXMLDocumentController implements Initializable {
     
     @FXML
     private void add_taskwindow(ActionEvent event) throws IOException {
-        Parent loader = FXMLLoader.load(getClass().getResource("add_task.fxml"));
+        Parent loader = FXMLLoader.load(getClass().getResource("tasks_add.fxml"));
         Scene task_scene= new Scene(loader);
         Stage task_stage =new Stage();
         task_stage.setScene(task_scene);
@@ -80,7 +80,7 @@ public class FXMLDocumentController implements Initializable {
     
     @FXML
     private void add_employeewindow(ActionEvent event) throws IOException {
-        Parent loader = FXMLLoader.load(getClass().getResource("add_employee.fxml"));
+        Parent loader = FXMLLoader.load(getClass().getResource("employee_add.fxml"));
         Scene emp_scene= new Scene(loader);
         Stage emp_stage =new Stage();
         emp_stage.setScene(emp_scene);
