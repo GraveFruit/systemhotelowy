@@ -32,14 +32,14 @@
         <items>
           <AnchorPane maxHeight="50.0" minHeight="-Infinity" minWidth="0.0" prefHeight="50.0" prefWidth="160.0">
                <children>
-                  <HBox prefHeight="50.0" prefWidth="672.0" spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <HBox id="region" prefHeight="50.0" prefWidth="672.0" spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
                         <Label prefHeight="33.0" prefWidth="260.0" text="Hotel Master 2000" textFill="#352985" textOverrun="CLIP">
                            <font>
                               <Font name="Impact" size="24.0" />
                            </font>
                         </Label>
-                        <Region prefHeight="40.0" prefWidth="157.0" HBox.hgrow="ALWAYS" />
+                        <Region fx:id="region" prefHeight="40.0" prefWidth="157.0" HBox.hgrow="ALWAYS" />
                         <Button fx:id="hotel_info" mnemonicParsing="false" onAction="#showHotelInfoWindow">
                            <graphic>
                               <ImageView onMouseClicked="#showHotelInfoWindow">
@@ -74,16 +74,16 @@
                   </HBox>
                </children>
             </AnchorPane>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="372.0" prefWidth="672.0">
+          <AnchorPane id="AnchorPane" minHeight="0.0" minWidth="0.0" prefHeight="372.0" prefWidth="672.0">
                <children>
                   <TabPane prefHeight="410.0" prefWidth="672.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <tabs>
-                        <Tab text="Logowanie">
+                        <Tab id="button_new" text="Logowanie">
                              <content>
                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
                               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                  <children>
-                                    <Button layoutX="369.0" layoutY="333.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="160.0" text="Zaloguj" />
+                                    <Button fx:id="button_new" layoutX="369.0" layoutY="333.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="160.0" text="Zaloguj" />
                                     <PasswordField layoutX="349.0" layoutY="282.0" prefHeight="40.0" prefWidth="200.0" promptText="Hasło" />
                                     <TextField layoutX="349.0" layoutY="231.0" prefHeight="40.0" prefWidth="200.0" promptText="Login" />
                                   </children></AnchorPane>
@@ -367,7 +367,7 @@
                               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="476.0" prefWidth="703.0" />
                            </content>
                         </Tab>
-                        <Tab text="Administracja">
+                        <Tab id="button_new" text="Administracja">
                            <content>
                               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="476.0" prefWidth="703.0">
                                  <children>

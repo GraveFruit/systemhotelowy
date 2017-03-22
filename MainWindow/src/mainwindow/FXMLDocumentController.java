@@ -14,6 +14,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.*;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.*;
 
 
@@ -33,6 +34,10 @@ public class FXMLDocumentController implements Initializable {
     private Button add_task;
     @FXML  
     private Button add_employee;
+    @FXML
+    private ToggleGroup admin_task;
+    @FXML
+    private ToggleGroup permissions;
     
     @FXML
     private void showInfoWindow(ActionEvent event) throws IOException {
@@ -93,5 +98,17 @@ public class FXMLDocumentController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
     }    
+
+    @FXML
+    private void showHotelInfoWindow(MouseEvent event) {
+    }
+
+    @FXML
+    private void showInfoWindow(MouseEvent event) {
+    }
+
+    @FXML
+    private void showSettingsWindow(MouseEvent event) {
+    }
     
 }
