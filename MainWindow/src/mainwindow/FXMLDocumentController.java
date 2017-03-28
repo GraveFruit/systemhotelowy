@@ -5,6 +5,7 @@
  */
 package mainwindow;
 
+import hotel.base.DataBase;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -39,6 +40,8 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private ToggleGroup permissions;
     
+    DataBase base;
+    
     @FXML
     private void showInfoWindow(ActionEvent event) throws IOException {
         Parent loader = FXMLLoader.load(getClass().getResource("InfoAplication.fxml"));
@@ -53,8 +56,8 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private void showHotelInfoWindow(ActionEvent event) throws IOException {
         Parent loader = FXMLLoader.load(getClass().getResource("HotelInfo.fxml"));
-        Scene info2_scene= new Scene(loader);
         Stage info2_stage =new Stage();
+        Scene info2_scene= new Scene(loader);
         info2_stage.setScene(info2_scene);
         info2_stage.initModality(Modality.APPLICATION_MODAL);
         info2_stage.initOwner(hotel_info.getScene().getWindow());
@@ -96,19 +99,8 @@ public class FXMLDocumentController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+       base= new DataBase();
     }    
 
-    @FXML
-    private void showHotelInfoWindow(MouseEvent event) {
-    }
-
-    @FXML
-    private void showInfoWindow(MouseEvent event) {
-    }
-
-    @FXML
-    private void showSettingsWindow(MouseEvent event) {
-    }
     
 }

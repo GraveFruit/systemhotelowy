@@ -3,16 +3,11 @@
 /*style css*/
 .root {-fx-background-color : #eaece5}
 
-#button_new 
-{-fx-background-color :  #b2c2bf}
-
 #region
 {-fx-background-color :  #b2c2bf}
 
-.AnchorPane
+#AnchorPane
 {-fx-background-color :  #eaece5}
 
-#tabela
-{
-    -fx-background-color : #c4c6c5
-}
+#button_new 
+{-fx-background-color :  #b2c2bf}

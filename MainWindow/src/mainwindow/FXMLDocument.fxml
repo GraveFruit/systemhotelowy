@@ -2,7 +2,6 @@
 
 <?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXDatePicker?>
-<?import com.jfoenix.controls.JFXRadioButton?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
@@ -31,7 +30,7 @@
      <children>
       <SplitPane dividerPositions="0.08179012345679013" orientation="VERTICAL" prefHeight="468.0" prefWidth="674.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <items>
-          <AnchorPane maxHeight="50.0" minHeight="-Infinity" minWidth="0.0" prefHeight="50.0" prefWidth="160.0">
+          <AnchorPane id="AnchorPane" maxHeight="50.0" minHeight="-Infinity" minWidth="0.0" prefHeight="50.0" prefWidth="160.0">
                <children>
                   <HBox id="region" prefHeight="50.0" prefWidth="672.0" spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
@@ -41,7 +40,7 @@
                            </font>
                         </Label>
                         <Region fx:id="region" prefHeight="40.0" prefWidth="157.0" HBox.hgrow="ALWAYS" />
-                        <Button fx:id="hotel_info" mnemonicParsing="false" onAction="#showHotelInfoWindow">
+                        <Button id="button_new" fx:id="hotel_info" mnemonicParsing="false" onAction="#showHotelInfoWindow">
                            <graphic>
                               <ImageView onMouseClicked="#showHotelInfoWindow">
                                  <image>
@@ -50,7 +49,7 @@
                               </ImageView>
                            </graphic>
                         </Button>
-                        <Button fx:id="app_info" mnemonicParsing="false" onAction="#showInfoWindow">
+                        <Button id="button_new" fx:id="app_info" mnemonicParsing="false" onAction="#showInfoWindow">
                            <graphic>
                               <ImageView onMouseClicked="#showInfoWindow">
                                  <image>
@@ -59,7 +58,7 @@
                               </ImageView>
                            </graphic>
                         </Button>
-                        <Button fx:id="settings" mnemonicParsing="false" onAction="#showSettingsWindow">
+                        <Button id="button_new" fx:id="settings" mnemonicParsing="false" onAction="#showSettingsWindow">
                            <graphic>
                               <ImageView onMouseClicked="#showSettingsWindow">
                                  <image>
@@ -90,9 +89,9 @@
                                   </children></AnchorPane>
                              </content>
                           </Tab>
-                        <Tab text="Oferta">
+                        <Tab id="button_new" text="Oferta">
                            <content>
-                              <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                              <AnchorPane id="AnchorPane" prefHeight="200.0" prefWidth="200.0">
                                  <children>
                                     <JFXDatePicker layoutX="598.0" layoutY="90.0" promptText="Data przyjazdu" />
                                     <JFXDatePicker layoutX="598.0" layoutY="185.0" promptText="Data wyjzadu" />
@@ -106,9 +105,9 @@
                                  </children></AnchorPane>
                            </content>
                         </Tab>
-                        <Tab text="Recepcja">
+                        <Tab id="button_new" text="Recepcja">
                            <content>
-                              <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                              <AnchorPane id="AnchorPane" prefHeight="200.0" prefWidth="200.0">
                                  <children>
                                     <GridPane gridLinesVisible="true" layoutX="121.0" layoutY="172.0" prefHeight="563.0" prefWidth="898.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                       <columnConstraints>
@@ -135,7 +134,7 @@
                                                 <TextField layoutX="10.0" layoutY="35.0" prefHeight="45.0" prefWidth="78.0" promptText="Nazwisko" GridPane.columnIndex="1" />
                                                 <TextField layoutX="235.0" layoutY="35.0" prefHeight="45.0" prefWidth="109.0" promptText="Pesel" GridPane.rowIndex="1" />
                                                 <TextField layoutX="10.0" layoutY="129.0" prefHeight="45.0" prefWidth="225.0" promptText="Telefon" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                                <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="35.0" prefWidth="120.0" text="Dodaj klienta" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                <Button id="button_new" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="35.0" prefWidth="120.0" text="Dodaj klienta" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                              </children>
                                              <GridPane.margin>
                                                 <Insets />
@@ -156,8 +155,8 @@
                                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                             </rowConstraints>
                                              <children>
-                                                <Button alignment="CENTER" mnemonicParsing="false" prefHeight="35.0" prefWidth="120.0" text="Zamelduj" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
-                                                <Button alignment="CENTER" layoutX="297.0" layoutY="28.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="120.0" text="Wymelduj" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                                                <Button id="button_new" alignment="CENTER" mnemonicParsing="false" prefHeight="35.0" prefWidth="120.0" text="Zamelduj" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
+                                                <Button id="button_new" alignment="CENTER" layoutX="297.0" layoutY="28.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="120.0" text="Wymelduj" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
                                                 <JFXComboBox prefHeight="35.0" prefWidth="120.0" promptText="Rezerwacje" GridPane.halignment="CENTER" />
                                                 <JFXComboBox layoutX="63.0" layoutY="28.0" prefHeight="35.0" prefWidth="120.0" promptText="Pokój" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
                                              </children>
@@ -195,7 +194,7 @@
                                                    </GridPane.margin>
                                                 </JFXComboBox>
                                                 <JFXComboBox promptText="Dostępne pokoje" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
-                                                <Button mnemonicParsing="false" prefHeight="35.0" prefWidth="120.0" text="Dodaj rezerwacje" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+                                                <Button id="button_new" mnemonicParsing="false" prefHeight="35.0" prefWidth="120.0" text="Dodaj rezerwacje" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
                                              </children>
                                           </GridPane>
                                           <GridPane GridPane.columnIndex="1" GridPane.rowIndex="1">
@@ -210,7 +209,7 @@
                                             </rowConstraints>
                                              <children>
                                                 <JFXComboBox prefHeight="35.0" prefWidth="120.0" promptText="Pokój" GridPane.halignment="CENTER" />
-                                                <Button alignment="CENTER" mnemonicParsing="false" prefHeight="35.0" prefWidth="120.0" text="Zleć zadanie" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
+                                                <Button id="button_new" alignment="CENTER" mnemonicParsing="false" prefHeight="35.0" prefWidth="120.0" text="Zleć zadanie" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
                                              </children>
                                           </GridPane>
                                        </children>
@@ -219,9 +218,9 @@
                               </AnchorPane>
                            </content>
                         </Tab>
-                      <Tab text="Goście">
+                      <Tab id="button_new" text="Goście">
                         <content>
-                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                          <AnchorPane id="AnchorPane" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                  <children>
                                     <AnchorPane prefHeight="563.0" prefWidth="898.0">
                                        <children>
@@ -242,7 +241,7 @@
                                  </children></AnchorPane>
                         </content>
                       </Tab>
-                      <Tab text="Rezerwacje">
+                      <Tab id="button_new" text="Rezerwacje">
                         <content>
                           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                  <children>
@@ -265,22 +264,12 @@
                                  </children></AnchorPane>
                         </content>
                       </Tab>
-                        <Tab text="Pokoje">
+                        <Tab id="button_new" text="Pokoje">
                            <content>
-                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="476.0" prefWidth="703.0">
+                              <AnchorPane id="AnchorPane" minHeight="0.0" minWidth="0.0" prefHeight="476.0" prefWidth="703.0">
                                  <children>
-                                    <SplitPane dividerPositions="0.11942959001782531" layoutX="118.0" layoutY="69.0" orientation="VERTICAL" prefHeight="563.0" prefWidth="898.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <SplitPane layoutX="118.0" layoutY="69.0" orientation="VERTICAL" prefHeight="563.0" prefWidth="898.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                       <items>
-                                        <AnchorPane maxHeight="100.0" minHeight="100.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
-                                             <children>
-                                                <HBox alignment="CENTER" layoutX="184.0" prefHeight="100.0" prefWidth="896.0" spacing="120.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                                   <children>
-                                                      <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="120.0" text="Edytuj" />
-                                                      <Button layoutX="398.0" layoutY="35.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="120.0" text="Wyłącz z użytku" />
-                                                   </children>
-                                                </HBox>
-                                             </children>
-                                          </AnchorPane>
                                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                                              <children>
                                                 <TableView layoutX="75.0" layoutY="28.0" prefHeight="455.0" prefWidth="896.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -291,6 +280,7 @@
                                                       <TableColumn prefWidth="75.0" text="Ilość łóżek" />
                                                       <TableColumn prefWidth="75.0" text="Standard" />
                                                       <TableColumn prefWidth="75.0" text="Status" />
+                                                      <TableColumn prefWidth="75.0" text="Edytuj" />
                                                   </columns>
                                                 </TableView>
                                              </children>
@@ -300,9 +290,9 @@
                                  </children></AnchorPane>
                            </content>
                         </Tab>
-                        <Tab text="Pracownicy">
+                        <Tab id="button_new" text="Pracownicy">
                            <content>
-                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                              <AnchorPane id="AnchorPane" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                  <children>
                                     <SplitPane dividerPositions="0.5" layoutX="106.0" layoutY="78.0" prefHeight="563.0" prefWidth="898.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                       <items>
@@ -312,21 +302,22 @@
                                                   <columns>
                                                     <TableColumn prefWidth="75.0" text="Imię" />
                                                       <TableColumn prefWidth="75.0" text="Nazwisko" />
-                                                    <TableColumn prefWidth="75.0" text="Wiek" />
-                                                      <TableColumn prefWidth="75.0" text="Adres" />
+                                                    <TableColumn prefWidth="75.0" text="Telefon" />
+                                                      <TableColumn prefWidth="75.0" text="Pesel" />
                                                       <TableColumn prefWidth="75.0" text="Stanowisko" />
+                                                      <TableColumn prefWidth="75.0" text="Status" />
                                                   </columns>
                                                 </TableView>
                                              </children>
                                           </AnchorPane>
                                         <AnchorPane maxWidth="250.0" minHeight="0.0" minWidth="180.0" prefHeight="160.0" prefWidth="200.0">
                                              <children>
-                                                <VBox alignment="CENTER" layoutX="7.0" prefHeight="561.0" prefWidth="239.0" spacing="50.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="7.0" AnchorPane.rightAnchor="-7.0" AnchorPane.topAnchor="0.0">
+                                                <VBox alignment="CENTER" layoutX="7.0" prefHeight="561.0" prefWidth="239.0" spacing="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="7.0" AnchorPane.rightAnchor="-7.0" AnchorPane.topAnchor="0.0">
                                                    <children>
-                                                      <Button fx:id="add_employee" mnemonicParsing="false" onAction="#add_employeewindow" prefHeight="43.0" prefWidth="123.0" text="Dodaj pracownika" />
-                                                      <Button layoutX="68.0" layoutY="269.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="123.0" text="Usuń pracownika" />
-                                                   </children>
-                                                </VBox>
+                                                      <Button id="button_new" fx:id="add_employee" mnemonicParsing="false" onAction="#add_employeewindow" prefHeight="43.0" prefWidth="123.0" text="Dodaj pracownika" />
+                                                      <Button id="button_new" mnemonicParsing="false" prefHeight="43.0" prefWidth="123.0" text="Edytuj pracownika" />
+                                                      <Button id="button_new" layoutX="69.0" layoutY="341.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="123.0" text="Usuń pracownika" />
+                                                   </children></VBox>
                                              </children>
                                           </AnchorPane>
                                       </items>
@@ -335,9 +326,9 @@
                               </AnchorPane>
                            </content>
                         </Tab>
-                        <Tab text="Zadania">
+                        <Tab id="button_new" text="Zadania">
                            <content>
-                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                              <AnchorPane id="AnchorPane" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                  <children>
                                     <SplitPane dividerPositions="0.6919642857142857" layoutX="191.0" layoutY="136.0" prefHeight="563.0" prefWidth="898.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                       <items>
@@ -359,10 +350,10 @@
                                              <children>
                                                 <VBox alignment="CENTER" layoutX="-7.0" layoutY="14.0" maxWidth="350.0" prefHeight="561.0" prefWidth="350.0" spacing="60.0" AnchorPane.bottomAnchor="-14.0" AnchorPane.leftAnchor="-7.0" AnchorPane.rightAnchor="7.0" AnchorPane.topAnchor="14.0">
                                                    <children>
-                                                      <Button fx:id="add_task" mnemonicParsing="false" onAction="#add_taskwindow" prefHeight="40.0" prefWidth="135.0" text="Dodaj zadanie" />
-                                                      <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="135.0" text="Usuń zadanie" />
-                                                      <Button layoutX="79.0" layoutY="121.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="135.0" text="Wyświetl zadania" />
-                                                      <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="135.0" text="Zmień status" />
+                                                      <Button id="button_new" fx:id="add_task" mnemonicParsing="false" onAction="#add_taskwindow" prefHeight="40.0" prefWidth="135.0" text="Dodaj zadanie" />
+                                                      <Button id="button_new" mnemonicParsing="false" prefHeight="40.0" prefWidth="135.0" text="Usuń zadanie" />
+                                                      <Button id="button_new" layoutX="79.0" layoutY="121.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="135.0" text="Wyświetl zadania" />
+                                                      <Button id="button_new" mnemonicParsing="false" prefHeight="40.0" prefWidth="135.0" text="Zmień status" />
                                                    </children>
                                                    <opaqueInsets>
                                                       <Insets />
@@ -374,12 +365,12 @@
                                  </children></AnchorPane>
                            </content>
                         </Tab>
-                        <Tab text="Raporty">
+                        <Tab id="button_new" text="Raporty">
                            <content>
-                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="476.0" prefWidth="703.0">
+                              <AnchorPane id="AnchorOPane" minHeight="0.0" minWidth="0.0" prefHeight="476.0" prefWidth="703.0">
                                  <children>
-                                    <Button layoutX="116.0" layoutY="296.0" mnemonicParsing="false" prefHeight="129.0" prefWidth="667.0" text="Generuj raport" />
-                                    <Button layoutX="116.0" layoutY="139.0" mnemonicParsing="false" prefHeight="129.0" prefWidth="667.0" text="Wyświetl statystyki" />
+                                    <Button id="button_new" layoutX="116.0" layoutY="296.0" mnemonicParsing="false" prefHeight="129.0" prefWidth="667.0" text="Generuj raport" />
+                                    <Button id="button_new" layoutX="116.0" layoutY="139.0" mnemonicParsing="false" prefHeight="129.0" prefWidth="667.0" text="Wyświetl statystyki" />
                                     <JFXDatePicker layoutX="279.0" layoutY="268.0" promptText="Od daty" />
                                     <JFXDatePicker layoutX="449.0" layoutY="268.0" promptText="Do daty" />
                                  </children></AnchorPane>
@@ -387,23 +378,13 @@
                         </Tab>
                         <Tab id="button_new" text="Administracja">
                            <content>
-                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="476.0" prefWidth="703.0">
+                              <AnchorPane id="AnchorPane" minHeight="0.0" minWidth="0.0" prefHeight="476.0" prefWidth="703.0">
                                  <children>
                                     <SplitPane dividerPositions="0.12121212121212122" layoutX="241.0" layoutY="82.0" orientation="VERTICAL" prefHeight="563.0" prefWidth="898.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                       <items>
                                         <AnchorPane maxHeight="70.0" minHeight="70.0" minWidth="0.0" prefHeight="70.0" prefWidth="160.0">
                                              <children>
-                                                <HBox alignment="CENTER" layoutX="210.0" layoutY="-15.0" prefHeight="70.0" prefWidth="896.0" spacing="60.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                                   <children>
-                                                      <JFXRadioButton text="Dodaj użytkownika">
-                                                         <toggleGroup>
-                                                            <ToggleGroup fx:id="admin_task" />
-                                                         </toggleGroup>
-                                                      </JFXRadioButton>
-                                                      <JFXRadioButton text="Usuń użytkownika" toggleGroup="$admin_task" />
-                                                      <JFXRadioButton text="Zmień uprawnienia" toggleGroup="$admin_task" />
-                                                   </children>
-                                                </HBox>
+                                                <HBox alignment="CENTER" layoutX="210.0" layoutY="-15.0" prefHeight="70.0" prefWidth="896.0" spacing="60.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                              </children>
                                           </AnchorPane>
                                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
@@ -426,7 +407,7 @@
                                                                <children>
                                                                   <TextField prefHeight="40.0" prefWidth="174.0" promptText="Login" />
                                                                   <TextField prefHeight="40.0" promptText="Powtórz login" GridPane.rowIndex="1" />
-                                                                  <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="35.0" prefWidth="146.0" text="Potwierdź" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
+                                                                  <Button id="button_new" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="35.0" prefWidth="146.0" text="Potwierdź" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
                                                                      <GridPane.margin>
                                                                         <Insets />
                                                                      </GridPane.margin>
