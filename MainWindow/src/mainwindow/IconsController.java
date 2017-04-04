@@ -14,7 +14,7 @@ import javafx.fxml.Initializable;
  *
  * @author Grzesiek
  */
-public class HotelInfoController implements Initializable {
+public class IconsController implements Initializable {
 
     /**
      * Initializes the controller class.

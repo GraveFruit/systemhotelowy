@@ -6,6 +6,8 @@
 package mainwindow;
 
 import hotel.base.DataBase;
+import hotel.base.Employee;
+import hotel.base.Rooms;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -15,92 +17,130 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.*;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Region;
 import javafx.stage.*;
-
 
 /**
  *
  * @author Grzesiek
  */
 public class FXMLDocumentController implements Initializable {
-    
+
     @FXML
     private Button hotel_info;
     @FXML
     private Button app_info;
-    @FXML  
+    @FXML
     private Button settings;
-    @FXML  
+    @FXML
     private Button add_task;
-    @FXML  
+    @FXML
     private Button add_employee;
-    @FXML
-    private ToggleGroup admin_task;
-    @FXML
-    private ToggleGroup permissions;
-    
+
     DataBase base;
-    
     @FXML
+    private Region region;
+    @FXML
+    private Button button_new;
+    @FXML
+    private TableColumn<?, ?> room_number;
+    @FXML
+    private TableColumn<?, ?> room_type;
+    @FXML
+    private TableColumn<?, ?> room_floor;
+    @FXML
+    private TableColumn<?, ?> room_beds;
+    @FXML
+    private TableColumn<?, ?> room_standard;
+    @FXML
+    private TableColumn<?, ?> room_status;
+    @FXML
+    private TableColumn<?, ?> employee_name;
+    @FXML
+    private TableColumn<?, ?> employee_surname;
+    @FXML
+    private TableColumn<?, ?> employee_phone;
+    @FXML
+    private TableColumn<?, ?> employee_pesel;
+    @FXML
+    private TableColumn<?, ?> employee_position;
+    @FXML
+    private TableColumn<?, ?> employee_status;
+    @FXML
+    private TableView<Rooms> room_tableview;
+    @FXML
+    private TableColumn<?, ?> room_edition;
+    @FXML
+    private TableView<Employee> employee_tableview;
+
+    @FXML//okno informacji o aplikacji
     private void showInfoWindow(ActionEvent event) throws IOException {
-        Parent loader = FXMLLoader.load(getClass().getResource("InfoAplication.fxml"));
-        Scene info_scene= new Scene(loader);
-        Stage info_stage =new Stage();
-        info_stage.setScene(info_scene);
-        info_stage.initModality(Modality.APPLICATION_MODAL);
-        info_stage.initOwner(app_info.getScene().getWindow());
-        info_stage.showAndWait();
+        makeWindow("InfoAplication.fxml", "Informacje o aplikacji", app_info);
     }
-    
-    @FXML
+
+    @FXML//okno informacji o hotelu
     private void showHotelInfoWindow(ActionEvent event) throws IOException {
-        Parent loader = FXMLLoader.load(getClass().getResource("HotelInfo.fxml"));
-        Stage info2_stage =new Stage();
-        Scene info2_scene= new Scene(loader);
-        info2_stage.setScene(info2_scene);
-        info2_stage.initModality(Modality.APPLICATION_MODAL);
-        info2_stage.initOwner(hotel_info.getScene().getWindow());
-        info2_stage.showAndWait();
+        makeWindow("HotelInfo.fxml", "Informacje o hotelu", hotel_info);
     }
-    
-    @FXML
+
+    @FXML//okno ustawień
     private void showSettingsWindow(ActionEvent event) throws IOException {
-        Parent loader = FXMLLoader.load(getClass().getResource("Settings.fxml"));
-        Scene settings_scene= new Scene(loader);
-        Stage settings_stage =new Stage();
-        settings_stage.setScene(settings_scene);
-        settings_stage.initModality(Modality.APPLICATION_MODAL);
-        settings_stage.initOwner(settings.getScene().getWindow());
-        settings_stage.showAndWait();
+        makeWindow("Settings.fxml", "Ustawienia", settings);
     }
-    
-    @FXML
+
+    @FXML//podokno dodaj zadanie
     private void add_taskwindow(ActionEvent event) throws IOException {
-        Parent loader = FXMLLoader.load(getClass().getResource("tasks_add.fxml"));
-        Scene task_scene= new Scene(loader);
-        Stage task_stage =new Stage();
-        task_stage.setScene(task_scene);
-        task_stage.initModality(Modality.APPLICATION_MODAL);
-        task_stage.initOwner(add_task.getScene().getWindow());
-        task_stage.showAndWait();
+        makeWindow("tasks_add.fxml", "Dodaj zadanie", add_task);
     }
-    
-    @FXML
+
+    @FXML//podokno dodaj pracownika
     private void add_employeewindow(ActionEvent event) throws IOException {
-        Parent loader = FXMLLoader.load(getClass().getResource("employee_add.fxml"));
-        Scene emp_scene= new Scene(loader);
-        Stage emp_stage =new Stage();
-        emp_stage.setScene(emp_scene);
-        emp_stage.initModality(Modality.APPLICATION_MODAL);
-        emp_stage.initOwner(add_employee.getScene().getWindow());
-        emp_stage.showAndWait();
+        makeWindow("employee_add.fxml", "Dodaj pracownika", add_employee);
     }
-    
+
+    public void makeWindow(String file, String name, Button button) throws IOException {
+        try {
+            Parent loader = FXMLLoader.load(getClass().getResource(file));
+            Scene scene = new Scene(loader);
+            Stage stage = new Stage();
+            scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
+            stage.setScene(scene);
+            stage.setTitle(name);
+            stage.initOwner(button.getScene().getWindow());
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.showAndWait();
+        } catch (IOException exc) {
+            System.out.print(" Error during making new window " + exc);
+        }
+    }
+
+    public void initTables() {
+
+        room_number.setCellValueFactory(new PropertyValueFactory<>("Number_room"));
+        room_floor.setCellValueFactory(new PropertyValueFactory<>("Floor_room"));
+        room_type.setCellValueFactory(new PropertyValueFactory<>("Type_room"));
+        room_standard.setCellValueFactory(new PropertyValueFactory<>("Standard_room"));
+        room_status.setCellValueFactory(new PropertyValueFactory<>("Status_room"));
+        room_edition.setCellValueFactory(new PropertyValueFactory<>("Edition_room"));
+        room_tableview.getItems().setAll(Rooms.getData());
+
+       
+        employee_name.setCellValueFactory(new PropertyValueFactory<>("Name_employee"));
+        employee_surname.setCellValueFactory(new PropertyValueFactory<>("Surname_employee"));
+        employee_phone.setCellValueFactory(new PropertyValueFactory<>("Phone_employee"));
+        employee_pesel.setCellValueFactory(new PropertyValueFactory<>("Pesel_employee"));
+        employee_position.setCellValueFactory(new PropertyValueFactory<>("Position_employee"));
+        employee_status.setCellValueFactory(new PropertyValueFactory<>("Status_employee"));
+        employee_tableview.getItems().setAll(Employee.getData());
+
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-       base= new DataBase();
-    }    
+        base = DataBase.getInstance();
+        initTables();
+    }
 
-    
 }

@@ -16,15 +16,41 @@ import java.sql.SQLException;
  * @author Grzesiek
  */
 public final class DataBase {
+    private static DataBase base = null;
+    private static final String base_name = "hotelmaster";
+    private static final String base_password = "resovia9";
     private static final String DRIVER = "org.mariadb.jdbc.Driver";
-    private static final String DB_URL = "jdbc:mariadb://localhost:3306/nazwa_bazy?user=root&password=hasło";
+    private static final String DB_URL = "jdbc:mariadb://localhost:3306/" + base_name + "?user=root&password=" + base_password;
     private static Connection connection = null;
+     private static Statement statement = null;
 
     public DataBase(){
         createConnection();
     }
 
-    private static Statement statement = null;
+    public static DataBase getInstance(){
+        if(base==null)
+            base = new DataBase();
+        return base;  
+}
+    
+    public static String getDRIVER() {
+        return DRIVER;
+    }
+
+    public static String getDB_URL() {
+        return DB_URL;
+    }
+
+    public static Connection getConnection() {
+        return connection;
+    }
+
+    public static Statement getStatement() {
+        return statement;
+    }
+
+   
 
     public static void createConnection() {
         try {
@@ -54,5 +80,8 @@ public final class DataBase {
         }
 
     }
-
+    
+  
+    
+    
 }

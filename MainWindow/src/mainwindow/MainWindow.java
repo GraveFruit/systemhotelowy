@@ -5,6 +5,7 @@
  */
 package mainwindow;
 
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.*;
@@ -28,6 +29,7 @@ public class MainWindow extends Application {
         scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
         stage.setScene(scene);
         stage.show();
+
     }
     
     /**
