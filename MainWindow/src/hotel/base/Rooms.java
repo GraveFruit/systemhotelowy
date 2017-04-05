@@ -25,6 +25,7 @@ import mainwindow.FXMLDocumentController;
  */
 public class Rooms {
 
+    
     private final IntegerProperty number_room;
     private final StringProperty type_room;
     private final StringProperty floor_room;
@@ -61,12 +62,9 @@ public class Rooms {
     public String getStatus_room() {
         return status_room.getValue();
     }
-
+    
     public Button getEdition_room() {
-        Button button = new Button("Edytuj");
-        button.setMaxSize(120, 10);
-
-        return button;
+        return FXMLDocumentController.makeEditRoomsButton();
     }
 
     public static ObservableList<Rooms> getData() {

@@ -23,7 +23,7 @@ import mainwindow.FXMLDocumentController;
  * @author Grzesiek
  */
 public class Employee {
-private IntegerProperty id_employee=null;
+    private IntegerProperty id_employee=null;
     private StringProperty name_employee;
     private StringProperty surname_employee;
     private StringProperty phone_employee;
@@ -79,7 +79,7 @@ private IntegerProperty id_employee=null;
     }
 public static ObservableList<Employee> getData() {
         try {
-        ObservableList<Employee> rooms_list = FXCollections.observableArrayList();
+        ObservableList<Employee> employee_list = FXCollections.observableArrayList();
         Statement statement = DataBase.getConnection().createStatement();
         ResultSet result = statement.executeQuery("select p.imie, p.nazwisko, p.telefon, p.pesel, p.status, po.nazwa from pracownicy p ,posady po where p.posada_id=po.posada_id");
         while(result.next()){
@@ -91,11 +91,11 @@ public static ObservableList<Employee> getData() {
             String stan = result.getString("nazwa");
             String status = result.getString("status");
             
-            rooms_list.add(new Employee(imie,type,floor,lozko,stan,status));
+            employee_list.add(new Employee(imie,type,floor,lozko,stan,status));
             
         }
         
-            return FXCollections.observableArrayList(rooms_list);
+            return FXCollections.observableArrayList(employee_list);
         }catch (SQLException ex) {
             Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
         }
