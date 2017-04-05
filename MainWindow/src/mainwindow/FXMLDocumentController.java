@@ -8,6 +8,7 @@ package mainwindow;
 import hotel.base.DataBase;
 import hotel.base.Employee;
 import hotel.base.Rooms;
+import hotel.base.Offer;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -74,6 +75,16 @@ public class FXMLDocumentController implements Initializable {
     private TableColumn<?, ?> room_edition;
     @FXML
     private TableView<Employee> employee_tableview;
+    @FXML
+    private TableColumn<?, ?> offer_number;
+    @FXML
+    private TableColumn<?, ?> offer_type;
+    @FXML
+    private TableColumn<?, ?> offer_floor;
+    @FXML
+    private TableColumn<?, ?> offer_standard;
+    @FXML
+    private TableView<Offer> offer_tableview;
 
     @FXML//okno informacji o aplikacji
     private void showInfoWindow(ActionEvent event) throws IOException {
@@ -126,6 +137,11 @@ public class FXMLDocumentController implements Initializable {
         room_edition.setCellValueFactory(new PropertyValueFactory<>("Edition_room"));
         room_tableview.getItems().setAll(Rooms.getData());
 
+        offer_number.setCellValueFactory(new PropertyValueFactory<>("Number_offer"));
+        offer_floor.setCellValueFactory(new PropertyValueFactory<>("Floor_offer"));
+        offer_type.setCellValueFactory(new PropertyValueFactory<>("Type_offer"));
+        offer_standard.setCellValueFactory(new PropertyValueFactory<>("Standard_offer"));
+        offer_tableview.getItems().setAll(Offer.getData());
        
         employee_name.setCellValueFactory(new PropertyValueFactory<>("Name_employee"));
         employee_surname.setCellValueFactory(new PropertyValueFactory<>("Surname_employee"));
