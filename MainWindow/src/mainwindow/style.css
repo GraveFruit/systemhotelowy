@@ -11,3 +11,8 @@
 
 #button_new 
 {-fx-background-color :  #b2c2bf}
+
+#field
+{-fx-background-color :  #eaece5;
+ -fx-font-weight : bold;
+}
