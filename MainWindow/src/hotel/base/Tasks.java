@@ -8,6 +8,7 @@ package hotel.base;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.beans.property.SimpleStringProperty;
@@ -47,36 +48,12 @@ public class Tasks {
         return client_task.getValue();
     }
     
-    public StringProperty getData_task() {
-        return data_task;
+    public String getData_task() {
+        return data_task.getValue();
     }
     
     public String getStatus_task() {
         return status_task.getValue();
     }
-    
-    public static ObservableList<Tasks> getData() {
-        try {
-        ObservableList<Tasks> tasks_list = FXCollections.observableArrayList();
-        Statement statement = DataBase.getConnection().createStatement();
-        ResultSet result = statement.executeQuery("select po.numer,p.nazwisko, k.nazwisko, z.data, z.status from pracownicy p ,pokoje po, zadania z, klienci k, lista l where z.pokoj_id=po.pokoj_id and z.klient_id=k.klient_id and l.pracownik_id=p.pracownik_id and l.zadanie_id=z.zadanie_id");
-        while(result.next()){
-            //int id = result.getInt("id");
-            String numer = result.getString("numer");
-            String prac = result.getString("nazwisko");
-            String klient= result.getString("nazwisko");
-            String data = result.getString("data");
-            String status = result.getString("status");
-            
-            tasks_list.add(new Tasks(numer,prac,klient,data,status));
-            
-        }
-        
-            return FXCollections.observableArrayList(tasks_list);
-        }catch (SQLException ex) {
-            Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-   return null;
-     } 
     
 }

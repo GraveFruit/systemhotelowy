@@ -81,6 +81,7 @@ public class Employee_addController implements Initializable {
         } else {
             try {
                 Statement statement = DataBase.getConnection().createStatement();
+                ResultSet result = statement.executeQuery("select imie, nazwisko, pesel, tel from klienci");
                 String update = "Insert into pracownicy (imie, nazwisko, telefon, pesel, podasa_id, hasło) values ("
                         //+"'"+null+"',"
                         + "'" + name_emp + "',"

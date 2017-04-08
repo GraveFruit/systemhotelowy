@@ -5,6 +5,7 @@
  */
 package hotel.base;
 
+import base.service.RoomService;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -18,13 +19,13 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Button;
 import mainwindow.FXMLDocumentController;
+import mainwindow.ObjectManager;
 
 /**
  *
  * @author Grzesiek
  */
 public class Rooms {
-
     
     private final IntegerProperty number_room;
     private final StringProperty type_room;
@@ -64,30 +65,8 @@ public class Rooms {
     }
     
     public Button getEdition_room() {
-        return FXMLDocumentController.makeEditRoomsButton();
+        return ObjectManager.GetInstance().roomservice.makeEditRoomsButton();
     }
 
-    public static ObservableList<Rooms> getData() {
-        try {
-            ObservableList<Rooms> rooms_list = FXCollections.observableArrayList();
-            Statement statement = DataBase.getConnection().createStatement();
-            ResultSet result = statement.executeQuery("Select * from pokoje");
-            while (result.next()) {
-                int id = result.getInt("numer");
-                String floor = result.getString("pietro");
-                String type = result.getString("typ");
-                String stan = result.getString("standard");
-                String status = result.getString("status");
-                String ed = null;
-
-                rooms_list.add(new Rooms(id, floor, type, stan, status, ed));
-
-            }
-
-            return FXCollections.observableArrayList(rooms_list);
-        } catch (SQLException ex) {
-            Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return null;
-    }
+    
 }

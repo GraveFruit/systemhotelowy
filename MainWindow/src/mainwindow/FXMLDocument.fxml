@@ -4,7 +4,6 @@
 <?import com.jfoenix.controls.JFXDatePicker?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.SplitPane?>
@@ -87,27 +86,11 @@
                                   </children></AnchorPane>
                              </content>
                           </Tab>
-                        <Tab id="button_new" text="Oferta">
+                        <Tab id="button_new" fx:id="offer_tab" text="Oferta">
                            <content>
                               <AnchorPane id="AnchorPane" prefHeight="200.0" prefWidth="200.0">
                                  <children>
-                                    <JFXDatePicker layoutX="598.0" layoutY="90.0" promptText="Data przyjazdu" />
-                                    <JFXDatePicker layoutX="598.0" layoutY="185.0" promptText="Data wyjzadu" />
-                                    <ComboBox layoutX="598.0" layoutY="289.0" prefWidth="150.0" promptText="Standard" />
-                                    <ComboBox layoutX="598.0" layoutY="377.0" prefWidth="150.0" promptText="Typ" />
-                                    
-                                    <TableView fx:id="offer_tableview" editable="true" layoutX="43.0" layoutY="55.0" prefHeight="454.0" prefWidth="407.0">
-                                      <columns>
-                                        <TableColumn fx:id="offer_standard" prefWidth="75.0" text="Standard" />
-                                        <TableColumn fx:id="offer_type" prefWidth="75.0" text="Typ" />                                        
-                                        <TableColumn fx:id="offer_floor" prefWidth="75.0" text="Piętro" />
-                                        <TableColumn fx:id="offer_number" prefWidth="75.0" text="Pokój" />
-                                      </columns>
-                                      <columnResizePolicy>
-                                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                                      </columnResizePolicy>
-                                    </TableView>
-                                    <TextField id="field" layoutX="43.0" layoutY="14.0" text="Dostępne pokoje" />
+                                    <Button fx:id="guest_offer" layoutX="122.0" layoutY="174.0" mnemonicParsing="false" onAction="#add_offerwindow" prefHeight="126.0" prefWidth="641.0" text="Sprawdź oferte" />
                                  </children></AnchorPane>
                            </content>
                         </Tab>
@@ -176,7 +159,6 @@
                                             <rowConstraints>
                                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                             </rowConstraints>
                                              <children>
                                                 <JFXComboBox prefHeight="35.0" prefWidth="409.0" promptText="Klienci" GridPane.columnSpan="3">
@@ -184,23 +166,7 @@
                                                       <Insets left="20.0" right="20.0" />
                                                    </GridPane.margin>
                                                 </JFXComboBox>
-                                                <JFXDatePicker promptText="Data przyjazdu" GridPane.halignment="CENTER" GridPane.rowIndex="1">
-                                                   <GridPane.margin>
-                                                      <Insets left="5.0" right="5.0" />
-                                                   </GridPane.margin>
-                                                </JFXDatePicker>
-                                                <JFXDatePicker promptText="Data wyjazdu" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1">
-                                                   <GridPane.margin>
-                                                      <Insets left="5.0" right="5.0" />
-                                                   </GridPane.margin>
-                                                </JFXDatePicker>
-                                                <JFXComboBox promptText="Ridzah pokoju" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1">
-                                                   <GridPane.margin>
-                                                      <Insets left="5.0" right="5.0" />
-                                                   </GridPane.margin>
-                                                </JFXComboBox>
-                                                <JFXComboBox promptText="Dostępne pokoje" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
-                                                <Button id="button_new" mnemonicParsing="false" prefHeight="35.0" prefWidth="120.0" text="Dodaj rezerwacje" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+                                                <Button id="button_new" fx:id="reception_offer" mnemonicParsing="false" onAction="#add_ReceptionOfferWindow" prefHeight="35.0" prefWidth="406.0" text="Dodaj rezerwacje" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
                                              </children>
                                           </GridPane>
                                           <GridPane GridPane.columnIndex="1" GridPane.rowIndex="1">
@@ -236,7 +202,7 @@
                                               <TableColumn fx:id="guest_surname" prefWidth="75.0" text="Nazwisko" />
                                                 <TableColumn fx:id="guest_pesel" prefWidth="75.0" text="Pesel" />
                                                 <TableColumn fx:id="guest_phone" prefWidth="75.0" text="Numer telefonu" />
-                                                <TableColumn fx:id="guest_edition" prefWidth="75.0" text="Edytuj" />
+                                                <TableColumn fx:id="guest_edition" minWidth="60.0" text="Edytuj" />
                                             </columns>
                                              <columnResizePolicy>
                                                 <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
@@ -263,7 +229,7 @@
                                                 <TableColumn fx:id="booking_datak" minWidth="0.0" prefWidth="87.0" text="Data wyjazdu" />
                                                 <TableColumn fx:id="booking_status" prefWidth="75.0" text="Status" />
                                                 <TableColumn fx:id="booking_comment" minWidth="0.0" prefWidth="87.0" text="Komentarz" />
-                                                <TableColumn fx:id="booking_edition" prefWidth="75.0" text="Edytuj" />
+                                                <TableColumn fx:id="booking_edition" minWidth="60.0" text="Edytuj" />
                                             </columns>
                                              <columnResizePolicy>
                                                 <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
@@ -289,7 +255,7 @@
                                                     <TableColumn fx:id="room_type" prefWidth="75.0" text="Typ" />
                                                       <TableColumn fx:id="room_standard" prefWidth="75.0" text="Standard" />
                                                       <TableColumn fx:id="room_status" prefWidth="75.0" text="Status" />
-                                                      <TableColumn fx:id="room_edition" prefWidth="75.0" text="Edytuj" />
+                                                      <TableColumn fx:id="room_edition" minWidth="80.0" prefWidth="100.0" text="Edytuj" />
                                                   </columns>
                                                    <columnResizePolicy>
                                                       <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />

@@ -5,6 +5,12 @@
  */
 package mainwindow;
 
+import base.service.BookingService;
+import base.service.EmployeeService;
+import base.service.GuestService;
+import base.service.RoomService;
+import base.service.TaskService;
+import com.jfoenix.controls.JFXDatePicker;
 import hotel.base.Bookings;
 import hotel.base.DataBase;
 import hotel.base.Employee;
@@ -14,7 +20,11 @@ import hotel.base.Offer;
 import hotel.base.Tasks;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -25,6 +35,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Region;
 import javafx.stage.*;
+import java.sql.Date;
 
 /**
  *
@@ -32,6 +43,8 @@ import javafx.stage.*;
  */
 public class FXMLDocumentController implements Initializable {
 
+    DataBase base;
+    
     @FXML
     private Button hotel_info;
     @FXML
@@ -43,10 +56,6 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private Button add_employee;
 
-    DataBase base;
-    static  Button edit_rooms;
-    static  Button edit_bookings;
-    static  Button edit_guests;
     @FXML
     private Region region;
     @FXML
@@ -79,16 +88,6 @@ public class FXMLDocumentController implements Initializable {
     private TableColumn<?, ?> room_edition;
     @FXML
     private TableView<Employee> employee_tableview;
-    @FXML
-    private TableColumn<?, ?> offer_number;
-    @FXML
-    private TableColumn<?, ?> offer_type;
-    @FXML
-    private TableColumn<?, ?> offer_floor;
-    @FXML
-    private TableColumn<?, ?> offer_standard;
-    @FXML
-    private TableView<Offer> offer_tableview;
     @FXML
     private TableView<Guests> guest_tableview;
     @FXML
@@ -133,6 +132,14 @@ public class FXMLDocumentController implements Initializable {
     private TableColumn<?, ?> data_task;
     @FXML
     private TableColumn<?, ?> status_task;
+    ObservableList<String> offer_typ_list = FXCollections.observableArrayList("1", "1+1", "2", "2+1", "3");
+    ObservableList<String> offer_standard_list = FXCollections.observableArrayList("vip", "ekonomiczny", "biznesowy");
+    @FXML
+    private Button guest_offer;
+    @FXML
+    private Button reception_offer;
+    @FXML
+    private Tab offer_tab;
 
     @FXML//okno informacji o aplikacji
     private void showInfoWindow(ActionEvent event) throws IOException {
@@ -159,6 +166,16 @@ public class FXMLDocumentController implements Initializable {
         makeWindow("employee_add.fxml", "Dodaj pracownika", add_employee);
     }
 
+    @FXML
+    private void add_ReceptionOfferWindow(ActionEvent event) throws IOException {
+        makeWindow("ShowOffer.fxml", "Sprawdź dostępne pokoje", reception_offer);
+    }
+
+    @FXML
+    private void add_offerwindow(ActionEvent event) throws IOException {
+        makeWindow("ShowOffer.fxml", "Wybierz pokój idealny dla ciebie", guest_offer);
+    }
+
     public void makeWindow(String file, String name, Button button) throws IOException {
         try {
             Parent loader = FXMLLoader.load(getClass().getResource(file));
@@ -175,38 +192,7 @@ public class FXMLDocumentController implements Initializable {
         }
     }
 
-    
-    public static Button makeEditRoomsButton(){
-        edit_rooms = new Button("Edytuj");
-        edit_rooms.setMaxSize(120, 10);
-        
-        return edit_rooms;
-    }
-    
-    public static Button makeEditBookingsButton(){
-        edit_bookings = new Button("Edytuj");
-        edit_bookings.setMaxSize(100, 10);
-        
-        return edit_bookings;
-    }
-    
-    public static Button makeEditGuestsButton(){
-        edit_guests = new Button("Edytuj");
-        edit_guests.setMaxSize(180, 10);
-        
-        return edit_guests;
-    }
-    
-    public void initOffer_Tables() {
-
-        offer_number.setCellValueFactory(new PropertyValueFactory<>("Number_offer"));
-        offer_floor.setCellValueFactory(new PropertyValueFactory<>("Floor_offer"));
-        offer_type.setCellValueFactory(new PropertyValueFactory<>("Type_offer"));
-        offer_standard.setCellValueFactory(new PropertyValueFactory<>("Standard_offer"));
-        offer_tableview.getItems().setAll(Offer.getData());
-    }
-
-    
+    //inicjalizacja tabel
     public void initRooms_Table() {
 
         room_number.setCellValueFactory(new PropertyValueFactory<>("Number_room"));
@@ -215,28 +201,29 @@ public class FXMLDocumentController implements Initializable {
         room_standard.setCellValueFactory(new PropertyValueFactory<>("Standard_room"));
         room_status.setCellValueFactory(new PropertyValueFactory<>("Status_room"));
         room_edition.setCellValueFactory(new PropertyValueFactory<>("Edition_room"));
-        room_tableview.getItems().setAll(Rooms.getData());
+        room_tableview.getItems().setAll(ObjectManager.GetInstance().roomservice.getData());
     }
-       public void initEmployee_Table() {
+
+    public void initEmployee_Table() {
         employee_name.setCellValueFactory(new PropertyValueFactory<>("Name_employee"));
         employee_surname.setCellValueFactory(new PropertyValueFactory<>("Surname_employee"));
         employee_phone.setCellValueFactory(new PropertyValueFactory<>("Phone_employee"));
         employee_pesel.setCellValueFactory(new PropertyValueFactory<>("Pesel_employee"));
         employee_position.setCellValueFactory(new PropertyValueFactory<>("Position_employee"));
         employee_status.setCellValueFactory(new PropertyValueFactory<>("Status_employee"));
-        employee_tableview.getItems().setAll(Employee.getData());     
+        employee_tableview.getItems().setAll(ObjectManager.GetInstance().employeeservice.getData());
     }
-       
-         public void initTasks_Table() {
+
+    public void initTasks_Table() {
         room_task.setCellValueFactory(new PropertyValueFactory<>("Employee_task"));
         employee_task.setCellValueFactory(new PropertyValueFactory<>("Room_task"));
         client_task.setCellValueFactory(new PropertyValueFactory<>("Client_task"));
         data_task.setCellValueFactory(new PropertyValueFactory<>("Data_task"));
         status_task.setCellValueFactory(new PropertyValueFactory<>("Status_task"));
-        task_tableview.getItems().setAll(Tasks.getData());     
+        task_tableview.getItems().setAll(ObjectManager.GetInstance().taskservice.getData());
     }
-         
-          public void initBookings_Table() {
+
+    public void initBookings_Table() {
         booking_id.setCellValueFactory(new PropertyValueFactory<>("Id_booking"));
         booking_client.setCellValueFactory(new PropertyValueFactory<>("Client_booking"));
         booking_employee.setCellValueFactory(new PropertyValueFactory<>("Employee_booking"));
@@ -246,22 +233,21 @@ public class FXMLDocumentController implements Initializable {
         booking_status.setCellValueFactory(new PropertyValueFactory<>("Status_booking"));
         booking_comment.setCellValueFactory(new PropertyValueFactory<>("Comment_booking"));
         booking_edition.setCellValueFactory(new PropertyValueFactory<>("Edition_booking"));
-        booking_tableview.getItems().setAll(Bookings.getData());     
+        booking_tableview.getItems().setAll(ObjectManager.GetInstance().bookingservice.getData());
     }
-          
-      public void initGuests_Table() {
+
+    public void initGuests_Table() {
         guest_name.setCellValueFactory(new PropertyValueFactory<>("Name_guest"));
         guest_surname.setCellValueFactory(new PropertyValueFactory<>("Surname_guest"));
         guest_pesel.setCellValueFactory(new PropertyValueFactory<>("Phone_guest"));
         guest_phone.setCellValueFactory(new PropertyValueFactory<>("Pesel_guest"));
         guest_edition.setCellValueFactory(new PropertyValueFactory<>("Edition_guest"));
-        guest_tableview.getItems().setAll(Guests.getData());     
-    }  
-    
+        guest_tableview.getItems().setAll(ObjectManager.GetInstance().guestservice.getData());
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         base = DataBase.getInstance();
-        initOffer_Tables();
         initRooms_Table();
         initEmployee_Table();
         initBookings_Table();

@@ -77,32 +77,4 @@ public class Employee {
     public String getPassword_employee() {
         return password_employee.getValue();
     }
-public static ObservableList<Employee> getData() {
-        try {
-        ObservableList<Employee> employee_list = FXCollections.observableArrayList();
-        Statement statement = DataBase.getConnection().createStatement();
-        ResultSet result = statement.executeQuery("select p.imie, p.nazwisko, p.telefon, p.pesel, p.status, po.nazwa from pracownicy p ,posady po where p.posada_id=po.posada_id");
-        while(result.next()){
-            //int id = result.getInt("id");
-            String imie = result.getString("imie");
-            String type = result.getString("nazwisko");
-            String floor= result.getString("telefon");
-            String lozko = result.getString("pesel");
-            String stan = result.getString("nazwa");
-            String status = result.getString("status");
-            
-            employee_list.add(new Employee(imie,type,floor,lozko,stan,status));
-            
-        }
-        
-            return FXCollections.observableArrayList(employee_list);
-        }catch (SQLException ex) {
-            Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-   return null;
-     } 
-    
-
-
-
 }
