@@ -55,7 +55,8 @@ public class FXMLDocumentController implements Initializable {
     private Button add_task;
     @FXML
     private Button add_employee;
-
+       
+    
     @FXML
     private Region region;
     @FXML
@@ -140,6 +141,8 @@ public class FXMLDocumentController implements Initializable {
     private Button reception_offer;
     @FXML
     private Tab offer_tab;
+    @FXML
+    private Button add_guests;
 
     @FXML//okno informacji o aplikacji
     private void showInfoWindow(ActionEvent event) throws IOException {
@@ -174,6 +177,11 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private void add_offerwindow(ActionEvent event) throws IOException {
         makeWindow("ShowOffer.fxml", "Wybierz pokój idealny dla ciebie", guest_offer);
+    }
+    
+    @FXML//podokno dodaj klienta
+    private void add_guestswindow(ActionEvent event) throws IOException {
+        makeWindow("guests_add.fxml", "Dodaj klienta", add_guests);
     }
 
     public void makeWindow(String file, String name, Button button) throws IOException {

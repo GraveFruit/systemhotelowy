@@ -39,6 +39,10 @@ public class Guests {
         this.edition_guest=new SimpleStringProperty(edit);
 }
 
+    public Guests(String imie, String nazwisko, String tel, String pesel) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
   
 
     public String getName_guest() {
