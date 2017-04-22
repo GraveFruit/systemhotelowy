@@ -29,9 +29,9 @@ public class OfferService {
                     + " where p.typ='"+typ+"' and p.standard='"+stand+"' and p.pokoj_id not in "
                     + " (select distinct p.pokoj_id"
                     + " from pokoje p, rezerwacje r "
-                    + " where p.pokoj_id = r.pokoj_id and(("
-                    + datap+" between r.data_p  and r.data_k) or ( "+datak+" between r.data_p and r.data_k)"
-                    + " or ("+datap+" between r.data_p  and r.data_k and "+datak+" between r.data_p and r.data_k)))");
+                    + " where p.pokoj_id = r.pokoj_id and(('"
+                    + datap+"' between r.data_p  and r.data_k) or ('"+datak+"' between r.data_p and r.data_k)"
+                    + " or ('"+datap+"' between r.data_p  and r.data_k and '"+datak+"' between r.data_p and r.data_k)))");
             while (result.next()) {
                 int id = result.getInt("numer");
                 String floor = result.getString("pietro");

@@ -48,7 +48,7 @@ public class Employee_addController implements Initializable {
 
     DataBase base;
 
-    ObservableList<String> position_list = FXCollections.observableArrayList("Admin", "Menedzer", "Recepcja", "Obsługa");
+    ObservableList<String> position_list = FXCollections.observableArrayList("Admin", "Menedżer", "Recepcja", "Obsługa");
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -57,7 +57,7 @@ public class Employee_addController implements Initializable {
     }
 
     @FXML
-    private void addEmployee(ActionEvent event) {
+    private void addEmployee(ActionEvent event) throws SQLException {
         String name_emp = name.getText();
         String surname_emp = surname.getText();
         String phone_emp = phone.getText();
@@ -65,7 +65,6 @@ public class Employee_addController implements Initializable {
         String position_emp = position.getValue();
         String passwd1 = password1.getText();
         String passwd2 = password2.getText();
-
         if (name_emp.isEmpty() || surname_emp.isEmpty() || phone_emp.isEmpty() || pesel_emp.isEmpty() || position_emp.isEmpty() || passwd1.isEmpty() || passwd2.isEmpty()) {
             Alert alert1 = new Alert(Alert.AlertType.ERROR);
             alert1.setHeaderText(null);
@@ -79,33 +78,18 @@ public class Employee_addController implements Initializable {
             alert2.showAndWait();
             return;
         } else {
-            try {
-                Statement statement = DataBase.getConnection().createStatement();
-                ResultSet result = statement.executeQuery("select imie, nazwisko, pesel, tel from klienci");
-                String update = "Insert into pracownicy (imie, nazwisko, telefon, pesel, podasa_id, hasło) values ("
-                        //+"'"+null+"',"
-                        + "'" + name_emp + "',"
-                        + "'" + surname_emp + "',"
-                        + "'" + phone_emp + "',"
-                        + "'" + pesel_emp + "',"
-                        + "'" + position_emp + "',"
-                        //+"'"+ null+"',"
-                        + "'" + passwd2 + "') from";
-
-                statement.executeUpdate(update);
-            } catch (SQLException ex) {
-                Alert alert3 = new Alert(Alert.AlertType.ERROR);
-                alert3.setHeaderText(null);
-                alert3.setContentText("Błąd przy dodawaniu danych");
-                alert3.showAndWait();
+            if (ObjectManager.GetInstance().employeeservice.insertEmployee(name_emp, surname_emp, phone_emp, pesel_emp, position_emp, passwd2)) {
+                Alert alert4 = new Alert(Alert.AlertType.INFORMATION);
+                alert4.setHeaderText(null);
+                alert4.setContentText("Dodano element");
+                alert4.showAndWait();
+            } else {
+                Alert alert2 = new Alert(Alert.AlertType.ERROR);
+                alert2.setHeaderText(null);
+                alert2.setContentText("Błąd przy dodawaniu pracownika");
+                alert2.showAndWait();
             }
-            Alert alert4 = new Alert(Alert.AlertType.INFORMATION);
-            alert4.setHeaderText(null);
-            alert4.setContentText("Dodano element");
-            alert4.showAndWait();
-            FXMLDocumentController ob = new FXMLDocumentController();
         }
-        
 
     }
 

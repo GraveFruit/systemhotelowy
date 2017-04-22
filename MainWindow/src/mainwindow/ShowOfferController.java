@@ -74,6 +74,7 @@ public class ShowOfferController implements Initializable {
         offer_typ.setItems(offer_typ_list);
         offer_standardbox.setItems(offer_standard_list);
         offer_datep.setValue(LocalDate.now());
+        offer_datek.setValue(LocalDate.now().plusDays(1));
          final Callback<DatePicker, DateCell> dateCalLabel1 = 
             (final DatePicker datePicker) -> new DateCell() {
                 @Override

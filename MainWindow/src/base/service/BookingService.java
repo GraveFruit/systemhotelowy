@@ -7,6 +7,7 @@ package base.service;
 
 import hotel.base.Bookings;
 import hotel.base.DataBase;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -52,6 +53,33 @@ public class BookingService {
             Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
+    }
+    
+    public boolean insertBooking(String klient, int pracownik, int pokoj, String datap, String datak, String komentarz) {
+        int klient_id = 0;
+        try {
+            ResultSet result = DataBase.getConnection().createStatement().executeQuery("select klient_id from klienci where pesel='" + klient + "'");
+            while (result.next()) {
+                klient_id = result.getInt("klient_id");
+            }
+            
+
+            PreparedStatement prep = DataBase.getConnection().prepareStatement(
+                    "Insert into rezerwacje (klient_id,pracownik_id,pokoj_id,data_p,data_k,status,komentarz) values (?,?,?,?,?,?,?)");
+            prep.setInt(1, klient_id);
+            prep.setInt(2, pracownik);
+            prep.setInt(3, pokoj);
+            prep.setString(4, datap);
+            prep.setString(5, datak);
+            prep.setString(6, "1");
+            prep.setString(7, komentarz);
+            prep.executeUpdate();
+
+        } catch (SQLException e) {
+            System.err.println("Błąd przy dodawaniu pracownika");
+            return false;
+        }
+        return true;
     }
 
     public Button makeEditBookingsButton() {

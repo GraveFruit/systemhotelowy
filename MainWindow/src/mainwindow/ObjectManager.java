@@ -9,7 +9,6 @@ import base.service.BookingService;
 import base.service.EmployeeService;
 import base.service.GuestService;
 import base.service.OfferService;
-import base.service.OfficeService;
 import base.service.RoomService;
 import base.service.TaskService;
 
@@ -27,7 +26,6 @@ public class ObjectManager {
     public BookingService bookingservice;
     public TaskService taskservice;
     public RoomService roomservice;
-    public OfficeService officeservice;
 
     private ObjectManager() {
         offerservice = new OfferService();
@@ -36,7 +34,6 @@ public class ObjectManager {
         taskservice = new TaskService();
         bookingservice = new BookingService();
         roomservice= new RoomService();
-        officeservice= new OfficeService();
     }
 
     public static ObjectManager GetInstance() {

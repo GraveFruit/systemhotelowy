@@ -36,6 +36,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Region;
 import javafx.stage.*;
 import java.sql.Date;
+import javafx.event.EventHandler;
 
 /**
  *
@@ -164,17 +165,7 @@ public class FXMLDocumentController implements Initializable {
         makeWindow("tasks_add.fxml", "Dodaj zadanie", add_task);
     }
 
-    @FXML//podokno dodaj pracownika
-    private void add_employeewindow(ActionEvent event) throws IOException {
-        makeWindow("employee_add.fxml", "Dodaj pracownika", add_employee);
-    }
-
-    @FXML
-    private void add_ReceptionOfferWindow(ActionEvent event) throws IOException {
-        makeWindow("ShowOffer.fxml", "Sprawdź dostępne pokoje", reception_offer);
-    }
-
-    @FXML
+    @FXML//podokno wyświetlające dostępne pokoje dla gości
     private void add_offerwindow(ActionEvent event) throws IOException {
         makeWindow("ShowOffer.fxml", "Wybierz pokój idealny dla ciebie", guest_offer);
     }
@@ -199,7 +190,54 @@ public class FXMLDocumentController implements Initializable {
             System.out.print(" Error during making new window " + exc);
         }
     }
+    
+    @FXML//podokno dodawania rezerwacji
+    private void add_ReceptionOfferWindow(ActionEvent event) throws IOException {
+        try {
+            Parent loader = FXMLLoader.load(getClass().getResource("booking_add.fxml"));
+            Scene scene = new Scene(loader);
+            Stage stage = new Stage();
+            scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
+            stage.setScene(scene);
+            stage.setTitle("Dodaj rezerwację");
+            stage.initOwner(reception_offer.getScene().getWindow());
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.showAndWait();
+            stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+                public void handle(WindowEvent we) {
+                    refreshBookingTable();
+                    refreshRoomTable();
+                }
+            });
+            stage.getOnCloseRequest().handle(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
+        } catch (IOException exc) {
+            System.out.print(" Error during making new window " + exc);
+        }
+    }
 
+    @FXML//podokno dodaj pracownika
+    private void add_employeewindow(ActionEvent event) throws IOException {
+        try {
+            Parent loader = FXMLLoader.load(getClass().getResource("employee_add.fxml"));
+            Scene scene = new Scene(loader);
+            Stage stage = new Stage();
+            scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
+            stage.setScene(scene);
+            stage.setTitle("Dodaj pracownika");
+            stage.initOwner(add_employee.getScene().getWindow());
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.showAndWait();
+            stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+                public void handle(WindowEvent we) {
+                    refreshEmployeeTable();
+                }
+            });
+            stage.getOnCloseRequest().handle(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
+        } catch (IOException exc) {
+            System.out.print(" Error during making new window " + exc);
+        }
+    }
+    
     //inicjalizacja tabel
     public void initRooms_Table() {
 
@@ -252,7 +290,23 @@ public class FXMLDocumentController implements Initializable {
         guest_edition.setCellValueFactory(new PropertyValueFactory<>("Edition_guest"));
         guest_tableview.getItems().setAll(ObjectManager.GetInstance().guestservice.getData());
     }
+    
+    public void refreshEmployeeTable() {
+        employee_tableview.getItems().setAll(ObjectManager.GetInstance().employeeservice.getData());
+    }
 
+    public void refreshBookingTable() {
+        booking_tableview.getItems().setAll(ObjectManager.GetInstance().bookingservice.getData());
+    }
+    
+    public void refreshRoomTable() {
+        room_tableview.getItems().setAll(ObjectManager.GetInstance().roomservice.getData());
+    }
+    
+    public void refreshGuestTable() {
+        guest_tableview.refresh();
+    }
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         base = DataBase.getInstance();

@@ -7,6 +7,7 @@ package base.service;
 
 import hotel.base.DataBase;
 import hotel.base.Employee;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -47,4 +48,32 @@ public class EmployeeService {
         }
    return null;
      } 
+    
+    public boolean insertEmployee(String imie, String nazwisko, String telefon, String pesel, String posada, String hasło) {
+        int posada_nr = 0;
+        try {
+            ResultSet result = DataBase.getConnection().createStatement().executeQuery("select posada_id from posady where nazwa='" + posada + "'");
+
+            while (result.next()) {
+                posada_nr = result.getInt("posada_id");
+            }
+
+            PreparedStatement prep = DataBase.getConnection().prepareStatement(
+                    "Insert into pracownicy (imie,nazwisko,telefon,pesel,posada_id,status,haslo) values (?,?,?,?,?,?,?)");
+            prep.setString(1, imie);
+            prep.setString(2, nazwisko);
+            prep.setString(3, telefon);
+            prep.setString(4, pesel);
+            prep.setInt(5, posada_nr);
+            prep.setString(6, "0");
+            prep.setString(7, hasło);
+            prep.executeUpdate();
+
+        } catch (SQLException e) {
+            System.err.println("Błąd przy dodawaniu pracownika");
+            return false;
+        }
+        return true;
+    }
+    
 }

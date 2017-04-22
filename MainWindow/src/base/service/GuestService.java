@@ -48,6 +48,27 @@ public class GuestService {
         }
         return null;
     }
+    
+    public ObservableList<String> getBooking_Data() {
+        try {
+            ObservableList<String> employee_list = FXCollections.observableArrayList();
+            Statement statement = DataBase.getConnection().createStatement();
+            ResultSet result = statement.executeQuery("select pesel from klienci");
+            while (result.next()) {
+                //int id = result.getInt("id");
+                String naz = result.getString("pesel");
+                
+
+                employee_list.add(new Guests(naz).getPesel_guest());
+
+            }
+
+            return FXCollections.observableArrayList(employee_list);
+        } catch (SQLException ex) {
+            Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
 
     public Button makeEditGuestsButton() {
         edit_guests = new Button("Edytuj");
