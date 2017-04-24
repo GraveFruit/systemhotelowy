@@ -36,6 +36,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Region;
 import javafx.stage.*;
 import java.sql.Date;
+import java.sql.SQLException;
 import javafx.event.EventHandler;
 
 /**
@@ -144,6 +145,14 @@ public class FXMLDocumentController implements Initializable {
     private Tab offer_tab;
     @FXML
     private Button add_guests;
+    @FXML
+    private TextField client_name;
+    @FXML
+    private TextField client_surname;
+    @FXML
+    private TextField client_pesel;
+    @FXML
+    private TextField client_phone;
 
     @FXML//okno informacji o aplikacji
     private void showInfoWindow(ActionEvent event) throws IOException {
@@ -169,9 +178,8 @@ public class FXMLDocumentController implements Initializable {
     private void add_offerwindow(ActionEvent event) throws IOException {
         makeWindow("ShowOffer.fxml", "Wybierz pokój idealny dla ciebie", guest_offer);
     }
-    
-    @FXML//podokno dodaj klienta
-    private void add_guestswindow(ActionEvent event) throws IOException {
+    @FXML
+        private void add_guestswindow(ActionEvent event) throws IOException {
         makeWindow("guests_add.fxml", "Dodaj klienta", add_guests);
     }
 
@@ -235,6 +243,35 @@ public class FXMLDocumentController implements Initializable {
             stage.getOnCloseRequest().handle(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
         } catch (IOException exc) {
             System.out.print(" Error during making new window " + exc);
+        }
+    }
+    
+    @FXML
+    private void addClient(ActionEvent event) throws SQLException {
+        String name_c = client_name.getText();
+        String surname_c = client_surname.getText();
+        String phone_c = client_phone.getText();
+        String pesel_c = client_pesel.getText();
+        
+        if (name_c.isEmpty() || surname_c.isEmpty() || phone_c.isEmpty() || pesel_c.isEmpty()) {
+            Alert alert1 = new Alert(Alert.AlertType.ERROR);
+            alert1.setHeaderText(null);
+            alert1.setContentText("Wypełnij wszystkie pola");
+            alert1.showAndWait();
+            return;
+        }
+        else {
+            if (ObjectManager.GetInstance().guestservice.insertClient(name_c, surname_c, phone_c, pesel_c)) {
+                Alert alert4 = new Alert(Alert.AlertType.INFORMATION);
+                alert4.setHeaderText(null);
+                alert4.setContentText("Dodano klienta");
+                alert4.showAndWait();
+            } else {
+                Alert alert2 = new Alert(Alert.AlertType.ERROR);
+                alert2.setHeaderText(null);
+                alert2.setContentText("Błąd przy dodawaniu klienta");
+                alert2.showAndWait();
+            }
         }
     }
     
@@ -315,6 +352,10 @@ public class FXMLDocumentController implements Initializable {
         initBookings_Table();
         initGuests_Table();
         initTasks_Table();
+    }
+
+    @FXML
+    private void add_client(ActionEvent event) {
     }
 
 }

@@ -7,6 +7,7 @@ package base.service;
 
 import hotel.base.DataBase;
 import hotel.base.Guests;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -77,4 +78,22 @@ public class GuestService {
         return edit_guests;
     }
 
+   public boolean insertClient(String name, String surname, String phone, String pesel){
+        try {
+            PreparedStatement prep = DataBase.getConnection().prepareStatement(
+                    "Insert into klienci (imie, nazwisko, tel,  pesel) values (?,?,?,?)");
+            prep.setString(1, name);
+            prep.setString(2, surname);
+            prep.setString(3, phone);
+            prep.setString(4, pesel);
+            prep.executeUpdate();
+
+        } catch (SQLException e) {
+            System.err.println("Błąd przy dodawaniu pracownika");
+            return false;
+        }
+        return true;
+    
+    
+}
 }

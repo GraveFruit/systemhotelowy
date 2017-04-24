@@ -119,11 +119,11 @@
                                               <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
                                             </rowConstraints>
                                              <children>
-                                                <TextField prefHeight="45.0" prefWidth="156.0" promptText="Imię" />
-                                                <TextField layoutX="10.0" layoutY="35.0" prefHeight="45.0" prefWidth="78.0" promptText="Nazwisko" GridPane.columnIndex="1" />
-                                                <TextField layoutX="235.0" layoutY="35.0" prefHeight="45.0" prefWidth="109.0" promptText="Pesel" GridPane.rowIndex="1" />
-                                                <TextField layoutX="10.0" layoutY="129.0" prefHeight="45.0" prefWidth="225.0" promptText="Telefon" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                                <Button id="button_new" fx:id="add_guests" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#add_guestswindow" prefHeight="35.0" prefWidth="120.0" text="Dodaj klienta" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                <TextField fx:id="client_name" prefHeight="45.0" prefWidth="156.0" promptText="Imię" />
+                                                <TextField fx:id="client_surname" layoutX="10.0" layoutY="35.0" prefHeight="45.0" prefWidth="78.0" promptText="Nazwisko" GridPane.columnIndex="1" />
+                                                <TextField fx:id="client_pesel" layoutX="235.0" layoutY="35.0" prefHeight="45.0" prefWidth="109.0" promptText="Pesel" GridPane.rowIndex="1" />
+                                                <TextField fx:id="client_phone" layoutX="10.0" layoutY="129.0" prefHeight="45.0" prefWidth="225.0" promptText="Telefon" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                <Button id="button_new" fx:id="add_guests" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#addClient" prefHeight="35.0" prefWidth="120.0" text="Dodaj klienta" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                              </children>
                                              <GridPane.margin>
                                                 <Insets />
