@@ -60,7 +60,7 @@ public class Booking_addController implements Initializable {
     @FXML
     private ComboBox<String> booking_standardbox;
     @FXML
-    private ComboBox<String> booking_typ;
+    private ComboBox<String> booking_typbox;
     @FXML
     private TextField booking_comment;
     @FXML
@@ -68,7 +68,7 @@ public class Booking_addController implements Initializable {
     ObservableList<String> booking_typ_list = FXCollections.observableArrayList("1", "1+1", "2", "2+1", "3");
     ObservableList<String> booking_client = ObjectManager.GetInstance().guestservice.getBooking_Data();
     ObservableList<String> booking_standard_list = FXCollections.observableArrayList("vip", "ekonomiczny", "biznesowy");
-   
+    
     @FXML
     private Button booking_offer;
     @FXML
@@ -78,7 +78,7 @@ public class Booking_addController implements Initializable {
     private void showOffer(ActionEvent event) {
         String datap = booking_datep.getValue().toString();
         String datak = booking_datek.getValue().toString();//new SimpleDateFormat(offer_datek);
-        String typ = booking_typ.getValue();
+        String typ = booking_typbox.getValue();
         String stand = booking_standardbox.getValue();
         String comment= booking_comment.getText();
         booking_number.setCellValueFactory(new PropertyValueFactory<>("Number_offer"));
@@ -108,6 +108,10 @@ public class Booking_addController implements Initializable {
                 alert4.setHeaderText(null);
                 alert4.setContentText("Dodano rezerwację");
                 alert4.showAndWait();
+                booking_clients.valueProperty().set(null);
+                booking_comment.clear();
+                if(booking_tableview.getSelectionModel().getSelectedItem()!=null)
+                booking_tableview.getItems().remove(booking_tableview.getSelectionModel().getSelectedItem());
             } else {
                 Alert alert2 = new Alert(Alert.AlertType.ERROR);
                 alert2.setHeaderText(null);
@@ -121,7 +125,7 @@ public class Booking_addController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         base = DataBase.getInstance();
-        booking_typ.setItems(booking_typ_list);
+        booking_typbox.setItems(booking_typ_list);
         booking_standardbox.setItems(booking_standard_list);
         booking_clients.setItems(booking_client);
         booking_datep.setValue(LocalDate.now());

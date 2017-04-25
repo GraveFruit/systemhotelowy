@@ -22,15 +22,16 @@ import mainwindow.FXMLDocumentController;
  * @author Grzesiek
  */
 public class Tasks {
+
     private StringProperty employee_task;
     private StringProperty room_task;
     private StringProperty client_task;
     private StringProperty data_task;
     private StringProperty status_task;
 
-    public Tasks(String room_task,String employee_task,String client_task, String date_task, String status_task) {
-        this.employee_task = new SimpleStringProperty(employee_task);
+    public Tasks(String room_task, String employee_task, String client_task, String date_task, String status_task) {
         this.room_task = new SimpleStringProperty(room_task);
+        this.employee_task = new SimpleStringProperty(employee_task);
         this.data_task = new SimpleStringProperty(date_task);
         this.client_task = new SimpleStringProperty(client_task);
         this.status_task = new SimpleStringProperty(status_task);
@@ -47,13 +48,13 @@ public class Tasks {
     public String getClient_task() {
         return client_task.getValue();
     }
-    
+
     public String getData_task() {
         return data_task.getValue();
     }
-    
+
     public String getStatus_task() {
         return status_task.getValue();
     }
-    
+
 }

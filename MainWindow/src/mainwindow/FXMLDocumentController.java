@@ -10,6 +10,7 @@ import base.service.EmployeeService;
 import base.service.GuestService;
 import base.service.RoomService;
 import base.service.TaskService;
+import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDatePicker;
 import hotel.base.Bookings;
 import hotel.base.DataBase;
@@ -46,7 +47,7 @@ import javafx.event.EventHandler;
 public class FXMLDocumentController implements Initializable {
 
     DataBase base;
-    
+
     @FXML
     private Button hotel_info;
     @FXML
@@ -57,8 +58,7 @@ public class FXMLDocumentController implements Initializable {
     private Button add_task;
     @FXML
     private Button add_employee;
-       
-    
+
     @FXML
     private Region region;
     @FXML
@@ -135,8 +135,6 @@ public class FXMLDocumentController implements Initializable {
     private TableColumn<?, ?> data_task;
     @FXML
     private TableColumn<?, ?> status_task;
-    ObservableList<String> offer_typ_list = FXCollections.observableArrayList("1", "1+1", "2", "2+1", "3");
-    ObservableList<String> offer_standard_list = FXCollections.observableArrayList("vip", "ekonomiczny", "biznesowy");
     @FXML
     private Button guest_offer;
     @FXML
@@ -153,6 +151,18 @@ public class FXMLDocumentController implements Initializable {
     private TextField client_pesel;
     @FXML
     private TextField client_phone;
+    @FXML
+    private Button checkin_button;
+    @FXML
+    private Button checkout_button;
+    @FXML
+    private JFXComboBox<String> recepction_checkinbox;
+    @FXML
+    private JFXComboBox<String> recepction_checkoutbox;
+    @FXML
+    private JFXComboBox<String> recepction_taskbox;
+    @FXML
+    private Button order_button;
 
     @FXML//okno informacji o aplikacji
     private void showInfoWindow(ActionEvent event) throws IOException {
@@ -178,10 +188,6 @@ public class FXMLDocumentController implements Initializable {
     private void add_offerwindow(ActionEvent event) throws IOException {
         makeWindow("ShowOffer.fxml", "Wybierz pokój idealny dla ciebie", guest_offer);
     }
-    @FXML
-        private void add_guestswindow(ActionEvent event) throws IOException {
-        makeWindow("guests_add.fxml", "Dodaj klienta", add_guests);
-    }
 
     public void makeWindow(String file, String name, Button button) throws IOException {
         try {
@@ -198,7 +204,7 @@ public class FXMLDocumentController implements Initializable {
             System.out.print(" Error during making new window " + exc);
         }
     }
-    
+
     @FXML//podokno dodawania rezerwacji
     private void add_ReceptionOfferWindow(ActionEvent event) throws IOException {
         try {
@@ -215,6 +221,7 @@ public class FXMLDocumentController implements Initializable {
                 public void handle(WindowEvent we) {
                     refreshBookingTable();
                     refreshRoomTable();
+                    initBookingBoxes();
                 }
             });
             stage.getOnCloseRequest().handle(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
@@ -245,27 +252,31 @@ public class FXMLDocumentController implements Initializable {
             System.out.print(" Error during making new window " + exc);
         }
     }
-    
-    @FXML
+
+    @FXML//dodawanie klienta
     private void addClient(ActionEvent event) throws SQLException {
         String name_c = client_name.getText();
         String surname_c = client_surname.getText();
         String phone_c = client_phone.getText();
         String pesel_c = client_pesel.getText();
-        
+
         if (name_c.isEmpty() || surname_c.isEmpty() || phone_c.isEmpty() || pesel_c.isEmpty()) {
             Alert alert1 = new Alert(Alert.AlertType.ERROR);
             alert1.setHeaderText(null);
             alert1.setContentText("Wypełnij wszystkie pola");
             alert1.showAndWait();
-            return;
-        }
-        else {
+
+        } else {
             if (ObjectManager.GetInstance().guestservice.insertClient(name_c, surname_c, phone_c, pesel_c)) {
                 Alert alert4 = new Alert(Alert.AlertType.INFORMATION);
                 alert4.setHeaderText(null);
                 alert4.setContentText("Dodano klienta");
                 alert4.showAndWait();
+                client_name.clear();
+                client_surname.clear();
+                client_phone.clear();
+                client_pesel.clear();
+                refreshGuestTable();
             } else {
                 Alert alert2 = new Alert(Alert.AlertType.ERROR);
                 alert2.setHeaderText(null);
@@ -274,7 +285,92 @@ public class FXMLDocumentController implements Initializable {
             }
         }
     }
+
+    @FXML//melodowanie gościa
+    private void addCheckin(ActionEvent event) throws SQLException {
+        if (recepction_checkinbox.getValue()==null) {
+            Alert alert1 = new Alert(Alert.AlertType.ERROR);
+            alert1.setHeaderText(null);
+            alert1.setContentText("Wybierz pokój");
+            alert1.showAndWait();
+
+        } else {
+            if (ObjectManager.GetInstance().bookingservice.updateCheckin(recepction_checkinbox.getValue())) {
+                Alert alert4 = new Alert(Alert.AlertType.INFORMATION);
+                alert4.setHeaderText(null);
+                alert4.setContentText("Zameldowano");
+                alert4.showAndWait();
+                initBookingBoxes();
+                refreshBookingTable();
+            } else {
+                Alert alert2 = new Alert(Alert.AlertType.ERROR);
+                alert2.setHeaderText(null);
+                alert2.setContentText("Błąd przy dodawaniu meldowaniu");
+                alert2.showAndWait();
+            }
+        }
+    }
+    @FXML//wymeldowywanie gościa
+    private void addCheckout(ActionEvent event) throws SQLException {
+        String room =recepction_checkoutbox.getValue();
+        if (recepction_checkoutbox.getValue()==null) {
+            Alert alert1 = new Alert(Alert.AlertType.ERROR);
+            alert1.setHeaderText(null);
+            alert1.setContentText("Wybierz pokój");
+            alert1.showAndWait();
+
+        } else {
+            if (ObjectManager.GetInstance().bookingservice.updateCheckout(room)) {
+                Alert alert4 = new Alert(Alert.AlertType.INFORMATION);
+                alert4.setHeaderText(null);
+                alert4.setContentText("Wymeldowano");
+                alert4.showAndWait();
+                refreshBookingTable();
+                initBookingBoxes();
+                
+            } else {
+                Alert alert2 = new Alert(Alert.AlertType.ERROR);
+                alert2.setHeaderText(null);
+                alert2.setContentText("Błąd przy wymeldowywaniu");
+                alert2.showAndWait();
+            }
+        }
+    }
+
+    @FXML//dodawanie zadania z recepcji
+    private void addRecepctionTask(ActionEvent event) throws SQLException {
+        String room =recepction_taskbox.getValue();
+        if (recepction_taskbox.getValue()==null) {
+            Alert alert1 = new Alert(Alert.AlertType.ERROR);
+            alert1.setHeaderText(null);
+            alert1.setContentText("Wybierz pokój");
+            alert1.showAndWait();
+        } else {
+            if (ObjectManager.GetInstance().taskservice.insertTask(room)) {
+                Alert alert4 = new Alert(Alert.AlertType.INFORMATION);
+                alert4.setHeaderText(null);
+                alert4.setContentText("Dodano zadanie");
+                alert4.showAndWait();
+                refreshGuestTable();
+                
+            } else {
+                Alert alert2 = new Alert(Alert.AlertType.ERROR);
+                alert2.setHeaderText(null);
+                alert2.setContentText("Błąd przy dodawaniu zadania");
+                alert2.showAndWait();
+            }
+        }
+    }
     
+    public void initBookingBoxes() {
+        ObservableList<String> recepction_checkin_list = ObjectManager.GetInstance().bookingservice.getBookingCheckin();
+        recepction_checkinbox.setItems(recepction_checkin_list);
+        ObservableList<String> recepction_checkout_list = ObjectManager.GetInstance().bookingservice.getBookingCheckout();
+        recepction_checkoutbox.setItems(recepction_checkout_list);
+        ObservableList<String> recepction_task_list = ObjectManager.GetInstance().bookingservice.getBookingCheckin();
+        recepction_taskbox.setItems(recepction_task_list);
+    }
+
     //inicjalizacja tabel
     public void initRooms_Table() {
 
@@ -298,8 +394,8 @@ public class FXMLDocumentController implements Initializable {
     }
 
     public void initTasks_Table() {
-        room_task.setCellValueFactory(new PropertyValueFactory<>("Employee_task"));
-        employee_task.setCellValueFactory(new PropertyValueFactory<>("Room_task"));
+        room_task.setCellValueFactory(new PropertyValueFactory<>("Room_task"));
+        employee_task.setCellValueFactory(new PropertyValueFactory<>("Employee_task"));
         client_task.setCellValueFactory(new PropertyValueFactory<>("Client_task"));
         data_task.setCellValueFactory(new PropertyValueFactory<>("Data_task"));
         status_task.setCellValueFactory(new PropertyValueFactory<>("Status_task"));
@@ -327,7 +423,7 @@ public class FXMLDocumentController implements Initializable {
         guest_edition.setCellValueFactory(new PropertyValueFactory<>("Edition_guest"));
         guest_tableview.getItems().setAll(ObjectManager.GetInstance().guestservice.getData());
     }
-    
+
     public void refreshEmployeeTable() {
         employee_tableview.getItems().setAll(ObjectManager.GetInstance().employeeservice.getData());
     }
@@ -335,15 +431,19 @@ public class FXMLDocumentController implements Initializable {
     public void refreshBookingTable() {
         booking_tableview.getItems().setAll(ObjectManager.GetInstance().bookingservice.getData());
     }
-    
+
     public void refreshRoomTable() {
         room_tableview.getItems().setAll(ObjectManager.GetInstance().roomservice.getData());
     }
-    
+
     public void refreshGuestTable() {
-        guest_tableview.refresh();
+        guest_tableview.getItems().setAll(ObjectManager.GetInstance().guestservice.getData());
     }
     
+    public void refreshTaskTable() {
+        task_tableview.getItems().setAll(ObjectManager.GetInstance().taskservice.getData());
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         base = DataBase.getInstance();
@@ -352,10 +452,8 @@ public class FXMLDocumentController implements Initializable {
         initBookings_Table();
         initGuests_Table();
         initTasks_Table();
-    }
+        initBookingBoxes();
 
-    @FXML
-    private void add_client(ActionEvent event) {
     }
 
 }

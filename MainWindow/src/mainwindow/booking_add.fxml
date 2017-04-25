@@ -58,7 +58,7 @@
             <JFXDatePicker fx:id="booking_datep" promptText="Data przyjazdu" />
             <JFXDatePicker fx:id="booking_datek" promptText="Data wyjzadu" GridPane.columnIndex="1" />
             <ComboBox fx:id="booking_standardbox" prefHeight="25.0" prefWidth="161.0" promptText="Standard" GridPane.rowIndex="1" />
-            <ComboBox fx:id="booking_typ" prefHeight="25.0" prefWidth="160.0" promptText="Typ" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <ComboBox fx:id="booking_typbox" prefHeight="25.0" prefWidth="160.0" promptText="Typ" GridPane.columnIndex="1" GridPane.rowIndex="1" />
          </children>
       </GridPane>
       <GridPane GridPane.columnIndex="2" GridPane.rowIndex="2">

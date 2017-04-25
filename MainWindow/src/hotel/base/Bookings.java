@@ -28,26 +28,31 @@ import mainwindow.ObjectManager;
  */
 public class Bookings {
 
-    private final IntegerProperty id_booking;
-    private final StringProperty client_booking;
-    private final StringProperty employee_booking;
-    private final StringProperty room_booking;
-    private final StringProperty datap_booking;
-    private final StringProperty datak_booking;
-    private final StringProperty status_booking;
-    private final StringProperty comment_booking;
-    private final StringProperty edition_booking;
+    private  IntegerProperty id_booking;
+    private  StringProperty client_booking;
+    private  StringProperty employee_booking;
+    private  StringProperty room_booking;
+    private  StringProperty datap_booking;
+    private  StringProperty datak_booking;
+    private  StringProperty status_booking;
+    private  StringProperty comment_booking;
+    private  StringProperty edition_booking;
 
-    public Bookings(int id_booking, String client_booking, String employee_booking, String room_booking, String datap_booking, String datak_booking, String status_booking, String comment_booking, String edit_booking) {
-        this.id_booking = new SimpleIntegerProperty(id_booking);
-        this.client_booking = new SimpleStringProperty(client_booking);
-        this.employee_booking = new SimpleStringProperty(employee_booking);
-        this.room_booking = new SimpleStringProperty(room_booking);
-        this.datap_booking = new SimpleStringProperty(datap_booking);
-        this.datak_booking = new SimpleStringProperty(datak_booking);
-        this.status_booking = new SimpleStringProperty(status_booking);
-        this.comment_booking = new SimpleStringProperty(comment_booking);
-        this.edition_booking = new SimpleStringProperty(edit_booking);
+    public Bookings(String room) {
+        this.room_booking = new SimpleStringProperty(room);
+        
+    }
+    
+    public Bookings(int id, String client, String employee, String room, String datap, String datak, String status, String comment, String edit) {
+        this(room);
+        this.id_booking = new SimpleIntegerProperty(id);
+        this.client_booking = new SimpleStringProperty(client);
+        this.employee_booking = new SimpleStringProperty(employee);
+        this.datap_booking = new SimpleStringProperty(datap);
+        this.datak_booking = new SimpleStringProperty(datak);
+        this.status_booking = new SimpleStringProperty(status);
+        this.comment_booking = new SimpleStringProperty(comment);
+        this.edition_booking = new SimpleStringProperty(edit);
     }
 
     public Integer getId_booking() {

@@ -52,9 +52,9 @@ public class ShowOfferController implements Initializable {
     @FXML
     private TableColumn<?, ?> offer_number;
     ObservableList<String> offer_typ_list = FXCollections.observableArrayList("1", "1+1", "2", "2+1", "3");
-    @FXML
     ObservableList<String> offer_standard_list = FXCollections.observableArrayList("vip", "ekonomiczny", "biznesowy");
-     @FXML
+    
+    @FXML
     private void showOffer(ActionEvent event) {
          
         String datap = offer_datep.getValue().toString();

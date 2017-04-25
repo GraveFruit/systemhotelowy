@@ -144,10 +144,10 @@
                                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                             </rowConstraints>
                                              <children>
-                                                <Button id="button_new" alignment="CENTER" mnemonicParsing="false" prefHeight="35.0" prefWidth="120.0" text="Zamelduj" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
-                                                <Button id="button_new" alignment="CENTER" layoutX="297.0" layoutY="28.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="120.0" text="Wymelduj" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-                                                <JFXComboBox prefHeight="35.0" prefWidth="120.0" promptText="Rezerwacje" GridPane.halignment="CENTER" />
-                                                <JFXComboBox layoutX="63.0" layoutY="28.0" prefHeight="35.0" prefWidth="120.0" promptText="Pokój" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                                                <Button id="button_new" fx:id="checkin_button" alignment="CENTER" mnemonicParsing="false" onAction="#addCheckin" prefHeight="35.0" prefWidth="120.0" text="Zamelduj" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
+                                                <Button id="button_new" fx:id="checkout_button" alignment="CENTER" layoutX="297.0" layoutY="28.0" mnemonicParsing="false" onAction="#addCheckout" prefHeight="35.0" prefWidth="120.0" text="Wymelduj" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                                                <JFXComboBox fx:id="recepction_checkinbox" prefHeight="35.0" prefWidth="120.0" promptText="Rezerwacje" GridPane.halignment="CENTER" />
+                                                <JFXComboBox fx:id="recepction_checkoutbox" layoutX="63.0" layoutY="28.0" prefHeight="35.0" prefWidth="120.0" promptText="Pokój" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
                                              </children>
                                           </GridPane>
                                           <GridPane GridPane.rowIndex="1">
@@ -176,8 +176,8 @@
                                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                             </rowConstraints>
                                              <children>
-                                                <JFXComboBox prefHeight="35.0" prefWidth="120.0" promptText="Pokój" GridPane.halignment="CENTER" />
-                                                <Button id="button_new" alignment="CENTER" mnemonicParsing="false" prefHeight="35.0" prefWidth="120.0" text="Zleć zadanie" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
+                                                <JFXComboBox fx:id="recepction_taskbox" prefHeight="35.0" prefWidth="120.0" promptText="Pokój" GridPane.halignment="CENTER" />
+                                                <Button id="button_new" fx:id="order_button" alignment="CENTER" mnemonicParsing="false" onAction="#addRecepctionTask" prefHeight="35.0" prefWidth="120.0" text="Zleć zadanie" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
                                              </children>
                                           </GridPane>
                                        </children>

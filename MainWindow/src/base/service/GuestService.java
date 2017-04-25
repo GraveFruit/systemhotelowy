@@ -54,7 +54,7 @@ public class GuestService {
         try {
             ObservableList<String> employee_list = FXCollections.observableArrayList();
             Statement statement = DataBase.getConnection().createStatement();
-            ResultSet result = statement.executeQuery("select pesel from klienci");
+            ResultSet result = statement.executeQuery("select pesel from klienci order by pesel desc");
             while (result.next()) {
                 //int id = result.getInt("id");
                 String naz = result.getString("pesel");

@@ -11,6 +11,8 @@ import base.service.GuestService;
 import base.service.OfferService;
 import base.service.RoomService;
 import base.service.TaskService;
+import java.sql.Date;
+import java.time.LocalDate;
 
 /**
  *
@@ -26,6 +28,7 @@ public class ObjectManager {
     public BookingService bookingservice;
     public TaskService taskservice;
     public RoomService roomservice;
+    public String currentData;
 
     private ObjectManager() {
         offerservice = new OfferService();
@@ -34,6 +37,7 @@ public class ObjectManager {
         taskservice = new TaskService();
         bookingservice = new BookingService();
         roomservice= new RoomService();
+        currentData=LocalDate.now().toString();
     }
 
     public static ObjectManager GetInstance() {
