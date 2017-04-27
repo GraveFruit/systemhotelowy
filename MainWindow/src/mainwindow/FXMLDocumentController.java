@@ -38,6 +38,8 @@ import javafx.scene.layout.Region;
 import javafx.stage.*;
 import java.sql.Date;
 import java.sql.SQLException;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 
 /**
@@ -163,6 +165,12 @@ public class FXMLDocumentController implements Initializable {
     private JFXComboBox<String> recepction_taskbox;
     @FXML
     private Button order_button;
+    @FXML
+    private PasswordField passfield;
+    @FXML
+    private TextField loginfield;
+    @FXML
+    private Label loginprompt;
 
     @FXML//okno informacji o aplikacji
     private void showInfoWindow(ActionEvent event) throws IOException {
@@ -259,14 +267,28 @@ public class FXMLDocumentController implements Initializable {
         String surname_c = client_surname.getText();
         String phone_c = client_phone.getText();
         String pesel_c = client_pesel.getText();
-
-        if (name_c.isEmpty() || surname_c.isEmpty() || phone_c.isEmpty() || pesel_c.isEmpty()) {
+        
+       if (name_c.isEmpty() || surname_c.isEmpty() || phone_c.isEmpty() || pesel_c.isEmpty()) {
             Alert alert1 = new Alert(Alert.AlertType.ERROR);
             alert1.setHeaderText(null);
             alert1.setContentText("Wypełnij wszystkie pola");
             alert1.showAndWait();
-
-        } else {
+        }else if(!name_c.matches("^[\\p{L} .'-]+$") || !surname_c.matches("^[\\p{L} .'-]+$")){
+            Alert alert2 = new Alert(Alert.AlertType.ERROR);
+            alert2.setHeaderText(null);
+            alert2.setContentText("Błędne imię lub nazwisko");
+            alert2.showAndWait();
+        }else if(!pesel_c.matches("[0-9]{11}")){
+            Alert alert3 = new Alert(Alert.AlertType.ERROR);
+            alert3.setHeaderText(null);
+            alert3.setContentText("Błędny pesel");
+            alert3.showAndWait();
+        }else if(!phone_c.matches("^[0-9]{7,15}$")){
+            Alert alert3 = new Alert(Alert.AlertType.ERROR);
+            alert3.setHeaderText(null);
+            alert3.setContentText("Błędny telefon");
+            alert3.showAndWait();
+        }else {
             if (ObjectManager.GetInstance().guestservice.insertClient(name_c, surname_c, phone_c, pesel_c)) {
                 Alert alert4 = new Alert(Alert.AlertType.INFORMATION);
                 alert4.setHeaderText(null);
@@ -367,7 +389,7 @@ public class FXMLDocumentController implements Initializable {
         recepction_checkinbox.setItems(recepction_checkin_list);
         ObservableList<String> recepction_checkout_list = ObjectManager.GetInstance().bookingservice.getBookingCheckout();
         recepction_checkoutbox.setItems(recepction_checkout_list);
-        ObservableList<String> recepction_task_list = ObjectManager.GetInstance().bookingservice.getBookingCheckin();
+        ObservableList<String> recepction_task_list = ObjectManager.GetInstance().bookingservice.getBookingCheckout();
         recepction_taskbox.setItems(recepction_task_list);
     }
 
@@ -443,6 +465,13 @@ public class FXMLDocumentController implements Initializable {
     public void refreshTaskTable() {
         task_tableview.getItems().setAll(ObjectManager.GetInstance().taskservice.getData());
     }
+    
+    public void loginsequence(ActionEvent event) throws SQLException{
+        String loginVar = loginfield.getText();
+        String passVar = passfield.getText();
+        loginprompt.setText(ObjectManager.GetInstance().loginservice.employeeSessionId);
+        ObjectManager.GetInstance().loginservice.getlogged(loginVar, passVar);
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -453,7 +482,6 @@ public class FXMLDocumentController implements Initializable {
         initGuests_Table();
         initTasks_Table();
         initBookingBoxes();
-
-    }
-
+        
+}
 }

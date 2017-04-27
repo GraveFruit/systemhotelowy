@@ -80,9 +80,14 @@
                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
                               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                  <children>
-                                    <Button fx:id="button_new" layoutX="369.0" layoutY="333.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="160.0" text="Zaloguj" />
-                                    <PasswordField layoutX="349.0" layoutY="282.0" prefHeight="40.0" prefWidth="200.0" promptText="Hasło" />
-                                    <TextField layoutX="349.0" layoutY="231.0" prefHeight="40.0" prefWidth="200.0" promptText="Login" />
+                                    <Button fx:id="login_button" layoutX="369.0" layoutY="333.0" mnemonicParsing="false" onAction="#loginsequence" prefHeight="40.0" prefWidth="160.0" text="Zaloguj" />
+                                    <PasswordField fx:id="passfield" layoutX="349.0" layoutY="282.0" prefHeight="40.0" prefWidth="200.0" promptText="Hasło" />
+                                    <TextField fx:id="loginfield" layoutX="349.0" layoutY="231.0" prefHeight="40.0" prefWidth="200.0" promptText="Login" />
+                                    <Label fx:id="loginprompt" layoutX="345.0" layoutY="189.0" prefHeight="17.0" prefWidth="208.0" textFill="#e41212">
+                                       <font>
+                                          <Font size="18.0" />
+                                       </font>
+                                    </Label>
                                   </children></AnchorPane>
                              </content>
                           </Tab>

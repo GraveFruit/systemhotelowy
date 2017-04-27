@@ -59,12 +59,12 @@ public class TaskService {
         int klient_id = 0;
         try {
             ResultSet result1 = DataBase.getConnection().createStatement().executeQuery("select "
-                    + "pokoj_id from rezerwacje where status='1' and pokoj_id='" + pokoj + "'");
+                    + "pokoj_id from rezerwacje where status='2' and pokoj_id='" + pokoj + "'");
             while (result1.next()) {
                 pokoj_id = result1.getInt("pokoj_id");
             }
             ResultSet result2 = DataBase.getConnection().createStatement().executeQuery("select "
-                    + "klient_id from rezerwacje where status='1' and pokoj_id='" + pokoj + "'");
+                    + "klient_id from rezerwacje where status='2' and pokoj_id='" + pokoj + "'");
             while (result2.next()) {
                 klient_id = result2.getInt("klient_id");
                 

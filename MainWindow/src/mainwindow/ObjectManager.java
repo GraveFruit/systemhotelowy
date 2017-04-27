@@ -8,6 +8,7 @@ package mainwindow;
 import base.service.BookingService;
 import base.service.EmployeeService;
 import base.service.GuestService;
+import base.service.LoginService;
 import base.service.OfferService;
 import base.service.RoomService;
 import base.service.TaskService;
@@ -29,6 +30,7 @@ public class ObjectManager {
     public TaskService taskservice;
     public RoomService roomservice;
     public String currentData;
+    public LoginService loginservice;
 
     private ObjectManager() {
         offerservice = new OfferService();
@@ -38,6 +40,7 @@ public class ObjectManager {
         bookingservice = new BookingService();
         roomservice= new RoomService();
         currentData=LocalDate.now().toString();
+        loginservice = new LoginService();
     }
 
     public static ObjectManager GetInstance() {

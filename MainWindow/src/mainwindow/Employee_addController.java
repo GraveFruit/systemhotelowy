@@ -15,6 +15,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ResourceBundle;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -49,12 +51,6 @@ public class Employee_addController implements Initializable {
     DataBase base;
 
     ObservableList<String> position_list = FXCollections.observableArrayList("Admin", "Menedżer", "Recepcja", "Obsługa");
-
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        position.setItems(position_list);
-        base = DataBase.getInstance();
-    }
 
     @FXML
     private void addEmployee(ActionEvent event) throws SQLException {
@@ -91,6 +87,29 @@ public class Employee_addController implements Initializable {
             }
         }
 
+    }
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        position.setItems(position_list);
+        base = DataBase.getInstance();
+        phone.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                if (newValue.matches("\\d*")) {
+                } else {
+                    phone.setText(oldValue);
+                }
+            }
+        });
+        pesel.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                if (newValue.matches("\\d*")) {
+                } else {
+                    pesel.setText(oldValue);
+                }
+            }
+        });
     }
 
 }
