@@ -18,7 +18,7 @@ import java.sql.SQLException;
 public final class DataBase {
     private static DataBase base = null;
     private static final String base_name = "hotelmaster";
-    private static final String base_password = "resovia9";
+    private static final String base_password = "";
     private static final String DRIVER = "org.mariadb.jdbc.Driver";
     private static final String DB_URL = "jdbc:mariadb://localhost:3306/" + base_name + "?user=root&password=" + base_password;
     private static Connection connection = null;

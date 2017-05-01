@@ -26,10 +26,15 @@ import mainwindow.FXMLDocumentController;
  */
 public class Offer {
 
-    private final IntegerProperty number_offer;
-    private final StringProperty type_offer;
-    private final StringProperty floor_offer;
-    private final StringProperty standard_offer;
+    private IntegerProperty number_offer;
+    private IntegerProperty id_booking;
+    private StringProperty type_offer;
+    private StringProperty floor_offer;
+    private StringProperty standard_offer;
+    private StringProperty datap_booking;
+    private StringProperty datak_booking;
+    private StringProperty comment_booking;
+    private StringProperty status_booking;
 
     public Offer(int room, String floor, String type, String stan) {
         this.number_offer = new SimpleIntegerProperty(room);
@@ -38,7 +43,37 @@ public class Offer {
         this.standard_offer = new SimpleStringProperty(stan);
     }
 
-    public Integer getNumber_offer() {
+    public Offer(int id, int room, String stan, String type,String floor, String datap, String datak, String comment,String status) {
+        this(room,floor,type,stan);
+        this.id_booking = new SimpleIntegerProperty(id);
+        this.datap_booking = new SimpleStringProperty(datap);
+        this.datak_booking = new SimpleStringProperty(datak);
+        this.comment_booking = new SimpleStringProperty(comment);
+        this.status_booking = new SimpleStringProperty(status);
+
+    }
+
+    public int getId_booking() {
+        return id_booking.getValue();
+    }
+
+    public String getDatap_booking() {
+        return datap_booking.getValue();
+    }
+
+    public String getDatak_booking() {
+        return datak_booking.getValue();
+    }
+
+    public String getComment_booking() {
+        return comment_booking.getValue();
+    }
+    
+     public String getStatus_booking() {
+        return status_booking.getValue();
+    }
+    
+    public int getNumber_offer() {
         return number_offer.getValue();
     }
 

@@ -34,14 +34,14 @@ public class BookingService {
             ObservableList<Bookings> bookings_list = FXCollections.observableArrayList();
             Statement statement = DataBase.getConnection().createStatement();
             ResultSet result = statement.executeQuery("select r.rezerwacja_id, "
-                    + "k.pesel, p.nazwisko, po.numer, r.data_p,r.data_k,"
+                    + "k.nazwisko as klient, p.nazwisko, po.numer, r.data_p,r.data_k,"
                     + "r.status,r.komentarz from rezerwacje r, pracownicy p,"
                     + " pokoje po, klienci k where r.pracownik_id=p.pracownik_id "
                     + "and r.pokoj_id=po.pokoj_id and r.klient_id=k.klient_id"
                     + " order by r.status desc, r.data_p asc");
             while (result.next()) {
                 int id = result.getInt("rezerwacja_id");
-                String pesel = result.getString("pesel");
+                String pesel = result.getString("klient");
                 String naz = result.getString("nazwisko");
                 String pokoj = result.getString("numer");
                 String datap = (new SimpleDateFormat("yyyy-MM-dd")).format(result.getTimestamp("data_p").getTime());
@@ -49,9 +49,8 @@ public class BookingService {
                 String datak = (new SimpleDateFormat("yyyy-MM-dd")).format(result.getTimestamp("data_k").getTime());
                 String status = result.getString("status");
                 String kom = result.getString("komentarz");
-                String ed = null;
 
-                bookings_list.add(new Bookings(id, pesel, naz, pokoj, datap, datak, status, kom, ed));
+                bookings_list.add(new Bookings(id, pesel, naz, pokoj, datap, datak, status, kom));
 
             }
 
@@ -62,20 +61,28 @@ public class BookingService {
         return null;
     }
 
-    public ObservableList<String> getBookingCheckin() {
+    public ObservableList<Bookings> getBookingCheckIn() {
         try {
-            ObservableList<String> bookingChceckin_list = FXCollections.observableArrayList();
+            ObservableList<Bookings> bookingChceckin_list = FXCollections.observableArrayList();
             Statement statement = DataBase.getConnection().createStatement();
-            ResultSet result = statement.executeQuery("select numer from pokoje"
-                    + " where pokoj_id in (select pokoj_id from rezerwacje where "
-                    + "status='1' and "
-                    + "data_p='" + ObjectManager.GetInstance().currentData + "')");
+            ResultSet result = statement.executeQuery("select r.rezerwacja_id, "
+                    + "k.nazwisko as klient, p.nazwisko, po.numer, r.data_p,r.data_k,"
+                    + "r.komentarz from rezerwacje r, pracownicy p,"
+                    + " pokoje po, klienci k where r.pracownik_id=p.pracownik_id "
+                    + "and r.pokoj_id=po.pokoj_id and r.klient_id=k.klient_id"
+                    + " and r.status='1' and r.data_p='" + ObjectManager.GetInstance().currentData
+                    + "' order by po.numer asc");
             while (result.next()) {
-                //int id = result.getInt("id");
-                String naz = result.getString("numer");
+                int id = result.getInt("rezerwacja_id");
+                String pesel = result.getString("klient");
+                String naz = result.getString("nazwisko");
+                String pokoj = result.getString("numer");
+                String datap = (new SimpleDateFormat("yyyy-MM-dd")).format(result.getTimestamp("data_p").getTime());
+                //String datap1 = result.getString("data_p");
+                String datak = (new SimpleDateFormat("yyyy-MM-dd")).format(result.getTimestamp("data_k").getTime());
+                String kom = result.getString("komentarz");
 
-                bookingChceckin_list.add(new Bookings(naz).getRoom_booking());
-
+                bookingChceckin_list.add(new Bookings(id, pesel, naz, pokoj, datap, datak, kom));
             }
 
             return FXCollections.observableArrayList(bookingChceckin_list);
@@ -85,21 +92,27 @@ public class BookingService {
         return null;
     }
 
-    public ObservableList<String> getBookingCheckout() {
+    public ObservableList<Bookings> getBookingCheckOut() {
         try {
-            ObservableList<String> bookingChceckin_list = FXCollections.observableArrayList();
+            ObservableList<Bookings> bookingChceckin_list = FXCollections.observableArrayList();
             Statement statement = DataBase.getConnection().createStatement();
-            ResultSet result = statement.executeQuery("select numer from pokoje "
-                    + "where pokoj_id in (select pokoj_id from rezerwacje "
-                    + "where status='2' and"
-                    + " '" + ObjectManager.GetInstance().currentData + "'"
-                    + " between data_p and data_k)");
+            ResultSet result = statement.executeQuery("select r.rezerwacja_id, "
+                    + "k.nazwisko as klient, p.nazwisko, po.numer, r.data_p,r.data_k,"
+                    + "r.komentarz from rezerwacje r, pracownicy p,"
+                    + " pokoje po, klienci k where r.pracownik_id=p.pracownik_id "
+                    + "and r.pokoj_id=po.pokoj_id and r.klient_id=k.klient_id "
+                    + "and r.status='2' order by po.numer asc");
             while (result.next()) {
-                //int id = result.getInt("id");
-                String naz = result.getString("numer");
+                int id = result.getInt("rezerwacja_id");
+                String pesel = result.getString("klient");
+                String naz = result.getString("nazwisko");
+                String pokoj = result.getString("numer");
+                String datap = (new SimpleDateFormat("yyyy-MM-dd")).format(result.getTimestamp("data_p").getTime());
+                //String datap1 = result.getString("data_p");
+                String datak = (new SimpleDateFormat("yyyy-MM-dd")).format(result.getTimestamp("data_k").getTime());
+                String kom = result.getString("komentarz");
 
-                bookingChceckin_list.add(new Bookings(naz).getRoom_booking());
-
+                bookingChceckin_list.add(new Bookings(id, pesel, naz, pokoj, datap, datak, kom));
             }
 
             return FXCollections.observableArrayList(bookingChceckin_list);
@@ -130,47 +143,85 @@ public class BookingService {
             prep.executeUpdate();
 
         } catch (SQLException e) {
-            System.err.println("Błąd przy dodawaniu pracownika");
+            System.err.println("Błąd przy dodawaniu rezewacji");
             return false;
         }
         return true;
     }
 
-    public boolean updateCheckin(String numer) {
+    public boolean updateCheckin(int numer) {
         try {
 
             PreparedStatement prep = DataBase.getConnection().prepareStatement(
-                    "Update rezerwacje set status='2' where status='1' and pokoj_id=?");
-            prep.setString(1, numer);
+                    "Update rezerwacje set status='2' where rezerwacja_id=?");
+            prep.setInt(1, numer);
             prep.executeUpdate();
 
         } catch (SQLException e) {
-            System.err.println("Błąd przy dodawaniu pracownika");
+            System.err.println("Błąd przy meldowaniu");
             return false;
         }
         return true;
     }
 
-    public boolean updateCheckout(String numer) {
+    public boolean updateCheckout(int numer) {
         try {
 
             PreparedStatement prep = DataBase.getConnection().prepareStatement(
-                    "Update rezerwacje set status='0' where status='2' and pokoj_id=?");
-            prep.setString(1, numer);
+                    "Update rezerwacje set status='0',data_k='"
+                    + ObjectManager.GetInstance().currentData + "' where rezerwacja_id=?");
+            prep.setInt(1, numer);
             prep.executeUpdate();
 
         } catch (SQLException e) {
-            System.err.println("Błąd przy dodawaniu pracownika");
+            System.err.println("Błąd przy wymeldowywaniu");
             return false;
         }
         return true;
     }
 
-    public Button makeEditBookingsButton() {
-        edit_bookings = new Button("Edytuj");
-        edit_bookings.setMaxSize(70, 10);
+    public boolean cancelBooking(int numer) {
+        try {
 
-        return edit_bookings;
+            PreparedStatement prep = DataBase.getConnection().prepareStatement(
+                    "Update rezerwacje set status='-1' where rezerwacja_id=?");
+            prep.setInt(1, numer);
+            prep.executeUpdate();
+
+        } catch (SQLException e) {
+            System.err.println("Błąd przy archiwizacji rezerwacji");
+            return false;
+        }
+        return true;
     }
 
+    public boolean restoreBooking(int numer) {
+        try {
+
+            PreparedStatement prep = DataBase.getConnection().prepareStatement(
+                    "Update rezerwacje set status='1' where rezerwacja_id=?");
+            prep.setInt(1, numer);
+            prep.executeUpdate();
+
+        } catch (SQLException e) {
+            System.err.println("Błąd przy przywracaniu rezerwacji");
+            return false;
+        }
+        return true;
+    }
+
+    public boolean deleteBooking(int numer) {
+        try {
+
+            PreparedStatement prep = DataBase.getConnection().prepareStatement(
+                    "delete from rezerwacje where rezerwacja_id=?");
+            prep.setInt(1, numer);
+            prep.executeUpdate();
+
+        } catch (SQLException e) {
+            System.err.println("Błąd przy archiwizacji rezerwacji");
+            return false;
+        }
+        return true;
+    }
 }

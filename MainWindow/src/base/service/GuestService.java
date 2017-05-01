@@ -37,9 +37,8 @@ public class GuestService {
                 String naz = result.getString("nazwisko");
                 String pesel = result.getString("pesel");
                 String telefon = result.getString("tel");
-                String ed = null;
 
-                employee_list.add(new Guests(imie, naz, pesel, telefon, ed));
+                employee_list.add(new Guests(imie, naz, pesel, telefon));
 
             }
 
@@ -49,19 +48,27 @@ public class GuestService {
         }
         return null;
     }
-    
-    public ObservableList<String> getBooking_Data() {
+
+    public ObservableList<Guests> getGuest_Data(String name, String surname, String pes, String phone) {
         try {
-            ObservableList<String> employee_list = FXCollections.observableArrayList();
-            Statement statement = DataBase.getConnection().createStatement();
-            ResultSet result = statement.executeQuery("select pesel from klienci order by pesel desc");
+            ObservableList<Guests> employee_list = FXCollections.observableArrayList();
+            PreparedStatement prep = DataBase.getConnection().prepareStatement(
+                    "select imie, nazwisko, pesel, tel from klienci where imie "
+                    + "like ? and nazwisko like ? and pesel like ? and "
+                    + "tel like ?");
+            prep.setString(1, name +"%");
+            prep.setString(2, surname+"%");
+            prep.setString(3, pes+"%");
+            prep.setString(4, phone+"%");
+            ResultSet result = prep.executeQuery();
             while (result.next()) {
                 //int id = result.getInt("id");
-                String naz = result.getString("pesel");
-                
+                String imie = result.getString("imie");
+                String naz = result.getString("nazwisko");
+                String pesel = result.getString("pesel");
+                String telefon = result.getString("tel");
 
-                employee_list.add(new Guests(naz).getPesel_guest());
-
+                employee_list.add(new Guests(imie, naz, pesel, telefon));
             }
 
             return FXCollections.observableArrayList(employee_list);
@@ -71,14 +78,7 @@ public class GuestService {
         return null;
     }
 
-    public Button makeEditGuestsButton() {
-        edit_guests = new Button("Edytuj");
-        edit_guests.setMaxSize(70, 10);
-
-        return edit_guests;
-    }
-
-   public boolean insertClient(String name, String surname, String phone, String pesel){
+    public boolean insertClient(String name, String surname, String phone, String pesel) {
         try {
             PreparedStatement prep = DataBase.getConnection().prepareStatement(
                     "Insert into klienci (imie, nazwisko, tel,  pesel) values (?,?,?,?)");
@@ -93,7 +93,6 @@ public class GuestService {
             return false;
         }
         return true;
-    
-    
-}
+
+    }
 }

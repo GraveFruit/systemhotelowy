@@ -29,7 +29,7 @@ public class Tasks {
     private StringProperty data_task;
     private StringProperty status_task;
 
-    public Tasks(String room_task, String employee_task, String client_task, String date_task, String status_task) {
+    public Tasks(String room_task,String employee_task, String client_task, String date_task, String status_task) {
         this.room_task = new SimpleStringProperty(room_task);
         this.employee_task = new SimpleStringProperty(employee_task);
         this.data_task = new SimpleStringProperty(date_task);

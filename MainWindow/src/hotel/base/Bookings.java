@@ -42,8 +42,17 @@ public class Bookings {
         this.room_booking = new SimpleStringProperty(room);
         
     }
+    public Bookings(int id, String client, String employee, String room, String datap, String datak, String comment) {
+        this(room);
+        this.id_booking = new SimpleIntegerProperty(id);
+        this.client_booking = new SimpleStringProperty(client);
+        this.employee_booking = new SimpleStringProperty(employee);
+        this.datap_booking = new SimpleStringProperty(datap);
+        this.datak_booking = new SimpleStringProperty(datak);
+        this.comment_booking = new SimpleStringProperty(comment);
+    }
     
-    public Bookings(int id, String client, String employee, String room, String datap, String datak, String status, String comment, String edit) {
+    public Bookings(int id, String client, String employee, String room, String datap, String datak, String status, String comment) {
         this(room);
         this.id_booking = new SimpleIntegerProperty(id);
         this.client_booking = new SimpleStringProperty(client);
@@ -52,8 +61,8 @@ public class Bookings {
         this.datak_booking = new SimpleStringProperty(datak);
         this.status_booking = new SimpleStringProperty(status);
         this.comment_booking = new SimpleStringProperty(comment);
-        this.edition_booking = new SimpleStringProperty(edit);
     }
+    
 
     public Integer getId_booking() {
         return id_booking.getValue();
@@ -85,10 +94,6 @@ public class Bookings {
 
     public String getComment_booking() {
         return comment_booking.getValue();
-    }
-
-    public Button getEdition_booking() {
-        return ObjectManager.GetInstance().bookingservice.makeEditBookingsButton();
     }
 
 }

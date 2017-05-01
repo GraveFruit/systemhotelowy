@@ -36,9 +36,8 @@ public class RoomService {
                 String type = result.getString("typ");
                 String stan = result.getString("standard");
                 String status = result.getString("status");
-                String ed = null;
 
-                rooms_list.add(new Rooms(id, floor, type, stan, status, ed));
+                rooms_list.add(new Rooms(id, floor, type, stan, status));
 
             }
 
@@ -47,13 +46,6 @@ public class RoomService {
             Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
-    }
-
-    public Button makeEditRoomsButton() {
-        edit_rooms = new Button("Edytuj");
-        edit_rooms.setMaxSize(70, 10);
-
-        return edit_rooms;
     }
 
 }

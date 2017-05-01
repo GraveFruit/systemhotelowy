@@ -29,19 +29,17 @@ public class Guests {
     private StringProperty surname_guest;
     private StringProperty phone_guest;
     private StringProperty pesel_guest;
-    private StringProperty edition_guest=null;
     
      public Guests(String pesel) {
         this.pesel_guest = new SimpleStringProperty(pesel);
 
     }
 
-    public Guests(String name, String surname, String phone, String pesel, String edit) {
+    public Guests(String name, String surname, String pesel, String phone) {
         this(pesel);
         this.name_guest = new SimpleStringProperty(name);
         this.surname_guest = new SimpleStringProperty(surname);
         this.phone_guest = new SimpleStringProperty(phone);
-        this.edition_guest = new SimpleStringProperty(edit);
     }
     
     public String getName_guest() {
@@ -58,10 +56,6 @@ public class Guests {
 
     public String getPesel_guest() {
         return pesel_guest.getValue();
-    }
-
-    public Button getEdition_guest() {
-        return ObjectManager.GetInstance().guestservice.makeEditGuestsButton();
     }
       
 }

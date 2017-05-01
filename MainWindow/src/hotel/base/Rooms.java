@@ -32,15 +32,13 @@ public class Rooms {
     private final StringProperty floor_room;
     private final StringProperty standard_room;
     private final StringProperty status_room;
-    private final StringProperty edition_room;
 
-    public Rooms(int room, String floor, String type, String stan, String status, String ed) {
+    public Rooms(int room, String floor, String type, String stan, String status){
         this.number_room = new SimpleIntegerProperty(room);
         this.floor_room = new SimpleStringProperty(floor);
         this.type_room = new SimpleStringProperty(type);
         this.standard_room = new SimpleStringProperty(stan);
         this.status_room = new SimpleStringProperty(status);
-        this.edition_room = new SimpleStringProperty(ed);
 
     }
 
@@ -62,10 +60,6 @@ public class Rooms {
 
     public String getStatus_room() {
         return status_room.getValue();
-    }
-    
-    public Button getEdition_room() {
-        return ObjectManager.GetInstance().roomservice.makeEditRoomsButton();
     }
 
     

@@ -5,14 +5,13 @@
  */
 package mainwindow;
 
-import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDatePicker;
+import hotel.base.Bookings;
 import hotel.base.DataBase;
 import hotel.base.Guests;
 import hotel.base.Offer;
 import java.net.URL;
-import java.sql.Date;
-import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
 import javafx.beans.value.ChangeListener;
@@ -33,27 +32,15 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.Callback;
-import javafx.util.StringConverter;
 
 /**
  * FXML Controller class
  *
  * @author Grzesiek
  */
-public class Booking_addController implements Initializable {
+public class Booking_editController implements Initializable {
 
     DataBase base;
-    String room;
-    @FXML
-    private TableView<Offer> booking_tableview;
-    @FXML
-    private TableColumn<?, ?> booking_standard;
-    @FXML
-    private TableColumn<?, ?> booking_type;
-    @FXML
-    private TableColumn<?, ?> booking_floor;
-    @FXML
-    private TableColumn<?, ?> booking_number;
     @FXML
     private JFXDatePicker booking_datep;
     @FXML
@@ -63,17 +50,11 @@ public class Booking_addController implements Initializable {
     @FXML
     private ComboBox<String> booking_typbox;
     @FXML
+    private Button booking_offer;
+    @FXML
     private TextField booking_comment;
     @FXML
     private Button booking_add;
-
-    ObservableList<String> booking_typ_list = FXCollections.observableArrayList("1", "1+1", "2", "2+1", "3");
-    ObservableList<String> booking_standard_list = FXCollections.observableArrayList("vip", "ekonomiczny", "biznesowy");
-
-    @FXML
-    private Button booking_offer;
-    @FXML
-    private Label booking_label;
     @FXML
     private TextField client_name;
     @FXML
@@ -83,7 +64,23 @@ public class Booking_addController implements Initializable {
     @FXML
     private TextField client_phone;
     @FXML
-    private Button add_guests;
+    private TableColumn<?, ?> booking_standard;
+    @FXML
+    private TableView<Offer> booking_tableview;
+    @FXML
+    private TableColumn<?, ?> booking_id;
+    @FXML
+    private TableColumn<?, ?> booking_room;
+    @FXML
+    private TableColumn<?, ?> booking_type;
+    @FXML
+    private TableColumn<?, ?> booking_floor;
+    @FXML
+    private TableColumn<?, ?> booking_datap;
+    @FXML
+    private TableColumn<?, ?> booking_datak;
+    @FXML
+    private TableColumn<?, ?> booking_comment1;
     @FXML
     private TableView<Guests> client_tableview;
     @FXML
@@ -94,8 +91,20 @@ public class Booking_addController implements Initializable {
     private TableColumn<?, ?> guest_pesel;
     @FXML
     private TableColumn<?, ?> guest_phone;
+    ObservableList<String> booking_typ_list = FXCollections.observableArrayList("1", "1+1", "2", "2+1", "3");
+    ObservableList<String> booking_standard_list = FXCollections.observableArrayList("vip", "ekonomiczny", "biznesowy");
     @FXML
-    private Label booking_label2;
+    private TableView<Offer> newbooking_tableview;
+    @FXML
+    private TableColumn<?, ?> newbooking_standard;
+    @FXML
+    private TableColumn<?, ?> newbooking_type;
+    @FXML
+    private TableColumn<?, ?> newbooking_floor;
+    @FXML
+    private TableColumn<?, ?> newbooking_number;
+    @FXML
+    private TableColumn<?, ?> booking_status;
 
     private void initGuestsBooking_Table() {
         guest_name.setCellValueFactory(new PropertyValueFactory<>("Name_guest"));
@@ -108,54 +117,47 @@ public class Booking_addController implements Initializable {
 
     }
 
-    @FXML//dodawanie klienta
-    private void addClient(ActionEvent event) throws SQLException {
-        String name_c = client_name.getText();
-        String surname_c = client_surname.getText();
-        String phone_c = client_phone.getText();
-        String pesel_c = client_pesel.getText();
-
-        if (name_c.isEmpty() || surname_c.isEmpty() || phone_c.isEmpty() || pesel_c.isEmpty()) {
-            Alert alert1 = new Alert(Alert.AlertType.ERROR);
-            alert1.setHeaderText(null);
-            alert1.setContentText("Wypełnij wszystkie pola");
-            alert1.showAndWait();
-        } else if (!name_c.matches("^[\\p{L} .'-]+$") || !surname_c.matches("^[\\p{L} .'-]+$")) {
-            Alert alert2 = new Alert(Alert.AlertType.ERROR);
-            alert2.setHeaderText(null);
-            alert2.setContentText("Błędne imię lub nazwisko");
-            alert2.showAndWait();
-        } else if (!pesel_c.matches("[0-9]{11}")) {
-            Alert alert3 = new Alert(Alert.AlertType.ERROR);
-            alert3.setHeaderText(null);
-            alert3.setContentText("Błędny pesel");
-            alert3.showAndWait();
-        } else if (!phone_c.matches("^[0-9]{7,15}$")) {
-            Alert alert3 = new Alert(Alert.AlertType.ERROR);
-            alert3.setHeaderText(null);
-            alert3.setContentText("Błędny telefon");
-            alert3.showAndWait();
-        } else {
-            if (ObjectManager.GetInstance().guestservice.insertClient(name_c, surname_c, phone_c, pesel_c)) {
-                Alert alert4 = new Alert(Alert.AlertType.INFORMATION);
-                alert4.setHeaderText(null);
-                alert4.setContentText("Dodano klienta");
-                alert4.showAndWait();
-                initGuestsBooking_Table();
-                client_name.clear();
-                client_surname.clear();
-                client_phone.clear();
-                client_pesel.clear();
-
-            } else {
-                Alert alert2 = new Alert(Alert.AlertType.ERROR);
-                alert2.setHeaderText(null);
-                alert2.setContentText("Błąd przy dodawaniu klienta");
-                alert2.showAndWait();
-            }
-        }
+    private void initNewBooking_Table() {
+        booking_id.setCellValueFactory(new PropertyValueFactory<>("Id_booking"));
+        booking_room.setCellValueFactory(new PropertyValueFactory<>("Number_offer"));
+        booking_standard.setCellValueFactory(new PropertyValueFactory<>("Standard_offer"));
+        booking_type.setCellValueFactory(new PropertyValueFactory<>("Type_offer"));
+        booking_floor.setCellValueFactory(new PropertyValueFactory<>("Floor_offer"));
+        booking_datap.setCellValueFactory(new PropertyValueFactory<>("Datap_booking"));
+        booking_datak.setCellValueFactory(new PropertyValueFactory<>("Datak_booking"));
+        booking_comment1.setCellValueFactory(new PropertyValueFactory<>("Comment_booking"));
+        booking_status.setCellValueFactory(new PropertyValueFactory<>("Status_booking"));
+        booking_tableview.getItems().setAll(ObjectManager.GetInstance().offerservice.getReceptionData(
+                client_tableview.getSelectionModel().getSelectedItem().getPesel_guest()));
     }
 
+    @FXML
+    private void cancelBooking(ActionEvent event) {
+        if(booking_tableview.getSelectionModel().getSelectedItem() == null){
+        Alert alert1 = new Alert(Alert.AlertType.ERROR);
+            alert1.setHeaderText(null);
+            alert1.setContentText("Wybierz rezerwacje, którą archiwizujesz");
+            alert1.showAndWait();
+        } else{
+        ObjectManager.GetInstance().bookingservice.cancelBooking(
+                booking_tableview.getSelectionModel().getSelectedItem().getId_booking());
+        refreshTable();
+        }
+    }
+    @FXML
+    private void restoreBooking(ActionEvent event) {
+        if(booking_tableview.getSelectionModel().getSelectedItem() == null){
+        Alert alert1 = new Alert(Alert.AlertType.ERROR);
+            alert1.setHeaderText(null);
+            alert1.setContentText("Wybierz rezerwację, którą przywracasz");
+            alert1.showAndWait();
+        } else{
+        ObjectManager.GetInstance().bookingservice.restoreBooking(
+                booking_tableview.getSelectionModel().getSelectedItem().getId_booking());
+        refreshTable();
+        }
+    }
+    
     @FXML
     private void showOffer(ActionEvent event) {
         String datap = booking_datep.getValue().toString();
@@ -163,20 +165,20 @@ public class Booking_addController implements Initializable {
         String typ = booking_typbox.getValue();
         String stand = booking_standardbox.getValue();
         String comment = booking_comment.getText();
-        booking_number.setCellValueFactory(new PropertyValueFactory<>("Number_offer"));
-        booking_floor.setCellValueFactory(new PropertyValueFactory<>("Floor_offer"));
-        booking_type.setCellValueFactory(new PropertyValueFactory<>("Type_offer"));
-        booking_standard.setCellValueFactory(new PropertyValueFactory<>("Standard_offer"));
-        booking_tableview.getItems().setAll(ObjectManager.GetInstance().offerservice.getData(typ, stand, datap, datak));
+        newbooking_number.setCellValueFactory(new PropertyValueFactory<>("Number_offer"));
+        newbooking_floor.setCellValueFactory(new PropertyValueFactory<>("Floor_offer"));
+        newbooking_type.setCellValueFactory(new PropertyValueFactory<>("Type_offer"));
+        newbooking_standard.setCellValueFactory(new PropertyValueFactory<>("Standard_offer"));
+        newbooking_tableview.getItems().setAll(ObjectManager.GetInstance().offerservice.getData(typ, stand, datap, datak));
     }
 
     @FXML
-    private void addBooking(ActionEvent event) throws SQLException {
+    private void updateBooking(ActionEvent event) {
         int pracownik = 1;//po dodaniu logowania pojawi się tu zmienna z numerem zalogowanego pracownika
         String datap = booking_datep.getValue().toString();
         String datak = booking_datek.getValue().toString();
         String komentarz = booking_comment.getText();
-        if (client_tableview.getSelectionModel().getSelectedItem() == null || booking_tableview.getSelectionModel().getSelectedItem() == null) {
+        if (client_tableview.getSelectionModel().getSelectedItem() == null || newbooking_tableview.getSelectionModel().getSelectedItem() == null) {
             Alert alert1 = new Alert(Alert.AlertType.ERROR);
             alert1.setHeaderText(null);
             alert1.setContentText("Wybierz gościa i pokój");
@@ -184,11 +186,13 @@ public class Booking_addController implements Initializable {
             return;
         } else {
             String klient = client_tableview.getSelectionModel().getSelectedItem().getPesel_guest();
-            int pokoj = booking_tableview.getSelectionModel().getSelectedItem().getNumber_offer();
-            if (ObjectManager.GetInstance().bookingservice.insertBooking(klient, pracownik, pokoj, datap, datak, komentarz)) {
+            int pokoj = newbooking_tableview.getSelectionModel().getSelectedItem().getNumber_offer();
+            if (ObjectManager.GetInstance().bookingservice.insertBooking(klient, pracownik, pokoj, datap, datak, komentarz)
+                    && ObjectManager.GetInstance().bookingservice.deleteBooking(
+                            booking_tableview.getSelectionModel().getSelectedItem().getId_booking())) {
                 Alert alert4 = new Alert(Alert.AlertType.INFORMATION);
                 alert4.setHeaderText(null);
-                alert4.setContentText("Dodano rezerwację");
+                alert4.setContentText("Zakutalizowano rezerwację");
                 alert4.showAndWait();
                 booking_comment.clear();
                 if (booking_tableview.getSelectionModel().getSelectedItem() != null) {
@@ -201,7 +205,10 @@ public class Booking_addController implements Initializable {
                 alert2.showAndWait();
             }
         }
-
+    }
+    public void refreshTable() {
+        booking_tableview.getItems().setAll(ObjectManager.GetInstance().offerservice.getReceptionData(
+                client_tableview.getSelectionModel().getSelectedItem().getPesel_guest()));
     }
 
     @Override
@@ -211,20 +218,23 @@ public class Booking_addController implements Initializable {
         booking_standardbox.setItems(booking_standard_list);
         booking_datep.setValue(LocalDate.now());
         booking_datek.setValue(LocalDate.now().plusDays(1));
-        booking_tableview.getSelectionModel().selectedItemProperty().
-                addListener((obs, oldSelection, newSelection) -> {
-                    if (newSelection != null) {
-                        booking_label2.setText("is booking room "
-                                + booking_tableview.getSelectionModel().
-                                        getSelectedItem().getNumber_offer());
-                    }
-                });
         client_tableview.getSelectionModel().selectedItemProperty().
                 addListener((obs, oldSelection, newSelection) -> {
                     if (newSelection != null) {
-                        booking_label.setText("Guest "
-                                + client_tableview.getSelectionModel().getSelectedItem().getName_guest()
-                                + " " + client_tableview.getSelectionModel().getSelectedItem().getSurname_guest());
+                        initNewBooking_Table();
+                    }
+                });
+        booking_tableview.getSelectionModel().selectedItemProperty().
+                addListener((obs, oldSelection, newSelection) -> {
+                    if (newSelection != null) {
+                        booking_datep.setValue(LocalDate.parse(booking_tableview.
+                                getSelectionModel().getSelectedItem().getDatap_booking()));
+                        booking_datek.setValue(LocalDate.parse(booking_tableview.
+                                getSelectionModel().getSelectedItem().getDatak_booking()));
+                        booking_standardbox.setValue(booking_tableview.
+                                getSelectionModel().getSelectedItem().getStandard_offer());
+                        booking_typbox.setValue(booking_tableview.
+                                getSelectionModel().getSelectedItem().getType_offer());
                     }
                 });
 
@@ -291,4 +301,5 @@ public class Booking_addController implements Initializable {
             }
         });
     }
+
 }
