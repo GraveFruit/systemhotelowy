@@ -45,5 +45,9 @@ public class LoginService {
         this.permissions = result.getString("uprawnienia");
         }     
     }
+        public void logout (){
+        this.permissions = null;
+        this.employeeSessionId = null;
+    }
 
 }

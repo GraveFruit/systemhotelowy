@@ -136,8 +136,6 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private Button reception_offer;
     @FXML
-    private Tab offer_tab;
-    @FXML
     private Button checkin_button;
     @FXML
     private Button checkout_button;
@@ -194,6 +192,26 @@ public class FXMLDocumentController implements Initializable {
     private Button guests_edition;
     @FXML
     private Button rooms_edition;
+    @FXML
+    private Tab tab_login;
+    @FXML
+    private Tab tab_offer;
+    @FXML
+    private Tab tab_reception;
+    @FXML
+    private Tab tab_guest;
+    @FXML
+    private Tab tab_reserv;
+    @FXML
+    private Tab tab_rooms;
+    @FXML
+    private Tab tab_employee;
+    @FXML
+    private Tab tab_tasks;
+    @FXML
+    private Tab tab_reports;
+    @FXML
+    private Button logout_button;
 
     @FXML//okno informacji o aplikacji
     private void showInfoWindow(ActionEvent event) throws IOException {
@@ -483,11 +501,56 @@ public class FXMLDocumentController implements Initializable {
     }
     
     @FXML
+    public void logoutsequence(ActionEvent event){
+        tab_lock(-1);
+        ObjectManager.GetInstance().loginservice.logout();
+        
+    }
+    
+    @FXML
     public void loginsequence(ActionEvent event) throws SQLException{
+        try{
         String loginVar = loginfield.getText();
         String passVar = passfield.getText();
-        loginprompt.setText(ObjectManager.GetInstance().loginservice.employeeSessionId);
         ObjectManager.GetInstance().loginservice.getlogged(loginVar, passVar);
+        
+        System.out.println(ObjectManager.GetInstance().loginservice.employeeSessionId);
+        }
+        catch(Exception e){
+            loginprompt.setText("zly login lub haslo");
+        }
+        
+        int permission_level = Integer.parseInt(ObjectManager.GetInstance().loginservice.permissions);
+        tab_lock(permission_level);
+    }
+    
+    public void tab_lock(int permission_level){
+        switch(permission_level){
+            case 0:
+            case 1:
+                tab_reports.setDisable(false);
+                tab_employee.setDisable(false);
+            case 2:
+                tab_guest.setDisable(false);
+                tab_reserv.setDisable(false);
+                tab_reception.setDisable(false);
+            case 3:
+                tab_rooms.setDisable(false);
+                tab_tasks.setDisable(false);
+                tab_login.setDisable(true);
+                logout_button.setDisable(false);
+                break;
+            default:
+                tab_reports.setDisable(true);
+                tab_employee.setDisable(true);
+                tab_guest.setDisable(true);
+                tab_reserv.setDisable(true);
+                tab_reception.setDisable(true);
+                tab_rooms.setDisable(true);
+                tab_tasks.setDisable(true);
+                tab_login.setDisable(false);
+                logout_button.setDisable(true);
+        }
     }
 
     @Override

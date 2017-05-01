@@ -36,6 +36,7 @@
                            </font>
                         </Label>
                         <Region fx:id="region" prefHeight="40.0" prefWidth="157.0" HBox.hgrow="ALWAYS" />
+                        <Button fx:id="logout_button" disable="true" mnemonicParsing="false" onAction="#logoutsequence" text="Wyloguj" />
                         <Button id="button_new" fx:id="hotel_info" mnemonicParsing="false" onAction="#showHotelInfoWindow">
                            <graphic>
                               <ImageView>
@@ -74,7 +75,7 @@
                <children>
                   <TabPane prefHeight="410.0" prefWidth="672.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <tabs>
-                        <Tab id="button_new" text="Logowanie">
+                        <Tab id="button_new" fx:id="tab_login" text="Logowanie">
                              <content>
                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
                               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
@@ -90,7 +91,7 @@
                                   </children></AnchorPane>
                              </content>
                           </Tab>
-                        <Tab id="button_new" fx:id="offer_tab" text="Oferta">
+                        <Tab id="button_new" fx:id="tab_offer" text="Oferta">
                            <content>
                               <AnchorPane id="AnchorPane" prefHeight="200.0" prefWidth="200.0">
                                  <children>
@@ -98,7 +99,7 @@
                                  </children></AnchorPane>
                            </content>
                         </Tab>
-                        <Tab id="button_new" text="Recepcja">
+                        <Tab id="button_new" fx:id="tab_reception" text="Recepcja">
                            <content>
                               <AnchorPane id="AnchorPane" prefHeight="200.0" prefWidth="200.0">
                                  <children>
@@ -191,7 +192,7 @@
                               </AnchorPane>
                            </content>
                         </Tab>
-                      <Tab id="button_new" text="Goście">
+                      <Tab id="button_new" fx:id="tab_guest" text="Goście">
                         <content>
                           <AnchorPane id="AnchorPane" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                  <children>
@@ -229,7 +230,7 @@
                                  </children></AnchorPane>
                         </content>
                       </Tab>
-                      <Tab id="button_new" text="Rezerwacje">
+                      <Tab id="button_new" fx:id="tab_reserv" text="Rezerwacje">
                         <content>
                           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                  <children>
@@ -255,7 +256,7 @@
                                  </children></AnchorPane>
                         </content>
                       </Tab>
-                        <Tab id="button_new" text="Pokoje">
+                        <Tab id="button_new" fx:id="tab_rooms" text="Pokoje">
                            <content>
                               <AnchorPane id="AnchorPane" minHeight="0.0" minWidth="0.0" prefHeight="476.0" prefWidth="703.0">
                                  <children>
@@ -291,7 +292,7 @@
                                  </children></AnchorPane>
                            </content>
                         </Tab>
-                        <Tab id="button_new" text="Pracownicy">
+                        <Tab id="button_new" fx:id="tab_employee" text="Pracownicy">
                            <content>
                               <AnchorPane id="AnchorPane" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                  <children>
@@ -330,7 +331,7 @@
                               </AnchorPane>
                            </content>
                         </Tab>
-                        <Tab id="button_new" text="Zadania">
+                        <Tab id="button_new" fx:id="tab_tasks" text="Zadania">
                            <content>
                               <AnchorPane id="AnchorPane" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                  <children>
@@ -371,7 +372,7 @@
                                  </children></AnchorPane>
                            </content>
                         </Tab>
-                        <Tab id="button_new" text="Raporty">
+                        <Tab id="button_new" fx:id="tab_reports" text="Raporty">
                            <content>
                               <AnchorPane id="AnchorOPane" minHeight="0.0" minWidth="0.0">
                                  <children>
