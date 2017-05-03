@@ -65,7 +65,7 @@ public class OfferService {
                     + "p.pokoj_id, p.standard, p.typ, p.pietro, r.data_p, "
                     + "r.data_k,r.komentarz,r.status from rezerwacje r, pokoje p, "
                     + "klienci k where r.pokoj_id=p.pokoj_id and "
-                    + "r.klient_id=k.klient_id and r.status<2 and k.klient_id=?");
+                    + "r.klient_id=k.klient_id and (r.status='1' or r.status='-1') and k.klient_id=?");
             prep.setInt(1, klient_id);
             ResultSet result = prep.executeQuery();
             while (result.next()) {
@@ -89,4 +89,26 @@ public class OfferService {
         return null;
     }
 
+     public boolean getPrologData(String pokoj, String datap, String datak) {
+        String standard="";
+        boolean wynik=false;
+         try {
+            Statement statement = DataBase.getConnection().createStatement();
+            ResultSet result = statement.executeQuery("select p.standard from pokoje p"
+                    + " where p.pokoj_id='" + pokoj + "' and p.pokoj_id not in "
+                    + " (select distinct p.pokoj_id from pokoje p, rezerwacje r "
+                    + " where p.pokoj_id = r.pokoj_id and r.status>0 and(('"
+                    + datap + "' between r.data_p  and DATE_SUB(r.data_k,INTERVAL 1 DAY)) or ('" + datak + "' between DATE_ADD(r.data_p,INTERVAL 1 DAY) and r.data_k)"
+                    + " or ('" + datap + "' between r.data_p  and r.data_k and '" + datak + "' between r.data_p and r.data_k)))");
+            while(result.next()){
+             standard=result.getString("standard");
+         }
+             wynik=standard.isEmpty();
+              //System.out.println("stan= "+standard+" wynik= "+wynik);
+        } catch (SQLException ex) {
+            Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return !wynik;
+    }
+    
 }

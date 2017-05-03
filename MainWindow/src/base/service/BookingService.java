@@ -224,4 +224,20 @@ public class BookingService {
         }
         return true;
     }
+    
+    public boolean prologBooking(int numer,String data) {
+        try {
+
+            PreparedStatement prep = DataBase.getConnection().prepareStatement(
+                    "Update rezerwacje set data_k=? where rezerwacja_id=?");
+            prep.setString(1, data); 
+            prep.setInt(2, numer);
+            prep.executeUpdate();
+
+        } catch (SQLException e) {
+            System.err.println("Błąd przy przedłużaniu rezerwacji");
+            return false;
+        }
+        return true;
+    }
 }

@@ -76,4 +76,42 @@ public class EmployeeService {
         return true;
     }
     
+     public boolean updateEmployeeData(String pesel, String telefon, String posada) {
+        int posada_nr = 0;
+        try {
+            ResultSet result = DataBase.getConnection().createStatement().executeQuery(
+                    "select posada_id from posady where nazwa='" + posada + "'");
+
+            while (result.next()) {
+                posada_nr = result.getInt("posada_id");
+            }
+
+            PreparedStatement prep = DataBase.getConnection().prepareStatement(
+                    "Update pracownicy set telefon=?, posada_id=? where pesel=?");
+            prep.setString(1, telefon);
+            prep.setInt(2, posada_nr);
+            prep.setString(3, pesel);
+            prep.executeUpdate();
+
+        } catch (SQLException e) {
+            System.err.println("Błąd przy aktualizacji pracownika");
+            return false;
+        }
+        return true;
+    }
+    
+    public boolean deleteEmployee(String pesel) {
+        try {
+            PreparedStatement prep = DataBase.getConnection().prepareStatement(
+                    "Update pracownicy set status='-1' where pesel=?");
+            prep.setString(1, pesel);
+            prep.executeUpdate();
+
+        } catch (SQLException e) {
+            System.err.println("Błąd przy usuwaniu pracownika");
+            return false;
+        }
+        return true;
+    }
+    
 }

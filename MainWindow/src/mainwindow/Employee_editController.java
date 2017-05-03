@@ -6,15 +6,12 @@
 package mainwindow;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
-import hotel.base.DataBase;
-import hotel.base.Employee;
 import java.net.URL;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ResourceBundle;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -30,84 +27,67 @@ import javafx.scene.control.Alert;
  *
  * @author Grzesiek
  */
-public class Employee_addController implements Initializable {
+public class Employee_editController implements Initializable {
 
+    @FXML
+    private JFXTextField phone;
+    @FXML
+    private JFXComboBox<String> position;
     @FXML
     private JFXTextField name;
     @FXML
     private JFXTextField surname;
     @FXML
-    private JFXTextField phone;
-    @FXML
     private JFXTextField pesel;
-    @FXML
-    private JFXComboBox<String> position;
-    @FXML
-    private JFXPasswordField password1;
-    @FXML
-    private JFXPasswordField password2;
-    @FXML
-    private JFXButton add;
-
-    DataBase base;
 
     ObservableList<String> position_list = FXCollections.observableArrayList("Admin", "Menedżer", "Recepcja", "Obsługa");
-
+    
     @FXML
-    private void addEmployee(ActionEvent event) throws SQLException {
-        String name_emp = name.getText();
-        String surname_emp = surname.getText();
+    private void changeEmployeeData(ActionEvent event) throws SQLException {
         String phone_emp = phone.getText();
         String pesel_emp = pesel.getText();
         String position_emp = position.getValue();
-        String passwd1 = password1.getText();
-        String passwd2 = password2.getText();
-        if (name_emp.isEmpty() || surname_emp.isEmpty() || phone_emp.isEmpty() || pesel_emp.isEmpty() || position_emp.isEmpty() || passwd1.isEmpty() || passwd2.isEmpty()) {
+        if (phone_emp.isEmpty() || position_emp.isEmpty()) {
             Alert alert1 = new Alert(Alert.AlertType.ERROR);
             alert1.setHeaderText(null);
             alert1.setContentText("Wypełnij wszystkie pola");
             alert1.showAndWait();
-            return;
-        } else if (!passwd1.equals(passwd2)) {
-            Alert alert2 = new Alert(Alert.AlertType.ERROR);
-            alert2.setHeaderText(null);
-            alert2.setContentText("Różne hasła");
-            alert2.showAndWait();
-            return;
         } else {
-            if (ObjectManager.GetInstance().employeeservice.insertEmployee(name_emp, surname_emp, phone_emp, pesel_emp, position_emp, passwd2)) {
+            if (ObjectManager.GetInstance().employeeservice.updateEmployeeData(pesel_emp, phone_emp, position_emp)) {
                 Alert alert4 = new Alert(Alert.AlertType.INFORMATION);
                 alert4.setHeaderText(null);
-                alert4.setContentText("Dodano element");
+                alert4.setContentText("Akutalizowano pracownika");
                 alert4.showAndWait();
             } else {
                 Alert alert2 = new Alert(Alert.AlertType.ERROR);
                 alert2.setHeaderText(null);
-                alert2.setContentText("Błąd przy dodawaniu pracownika");
+                alert2.setContentText("Błąd przy akutalizacji danych pracownika");
                 alert2.showAndWait();
             }
         }
 
     }
+
+     void addEmployeeData(String name2, String surname2, String pesel2, String number, String profession) {
+        name.setText(name2);
+        surname.setText(surname2);
+        pesel.setText(pesel2);
+        name.setDisable(true);
+        surname.setDisable(true);
+        pesel.setDisable(true);
+        phone.setText(number);
+        position.setValue(profession);
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         position.setItems(position_list);
-        base = DataBase.getInstance();
         phone.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                 if (newValue.matches("\\d*")) {
                 } else {
                     phone.setText(oldValue);
-                }
-            }
-        });
-        pesel.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                if (newValue.matches("\\d*")) {
-                } else {
-                    pesel.setText(oldValue);
                 }
             }
         });

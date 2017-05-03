@@ -133,31 +133,38 @@ public class Booking_editController implements Initializable {
 
     @FXML
     private void cancelBooking(ActionEvent event) {
-        if(booking_tableview.getSelectionModel().getSelectedItem() == null){
-        Alert alert1 = new Alert(Alert.AlertType.ERROR);
+        if (booking_tableview.getSelectionModel().getSelectedItem() == null) {
+            Alert alert1 = new Alert(Alert.AlertType.ERROR);
             alert1.setHeaderText(null);
             alert1.setContentText("Wybierz rezerwacje, którą archiwizujesz");
             alert1.showAndWait();
-        } else{
-        ObjectManager.GetInstance().bookingservice.cancelBooking(
-                booking_tableview.getSelectionModel().getSelectedItem().getId_booking());
-        refreshTable();
+        } else {
+            ObjectManager.GetInstance().bookingservice.cancelBooking(
+                    booking_tableview.getSelectionModel().getSelectedItem().getId_booking());
+            refreshTable();
         }
     }
+
     @FXML
     private void restoreBooking(ActionEvent event) {
-        if(booking_tableview.getSelectionModel().getSelectedItem() == null){
-        Alert alert1 = new Alert(Alert.AlertType.ERROR);
+        if (booking_tableview.getSelectionModel().getSelectedItem() == null) {
+            Alert alert1 = new Alert(Alert.AlertType.ERROR);
             alert1.setHeaderText(null);
             alert1.setContentText("Wybierz rezerwację, którą przywracasz");
             alert1.showAndWait();
-        } else{
-        ObjectManager.GetInstance().bookingservice.restoreBooking(
-                booking_tableview.getSelectionModel().getSelectedItem().getId_booking());
-        refreshTable();
+        } else {
+            if (ObjectManager.GetInstance().offerservice.getPrologData(
+                    Integer.toString(booking_tableview.getSelectionModel().getSelectedItem().getNumber_offer()),
+                    booking_tableview.getSelectionModel().getSelectedItem().getDatap_booking(),
+                    booking_tableview.getSelectionModel().getSelectedItem().getDatak_booking())) {
+                ObjectManager.GetInstance().bookingservice.restoreBooking(
+                        booking_tableview.getSelectionModel().getSelectedItem().getId_booking());
+                refreshTable();
+                
+            }
         }
     }
-    
+
     @FXML
     private void showOffer(ActionEvent event) {
         String datap = booking_datep.getValue().toString();
@@ -183,7 +190,6 @@ public class Booking_editController implements Initializable {
             alert1.setHeaderText(null);
             alert1.setContentText("Wybierz gościa i pokój");
             alert1.showAndWait();
-            return;
         } else {
             String klient = client_tableview.getSelectionModel().getSelectedItem().getPesel_guest();
             int pokoj = newbooking_tableview.getSelectionModel().getSelectedItem().getNumber_offer();
@@ -197,6 +203,7 @@ public class Booking_editController implements Initializable {
                 booking_comment.clear();
                 if (booking_tableview.getSelectionModel().getSelectedItem() != null) {
                     booking_tableview.getItems().remove(booking_tableview.getSelectionModel().getSelectedItem());
+                    initNewBooking_Table();
                 }
             } else {
                 Alert alert2 = new Alert(Alert.AlertType.ERROR);
@@ -206,6 +213,7 @@ public class Booking_editController implements Initializable {
             }
         }
     }
+
     public void refreshTable() {
         booking_tableview.getItems().setAll(ObjectManager.GetInstance().offerservice.getReceptionData(
                 client_tableview.getSelectionModel().getSelectedItem().getPesel_guest()));

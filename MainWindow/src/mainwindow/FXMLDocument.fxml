@@ -36,7 +36,6 @@
                            </font>
                         </Label>
                         <Region fx:id="region" prefHeight="40.0" prefWidth="157.0" HBox.hgrow="ALWAYS" />
-                        <Button fx:id="logout_button" disable="true" mnemonicParsing="false" onAction="#logoutsequence" text="Wyloguj" />
                         <Button id="button_new" fx:id="hotel_info" mnemonicParsing="false" onAction="#showHotelInfoWindow">
                            <graphic>
                               <ImageView>
@@ -55,11 +54,11 @@
                               </ImageView>
                            </graphic>
                         </Button>
-                        <Button id="button_new" fx:id="settings" mnemonicParsing="false" onAction="#showSettingsWindow">
+                        <Button id="button_new" fx:id="logout_button" mnemonicParsing="false" onAction="#logoutsequence">
                            <graphic>
                               <ImageView>
                                  <image>
-                                    <Image url="@../icons/010-cogwheel.png" />
+                                    <Image url="@../icons/003-sign-out-option.png" />
                                  </image>
                               </ImageView>
                            </graphic>
@@ -109,8 +108,8 @@
                                         <ColumnConstraints hgrow="SOMETIMES" maxWidth="220.0" minWidth="220.0" prefWidth="220.0" />
                                       </columnConstraints>
                                       <rowConstraints>
-                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints maxHeight="277.0" minHeight="10.0" prefHeight="248.0" vgrow="SOMETIMES" />
+                                        <RowConstraints maxHeight="327.0" minHeight="10.0" prefHeight="315.0" vgrow="SOMETIMES" />
                                       </rowConstraints>
                                        <children>
                                           <GridPane GridPane.columnIndex="1">
@@ -120,8 +119,8 @@
                                             <rowConstraints>
                                               <RowConstraints maxHeight="105.0" minHeight="0.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                               <RowConstraints maxHeight="188.0" minHeight="10.0" prefHeight="67.0" vgrow="SOMETIMES" />
-                                                <RowConstraints maxHeight="188.0" minHeight="10.0" prefHeight="66.0" vgrow="SOMETIMES" />
-                                              <RowConstraints maxHeight="185.0" minHeight="10.0" prefHeight="120.0" vgrow="SOMETIMES" />
+                                                <RowConstraints maxHeight="188.0" minHeight="10.0" prefHeight="78.0" vgrow="SOMETIMES" />
+                                              <RowConstraints maxHeight="185.0" minHeight="10.0" prefHeight="91.0" vgrow="SOMETIMES" />
                                             </rowConstraints>
                                              <children>
                                                 <Button id="button_new" fx:id="checkin_button" alignment="CENTER" mnemonicParsing="false" onAction="#addCheckin" prefHeight="35.0" prefWidth="120.0" text="Zamelduj" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
@@ -131,20 +130,21 @@
                                                    </font>
                                                 </Button>
                                                 <Label alignment="CENTER" prefHeight="17.0" prefWidth="129.0" text="Lista rezerwacji" underline="true" />
-                                                <Button id="button_new" fx:id="booking_Edit_button" alignment="CENTER" layoutX="60.0" layoutY="55.0" mnemonicParsing="false" onAction="#editBookingWindow" prefHeight="35.0" prefWidth="120.0" text="Edytuj rezerwację" GridPane.rowIndex="2" />
+                                                <Button id="button_new" fx:id="booking_edit_button" alignment="CENTER" layoutX="60.0" layoutY="55.0" mnemonicParsing="false" onAction="#editBookingWindow" prefHeight="35.0" prefWidth="120.0" text="Edytuj rezerwację" GridPane.rowIndex="2" />
                                              </children>
                                           </GridPane>
-                                          <GridPane GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                          <GridPane gridLinesVisible="true" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                             <columnConstraints>
                                               <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                             </columnConstraints>
                                             <rowConstraints>
-                                              <RowConstraints maxHeight="151.0" minHeight="0.0" prefHeight="32.0" vgrow="SOMETIMES" />
-                                              <RowConstraints maxHeight="188.0" minHeight="10.0" prefHeight="94.0" vgrow="SOMETIMES" />
-                                              <RowConstraints maxHeight="170.0" minHeight="10.0" prefHeight="147.0" vgrow="SOMETIMES" />
+                                              <RowConstraints maxHeight="151.0" minHeight="0.0" prefHeight="26.0" vgrow="SOMETIMES" />
+                                              <RowConstraints maxHeight="188.0" minHeight="10.0" prefHeight="51.0" vgrow="SOMETIMES" />
+                                                <RowConstraints maxHeight="188.0" minHeight="10.0" prefHeight="128.0" vgrow="SOMETIMES" />
+                                              <RowConstraints maxHeight="170.0" minHeight="10.0" prefHeight="94.0" vgrow="SOMETIMES" />
                                             </rowConstraints>
                                              <children>
-                                                <VBox alignment="CENTER" spacing="10.0" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+                                                <VBox alignment="CENTER" spacing="10.0" GridPane.halignment="CENTER" GridPane.rowIndex="3">
                                                    <children>
                                                       <Button id="button_new" fx:id="order_button" alignment="CENTER" mnemonicParsing="false" onAction="#addRecepctionTask" prefHeight="35.0" prefWidth="120.0" text="Zleć zadanie" />
                                                       <TextField fx:id="recepction_taskComment" prefHeight="37.0" prefWidth="327.0" promptText="Uwagi">
@@ -156,9 +156,33 @@
                                                 </VBox>
                                                 <Button id="button_new" fx:id="checkout_button" alignment="CENTER" mnemonicParsing="false" onAction="#addCheckout" prefHeight="35.0" prefWidth="120.0" text="Wymelduj" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
                                                 <Label alignment="CENTER" prefHeight="9.0" prefWidth="128.0" text="Lista zajętych pokoi" underline="true" />
+                                                <GridPane prefHeight="115.0" prefWidth="220.0" GridPane.rowIndex="2">
+                                                  <columnConstraints>
+                                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="138.0" minWidth="10.0" prefWidth="111.0" />
+                                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="164.0" minWidth="10.0" prefWidth="109.0" />
+                                                  </columnConstraints>
+                                                  <rowConstraints>
+                                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                  </rowConstraints>
+                                                   <children>
+                                                      <JFXDatePicker fx:id="prolog_date" prefHeight="28.0" prefWidth="123.0" />
+                                                      <Label fx:id="prolog_info" prefHeight="25.0" prefWidth="75.0" GridPane.columnIndex="1" />
+                                                      <Button fx:id="prolog_booking" alignment="CENTER" mnemonicParsing="false" onAction="#prologBooking" prefHeight="42.0" prefWidth="99.0" text="Przedłuż rezerwację" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                                         <GridPane.margin>
+                                                            <Insets left="5.0" right="5.0" />
+                                                         </GridPane.margin>
+                                                      </Button>
+                                                      <Button fx:id="prolog_check_booking" alignment="CENTER" layoutX="126.0" layoutY="92.0" mnemonicParsing="false" onAction="#checkBookingProlog" prefHeight="43.0" prefWidth="110.0" text="Sprawdź" wrapText="true" GridPane.rowIndex="1">
+                                                         <GridPane.margin>
+                                                            <Insets left="5.0" right="5.0" />
+                                                         </GridPane.margin>
+                                                      </Button>
+                                                   </children>
+                                                </GridPane>
                                              </children>
                                           </GridPane>
-                                          <TableView fx:id="bookingCheckIn_tableview" prefHeight="268.0" prefWidth="676.0">
+                                          <TableView fx:id="bookingCheckIn_tableview" prefHeight="287.0" prefWidth="678.0">
                                              <columns>
                                                 <TableColumn fx:id="bookingCheckIn_id" prefWidth="130.0" text="Numer rezerwacji" />
                                                 <TableColumn fx:id="bookingCheckIn_client" text="Gość" />
@@ -278,7 +302,6 @@
                                                     <TableColumn fx:id="room_type" prefWidth="75.0" text="Typ" />
                                                       <TableColumn fx:id="room_standard" prefWidth="75.0" text="Standard" />
                                                       <TableColumn fx:id="room_status" prefWidth="75.0" text="Status" />
-                                                      <TableColumn fx:id="room_edition" minWidth="80.0" prefWidth="100.0" text="Edytuj" />
                                                   </columns>
                                                    <columnResizePolicy>
                                                       <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
@@ -320,8 +343,8 @@
                                                 <VBox alignment="CENTER" layoutX="7.0" prefHeight="561.0" prefWidth="239.0" spacing="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="7.0" AnchorPane.rightAnchor="-7.0" AnchorPane.topAnchor="0.0">
                                                    <children>
                                                       <Button id="button_new" fx:id="add_employee" mnemonicParsing="false" onAction="#add_employeewindow" prefHeight="43.0" prefWidth="123.0" text="Dodaj pracownika" />
-                                                      <Button id="button_new" mnemonicParsing="false" prefHeight="43.0" prefWidth="123.0" text="Edytuj pracownika" />
-                                                      <Button id="button_new" layoutX="69.0" layoutY="341.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="123.0" text="Usuń pracownika" />
+                                                      <Button id="button_new" fx:id="edit_employee" mnemonicParsing="false" onAction="#editEmployeeWindow" prefHeight="43.0" prefWidth="123.0" text="Edytuj pracownika" />
+                                                      <Button id="button_new" fx:id="delete_employee" layoutX="69.0" layoutY="341.0" mnemonicParsing="false" onAction="#cancelEmployee" prefHeight="43.0" prefWidth="123.0" text="Usuń pracownika" />
                                                    </children></VBox>
                                              </children>
                                           </AnchorPane>

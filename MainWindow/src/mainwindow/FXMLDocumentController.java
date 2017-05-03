@@ -38,6 +38,7 @@ import javafx.scene.layout.Region;
 import javafx.stage.*;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
@@ -54,8 +55,6 @@ public class FXMLDocumentController implements Initializable {
     private Button hotel_info;
     @FXML
     private Button app_info;
-    @FXML
-    private Button settings;
     @FXML
     private Button add_task;
     @FXML
@@ -87,8 +86,6 @@ public class FXMLDocumentController implements Initializable {
     private TableColumn<?, ?> employee_status;
     @FXML
     private TableView<Rooms> room_tableview;
-    @FXML
-    private TableColumn<?, ?> room_edition;
     @FXML
     private TableView<Employee> employee_tableview;
     @FXML
@@ -139,9 +136,6 @@ public class FXMLDocumentController implements Initializable {
     private Button checkin_button;
     @FXML
     private Button checkout_button;
-    private JFXComboBox<String> recepction_checkinbox;
-    private JFXComboBox<String> recepction_checkoutbox;
-    private JFXComboBox<String> recepction_taskbox;
     @FXML
     private Button order_button;
     @FXML
@@ -187,8 +181,6 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private TableColumn<?, ?> bookingCheckOut_comment;
     @FXML
-    private Button booking_Edit_button;
-    @FXML
     private Button guests_edition;
     @FXML
     private Button rooms_edition;
@@ -212,7 +204,22 @@ public class FXMLDocumentController implements Initializable {
     private Tab tab_reports;
     @FXML
     private Button logout_button;
+    @FXML
+    private Button booking_edit_button;
+    @FXML
+    private JFXDatePicker prolog_date;
+    @FXML
+    private Label prolog_info;
+    @FXML
+    private Button prolog_booking;
+    @FXML
+    private Button edit_employee;
+    @FXML
+    private Button delete_employee;
+    @FXML
+    private Button prolog_check_booking;
 
+    //inicialize windows
     @FXML//okno informacji o aplikacji
     private void showInfoWindow(ActionEvent event) throws IOException {
         makeWindow("InfoAplication.fxml", "Informacje o aplikacji", app_info);
@@ -223,14 +230,9 @@ public class FXMLDocumentController implements Initializable {
         makeWindow("HotelInfo.fxml", "Informacje o hotelu", hotel_info);
     }
 
-    @FXML//okno ustawień
-    private void showSettingsWindow(ActionEvent event) throws IOException {
-        makeWindow("Settings.fxml", "Ustawienia", settings);
-    }
-
     @FXML//podokno dodaj zadanie
     private void add_taskwindow(ActionEvent event) throws IOException {
-        makeWindow("tasks_add.fxml", "Dodaj zadanie", add_task);
+        makeWindow("Tasks_add.fxml", "Dodaj zadanie", add_task);
     }
 
     @FXML//podokno wyświetlające dostępne pokoje dla gości
@@ -254,10 +256,70 @@ public class FXMLDocumentController implements Initializable {
         }
     }
 
+    @FXML//podokno dodaj pracownika
+    private void add_employeewindow(ActionEvent event) throws IOException {
+        try {
+            Parent loader = FXMLLoader.load(getClass().getResource("Employee_add.fxml"));
+            Scene scene = new Scene(loader);
+            Stage stage = new Stage();
+            scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
+            stage.setScene(scene);
+            stage.setTitle("Dodaj pracownika");
+            stage.initOwner(add_employee.getScene().getWindow());
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.showAndWait();
+            stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+                public void handle(WindowEvent we) {
+                    refreshEmployeeTable();
+                }
+            });
+            stage.getOnCloseRequest().handle(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
+        } catch (IOException exc) {
+            System.out.print(" Error during making new window " + exc);
+        }
+    }
+
+    @FXML//podokno edytuj pracownika
+    private void editEmployeeWindow(ActionEvent event) throws IOException {
+        if (employee_tableview.getSelectionModel().getSelectedItem() != null) {
+            try {
+                FXMLLoader loader = new FXMLLoader();
+                Parent root = loader.load(getClass().getResource("Employee_edit.fxml").openStream());
+                Employee_editController controller = (Employee_editController) loader.getController();
+                controller.addEmployeeData(employee_tableview.getSelectionModel().getSelectedItem().getName_employee(),
+                        employee_tableview.getSelectionModel().getSelectedItem().getSurname_employee(),
+                        employee_tableview.getSelectionModel().getSelectedItem().getPesel_employee(),
+                        employee_tableview.getSelectionModel().getSelectedItem().getPhone_employee(),
+                        employee_tableview.getSelectionModel().getSelectedItem().getPosition_employee());
+                Scene scene = new Scene(root);
+                Stage stage = new Stage();
+                scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
+                stage.setScene(scene);
+                stage.setTitle("Edytuj pracownika");
+                stage.initOwner(edit_employee.getScene().getWindow());
+                stage.initModality(Modality.APPLICATION_MODAL);
+                stage.showAndWait();
+                stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+                    public void handle(WindowEvent we) {
+                        refreshEmployeeTable();
+                    }
+                });
+                stage.getOnCloseRequest().handle(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
+            } catch (IOException exc) {
+                System.out.print(" Error during making new window " + exc);
+            }
+        } else {
+            Alert alert1 = new Alert(Alert.AlertType.ERROR);
+            alert1.setHeaderText(null);
+            alert1.setContentText("Wybierz pracownika");
+            alert1.showAndWait();
+        }
+    }
+
     @FXML//podokno dodawania rezerwacji
     private void add_ReceptionOfferWindow(ActionEvent event) throws IOException {
         try {
-            Parent loader = FXMLLoader.load(getClass().getResource("booking_add.fxml"));
+            Parent loader = FXMLLoader.load(getClass().getResource("Booking_add.fxml"));
             Scene scene = new Scene(loader);
             Stage stage = new Stage();
             scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
@@ -279,30 +341,7 @@ public class FXMLDocumentController implements Initializable {
         }
     }
 
-    @FXML//podokno dodaj pracownika
-    private void add_employeewindow(ActionEvent event) throws IOException {
-        try {
-            Parent loader = FXMLLoader.load(getClass().getResource("employee_add.fxml"));
-            Scene scene = new Scene(loader);
-            Stage stage = new Stage();
-            scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
-            stage.setScene(scene);
-            stage.setTitle("Dodaj pracownika");
-            stage.initOwner(add_employee.getScene().getWindow());
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.showAndWait();
-            stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-                public void handle(WindowEvent we) {
-                    refreshEmployeeTable();
-                }
-            });
-            stage.getOnCloseRequest().handle(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
-        } catch (IOException exc) {
-            System.out.print(" Error during making new window " + exc);
-        }
-    }
-
-    @FXML//podokno dodaj pracownika
+    @FXML//podokno edytuj rezerwację
     private void editBookingWindow(ActionEvent event) throws IOException {
         try {
             Parent loader = FXMLLoader.load(getClass().getResource("Booking_edit.fxml"));
@@ -311,12 +350,13 @@ public class FXMLDocumentController implements Initializable {
             scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
             stage.setScene(scene);
             stage.setTitle("Edytuj rezerwację");
-            stage.initOwner(add_employee.getScene().getWindow());
+            stage.initOwner(booking_edit_button.getScene().getWindow());
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.showAndWait();
             stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
                 public void handle(WindowEvent we) {
                     refreshBookingTable();
+                    refreshReceptionTable();
                 }
             });
             stage.getOnCloseRequest().handle(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
@@ -324,11 +364,26 @@ public class FXMLDocumentController implements Initializable {
             System.out.print(" Error during making new window " + exc);
         }
     }
-    
+
+//Methods
+    @FXML//metoda usuń pracownika
+    private void cancelEmployee(ActionEvent event) {
+        if (employee_tableview.getSelectionModel().getSelectedItem() != null) {
+            ObjectManager.GetInstance().employeeservice.deleteEmployee(
+                    employee_tableview.getSelectionModel().getSelectedItem().getPesel_employee());
+            refreshEmployeeTable();
+        } else {
+            Alert alert1 = new Alert(Alert.AlertType.ERROR);
+            alert1.setHeaderText(null);
+            alert1.setContentText("Wybierz pracownika");
+            alert1.showAndWait();
+        }
+
+    }
 
     @FXML//melodowanie gościa
     private void addCheckin(ActionEvent event) throws SQLException {
-        if (bookingCheckIn_tableview.getSelectionModel().getSelectedItem()==null) {
+        if (bookingCheckIn_tableview.getSelectionModel().getSelectedItem() == null) {
             Alert alert1 = new Alert(Alert.AlertType.ERROR);
             alert1.setHeaderText(null);
             alert1.setContentText("Wybierz pokój");
@@ -351,10 +406,10 @@ public class FXMLDocumentController implements Initializable {
             }
         }
     }
-    
+
     @FXML//wymeldowywanie gościa
     private void addCheckout(ActionEvent event) throws SQLException {
-        if (bookingCheckOut_tableview.getSelectionModel().getSelectedItem()==null) {
+        if (bookingCheckOut_tableview.getSelectionModel().getSelectedItem() == null) {
             Alert alert1 = new Alert(Alert.AlertType.ERROR);
             alert1.setHeaderText(null);
             alert1.setContentText("Wybierz pokój");
@@ -380,7 +435,7 @@ public class FXMLDocumentController implements Initializable {
 
     @FXML//dodawanie zadania z recepcji
     private void addRecepctionTask(ActionEvent event) throws SQLException {
-        if (bookingCheckOut_tableview.getSelectionModel().getSelectedItem()==null) {
+        if (bookingCheckOut_tableview.getSelectionModel().getSelectedItem() == null) {
             Alert alert1 = new Alert(Alert.AlertType.ERROR);
             alert1.setHeaderText(null);
             alert1.setContentText("Wybierz pokój");
@@ -388,17 +443,74 @@ public class FXMLDocumentController implements Initializable {
         } else {
             if (ObjectManager.GetInstance().taskservice.insertTask(
                     bookingCheckOut_tableview.getSelectionModel().getSelectedItem()
-                            .getId_booking())){
+                            .getId_booking())) {
                 Alert alert4 = new Alert(Alert.AlertType.INFORMATION);
                 alert4.setHeaderText(null);
                 alert4.setContentText("Dodano zadanie");
                 alert4.showAndWait();
                 refreshTaskTable();
-                
+
             } else {
                 Alert alert2 = new Alert(Alert.AlertType.ERROR);
                 alert2.setHeaderText(null);
                 alert2.setContentText("Błąd przy dodawaniu zadania");
+                alert2.showAndWait();
+            }
+        }
+    }
+
+    @FXML//sprawdzanie możliwości przedłużenia rezerwacji
+    private void checkBookingProlog(ActionEvent event) throws SQLException {
+        if (bookingCheckOut_tableview.getSelectionModel().getSelectedItem() == null) {
+            Alert alert1 = new Alert(Alert.AlertType.ERROR);
+            alert1.setHeaderText(null);
+            alert1.setContentText("Wybierz pokój");
+            alert1.showAndWait();
+        } else {
+            if (prolog_date.getValue().toString().compareTo(bookingCheckOut_tableview.
+                    getSelectionModel().getSelectedItem().getDatak_booking()) > 0) {
+                if (ObjectManager.GetInstance().offerservice.getPrologData(
+                        bookingCheckOut_tableview.getSelectionModel().getSelectedItem()
+                                .getRoom_booking(), bookingCheckOut_tableview.getSelectionModel().getSelectedItem().getDatak_booking(),
+                        prolog_date.getValue().toString())) {
+                    prolog_info.setText("Dostępny");
+                } else {
+                    prolog_info.setText("Niedostępny");
+                }
+            } else {
+                Alert alert2 = new Alert(Alert.AlertType.ERROR);
+                alert2.setHeaderText(null);
+                alert2.setContentText("Zła data");
+                alert2.showAndWait();
+            }
+        }
+    }
+    
+    @FXML//przedłużanie rezerwacji
+    private void prologBooking(ActionEvent event) throws SQLException {
+        if (bookingCheckOut_tableview.getSelectionModel().getSelectedItem() == null) {
+            Alert alert1 = new Alert(Alert.AlertType.ERROR);
+            alert1.setHeaderText(null);
+            alert1.setContentText("Wybierz pokój");
+            alert1.showAndWait();
+        } else {
+            if (ObjectManager.GetInstance().offerservice.getPrologData(
+                        bookingCheckOut_tableview.getSelectionModel().getSelectedItem()
+                                .getRoom_booking(), bookingCheckOut_tableview.getSelectionModel().getSelectedItem().getDatak_booking(),
+                        prolog_date.getValue().toString())) {
+                ObjectManager.GetInstance().bookingservice.prologBooking(bookingCheckOut_tableview.
+                        getSelectionModel().getSelectedItem().getId_booking(), prolog_date.getValue().toString());
+                Alert alert4 = new Alert(Alert.AlertType.INFORMATION);
+                alert4.setHeaderText(null);
+                alert4.setContentText("Przedłużono rezerwację");
+                alert4.showAndWait();
+                refreshReceptionTable();
+                refreshBookingTable();
+
+            } else {
+                Alert alert2 = new Alert(Alert.AlertType.ERROR);
+                alert2.setHeaderText(null);
+                alert2.setContentText("Błąd przy przedłużaniu rezerwacji");
                 alert2.showAndWait();
             }
         }
@@ -445,7 +557,7 @@ public class FXMLDocumentController implements Initializable {
         booking_comment.setCellValueFactory(new PropertyValueFactory<>("Comment_booking"));
         booking_tableview.getItems().setAll(ObjectManager.GetInstance().bookingservice.getData());
     }
-    
+
     public void initBookingsCheckIn_Table() {
         bookingCheckIn_id.setCellValueFactory(new PropertyValueFactory<>("Id_booking"));
         bookingCheckIn_client.setCellValueFactory(new PropertyValueFactory<>("Client_booking"));
@@ -457,7 +569,7 @@ public class FXMLDocumentController implements Initializable {
         bookingCheckIn_tableview.getItems().setAll(ObjectManager.GetInstance().bookingservice.getBookingCheckIn());
     }
 
-      public void initBookingsCheckOut_Table() {
+    public void initBookingsCheckOut_Table() {
         bookingCheckOut_id.setCellValueFactory(new PropertyValueFactory<>("Id_booking"));
         bookingCheckOut_client.setCellValueFactory(new PropertyValueFactory<>("Client_booking"));
         bookingCheckOut_employee.setCellValueFactory(new PropertyValueFactory<>("Employee_booking"));
@@ -467,7 +579,7 @@ public class FXMLDocumentController implements Initializable {
         bookingCheckOut_comment.setCellValueFactory(new PropertyValueFactory<>("Comment_booking"));
         bookingCheckOut_tableview.getItems().setAll(ObjectManager.GetInstance().bookingservice.getBookingCheckOut());
     }
-    
+
     public void initGuests_Table() {
         guest_name.setCellValueFactory(new PropertyValueFactory<>("Name_guest"));
         guest_surname.setCellValueFactory(new PropertyValueFactory<>("Surname_guest"));
@@ -491,41 +603,41 @@ public class FXMLDocumentController implements Initializable {
     public void refreshGuestTable() {
         guest_tableview.getItems().setAll(ObjectManager.GetInstance().guestservice.getData());
     }
-    
+
     public void refreshTaskTable() {
         task_tableview.getItems().setAll(ObjectManager.GetInstance().taskservice.getData());
     }
+
     public void refreshReceptionTable() {
         bookingCheckIn_tableview.getItems().setAll(ObjectManager.GetInstance().bookingservice.getBookingCheckIn());
         bookingCheckOut_tableview.getItems().setAll(ObjectManager.GetInstance().bookingservice.getBookingCheckOut());
     }
-    
+
     @FXML
-    public void logoutsequence(ActionEvent event){
+    public void logoutsequence(ActionEvent event) {
         tab_lock(-1);
         ObjectManager.GetInstance().loginservice.logout();
-        
+
     }
-    
+
     @FXML
-    public void loginsequence(ActionEvent event) throws SQLException{
-        try{
-        String loginVar = loginfield.getText();
-        String passVar = passfield.getText();
-        ObjectManager.GetInstance().loginservice.getlogged(loginVar, passVar);
-        
-        System.out.println(ObjectManager.GetInstance().loginservice.employeeSessionId);
-        }
-        catch(Exception e){
+    public void loginsequence(ActionEvent event) throws SQLException {
+        try {
+            String loginVar = loginfield.getText();
+            String passVar = passfield.getText();
+            ObjectManager.GetInstance().loginservice.getlogged(loginVar, passVar);
+
+            System.out.println(ObjectManager.GetInstance().loginservice.employeeSessionId);
+        } catch (SQLException e) {
             loginprompt.setText("zly login lub haslo");
         }
-        
+
         int permission_level = Integer.parseInt(ObjectManager.GetInstance().loginservice.permissions);
         tab_lock(permission_level);
     }
-    
-    public void tab_lock(int permission_level){
-        switch(permission_level){
+
+    public void tab_lock(int permission_level) {
+        switch (permission_level) {
             case 0:
             case 1:
                 tab_reports.setDisable(false);
@@ -563,6 +675,6 @@ public class FXMLDocumentController implements Initializable {
         initTasks_Table();
         initBookingsCheckIn_Table();
         initBookingsCheckOut_Table();
-        
-}
+
+    }
 }
