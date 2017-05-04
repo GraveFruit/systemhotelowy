@@ -27,12 +27,16 @@ import mainwindow.ObjectManager;
  */
 public class Rooms {
     
-    private final IntegerProperty number_room;
-    private final StringProperty type_room;
-    private final StringProperty floor_room;
-    private final StringProperty standard_room;
-    private final StringProperty status_room;
+    private  IntegerProperty number_room;
+    private  StringProperty type_room;
+    private  StringProperty floor_room;
+    private  StringProperty standard_room;
+    private  StringProperty status_room;
 
+      public Rooms(int room){
+        this.number_room = new SimpleIntegerProperty(room);
+    }
+      
     public Rooms(int room, String floor, String type, String stan, String status){
         this.number_room = new SimpleIntegerProperty(room);
         this.floor_room = new SimpleStringProperty(floor);

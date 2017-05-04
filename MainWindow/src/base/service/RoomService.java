@@ -7,6 +7,7 @@ package base.service;
 
 import hotel.base.DataBase;
 import hotel.base.Rooms;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -47,5 +48,55 @@ public class RoomService {
         }
         return null;
     }
+    
+    public ObservableList<String> getRoomData() {
+        try {
+            ObservableList<String> rooms_list = FXCollections.observableArrayList();
+            Statement statement = DataBase.getConnection().createStatement();
+            ResultSet result = statement.executeQuery("Select pokoj_id from pokoje");
+            while (result.next()) {
+                int id = result.getInt("pokoj_id");
+                rooms_list.add(Integer.toString(new Rooms(id).getNumber_room()));
+            }
 
+            return FXCollections.observableArrayList(rooms_list);
+        } catch (SQLException ex) {
+            Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
+    public boolean updateRoomStatus(String numer, String status) {
+        try {
+
+            PreparedStatement prep = DataBase.getConnection().prepareStatement(
+                    "Update pokoje set status=? where pokoj_id=?");
+            prep.setString(1, status);
+            prep.setString(2, numer);
+            prep.executeUpdate();
+
+        } catch (SQLException e) {
+            System.err.println("Błąd przy meldowaniu");
+            return false;
+        }
+        return true;
+    }
+  
+      public boolean checkRoomStatus(String numer) {
+       String status="";
+        boolean wynik=false;
+         try {
+            Statement statement = DataBase.getConnection().createStatement();
+            ResultSet result = statement.executeQuery(
+                    "Select status from pokoje where pokoj_id='"+ numer+"'");
+            while(result.next()){
+             status=result.getString("status");
+         }
+            wynik=status.compareTo("2")==0;
+        } catch (SQLException e) {
+            System.err.println("Błąd przy sprawdzaniu statusu pokoju");
+        }
+        return !wynik;
+    }
+    
 }

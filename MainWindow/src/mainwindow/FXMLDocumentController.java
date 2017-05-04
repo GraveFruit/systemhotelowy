@@ -73,6 +73,8 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private TableColumn<?, ?> room_status;
     @FXML
+    private TableView<Rooms> room_tableview;
+    @FXML
     private TableColumn<?, ?> employee_name;
     @FXML
     private TableColumn<?, ?> employee_surname;
@@ -84,8 +86,6 @@ public class FXMLDocumentController implements Initializable {
     private TableColumn<?, ?> employee_position;
     @FXML
     private TableColumn<?, ?> employee_status;
-    @FXML
-    private TableView<Rooms> room_tableview;
     @FXML
     private TableView<Employee> employee_tableview;
     @FXML
@@ -126,6 +126,8 @@ public class FXMLDocumentController implements Initializable {
     private TableColumn<?, ?> client_task;
     @FXML
     private TableColumn<?, ?> data_task;
+    @FXML
+    private TableColumn<?, ?> disc_task;
     @FXML
     private TableColumn<?, ?> status_task;
     @FXML
@@ -218,6 +220,14 @@ public class FXMLDocumentController implements Initializable {
     private Button delete_employee;
     @FXML
     private Button prolog_check_booking;
+    @FXML
+    private Button delete_task;
+    @FXML
+    private Button show_task;
+    @FXML
+    private Button change_task_status;
+    @FXML
+    private TableColumn<?, ?> id_task;
 
     //inicialize windows
     @FXML//okno informacji o aplikacji
@@ -228,11 +238,6 @@ public class FXMLDocumentController implements Initializable {
     @FXML//okno informacji o hotelu
     private void showHotelInfoWindow(ActionEvent event) throws IOException {
         makeWindow("HotelInfo.fxml", "Informacje o hotelu", hotel_info);
-    }
-
-    @FXML//podokno dodaj zadanie
-    private void add_taskwindow(ActionEvent event) throws IOException {
-        makeWindow("Tasks_add.fxml", "Dodaj zadanie", add_task);
     }
 
     @FXML//podokno wyświetlające dostępne pokoje dla gości
@@ -333,6 +338,7 @@ public class FXMLDocumentController implements Initializable {
                     refreshBookingTable();
                     refreshRoomTable();
                     refreshGuestTable();
+                    refreshReceptionTable();
                 }
             });
             stage.getOnCloseRequest().handle(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
@@ -365,6 +371,55 @@ public class FXMLDocumentController implements Initializable {
         }
     }
 
+    @FXML//podokno edycja zadań
+    private void addTaskWindow(ActionEvent event) throws IOException {
+        try {
+            Parent loader = FXMLLoader.load(getClass().getResource("Tasks_add.fxml"));
+            Scene scene = new Scene(loader);
+            Stage stage = new Stage();
+            scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
+            stage.setScene(scene);
+            stage.setTitle("Dodaj zadanie");
+            stage.initOwner(add_task.getScene().getWindow());
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.showAndWait();
+            stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+                public void handle(WindowEvent we) {
+                    refreshTaskTable();
+                    refreshRoomTable();
+                }
+            });
+            stage.getOnCloseRequest().handle(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
+        } catch (IOException exc) {
+            System.out.print(" Error during making new window " + exc);
+        }
+    }
+    
+    @FXML//podokno wysietlania zadań dla pracowników
+    private void showTaskWindow(ActionEvent event) throws IOException {
+        try {
+            Parent loader = FXMLLoader.load(getClass().getResource("Tasks_show.fxml"));
+            Scene scene = new Scene(loader);
+            Stage stage = new Stage();
+            scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
+            stage.setScene(scene);
+            stage.setTitle("Edytuj swoje zadania");
+            stage.initOwner(show_task.getScene().getWindow());
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.showAndWait();
+            stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+                public void handle(WindowEvent we) {
+                    refreshTaskTable();
+                    refreshRoomTable();
+                }
+            });
+            stage.getOnCloseRequest().handle(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
+        } catch (IOException exc) {
+            System.out.print(" Error during making new window " + exc);
+        }
+    }
+
+
 //Methods
     @FXML//metoda usuń pracownika
     private void cancelEmployee(ActionEvent event) {
@@ -388,21 +443,34 @@ public class FXMLDocumentController implements Initializable {
             alert1.setHeaderText(null);
             alert1.setContentText("Wybierz pokój");
             alert1.showAndWait();
-
         } else {
-            if (ObjectManager.GetInstance().bookingservice.updateCheckin(
-                    bookingCheckIn_tableview.getSelectionModel().getSelectedItem().getId_booking())) {
+            if (ObjectManager.GetInstance().roomservice.checkRoomStatus(
+                    bookingCheckIn_tableview.getSelectionModel().getSelectedItem()
+                            .getRoom_booking())) {
+                if (ObjectManager.GetInstance().bookingservice.updateCheckin(
+                        bookingCheckIn_tableview.getSelectionModel().getSelectedItem().getId_booking())
+                        && ObjectManager.GetInstance().roomservice.updateRoomStatus(
+                                bookingCheckIn_tableview.getSelectionModel().getSelectedItem().getRoom_booking(), "1")) {
+                    Alert alert4 = new Alert(Alert.AlertType.INFORMATION);
+                    alert4.setHeaderText(null);
+                    alert4.setContentText("Zameldowano");
+                    alert4.showAndWait();
+                    refreshBookingTable();
+                    refreshReceptionTable();
+                    refreshRoomTable();
+                } else {
+                    Alert alert2 = new Alert(Alert.AlertType.ERROR);
+                    alert2.setHeaderText(null);
+                    alert2.setContentText("Błąd przy dodawaniu meldowania");
+                    alert2.showAndWait();
+                }
+            } else {
                 Alert alert4 = new Alert(Alert.AlertType.INFORMATION);
                 alert4.setHeaderText(null);
-                alert4.setContentText("Zameldowano");
+                alert4.setContentText("Pokój jest jeszcze nie gotowy");
                 alert4.showAndWait();
                 refreshBookingTable();
                 refreshReceptionTable();
-            } else {
-                Alert alert2 = new Alert(Alert.AlertType.ERROR);
-                alert2.setHeaderText(null);
-                alert2.setContentText("Błąd przy dodawaniu meldowania");
-                alert2.showAndWait();
             }
         }
     }
@@ -417,13 +485,19 @@ public class FXMLDocumentController implements Initializable {
 
         } else {
             if (ObjectManager.GetInstance().bookingservice.updateCheckout(
-                    bookingCheckOut_tableview.getSelectionModel().getSelectedItem().getId_booking())) {
+                    bookingCheckOut_tableview.getSelectionModel().getSelectedItem().getId_booking())
+                    && ObjectManager.GetInstance().roomservice.updateRoomStatus(
+                            bookingCheckOut_tableview.getSelectionModel().getSelectedItem().getRoom_booking(), "2")
+                    && ObjectManager.GetInstance().taskservice.insertTask(
+                            bookingCheckOut_tableview.getSelectionModel().getSelectedItem().getId_booking(), "sprzatanie")) {
                 Alert alert4 = new Alert(Alert.AlertType.INFORMATION);
                 alert4.setHeaderText(null);
                 alert4.setContentText("Wymeldowano");
                 alert4.showAndWait();
+                refreshRoomTable();
                 refreshBookingTable();
                 refreshReceptionTable();
+                refreshTaskTable();
             } else {
                 Alert alert2 = new Alert(Alert.AlertType.ERROR);
                 alert2.setHeaderText(null);
@@ -443,7 +517,8 @@ public class FXMLDocumentController implements Initializable {
         } else {
             if (ObjectManager.GetInstance().taskservice.insertTask(
                     bookingCheckOut_tableview.getSelectionModel().getSelectedItem()
-                            .getId_booking())) {
+                            .getId_booking(), recepction_taskComment.getText())
+                    && ObjectManager.GetInstance().taskservice.insertList()) {
                 Alert alert4 = new Alert(Alert.AlertType.INFORMATION);
                 alert4.setHeaderText(null);
                 alert4.setContentText("Dodano zadanie");
@@ -485,7 +560,7 @@ public class FXMLDocumentController implements Initializable {
             }
         }
     }
-    
+
     @FXML//przedłużanie rezerwacji
     private void prologBooking(ActionEvent event) throws SQLException {
         if (bookingCheckOut_tableview.getSelectionModel().getSelectedItem() == null) {
@@ -495,9 +570,9 @@ public class FXMLDocumentController implements Initializable {
             alert1.showAndWait();
         } else {
             if (ObjectManager.GetInstance().offerservice.getPrologData(
-                        bookingCheckOut_tableview.getSelectionModel().getSelectedItem()
-                                .getRoom_booking(), bookingCheckOut_tableview.getSelectionModel().getSelectedItem().getDatak_booking(),
-                        prolog_date.getValue().toString())) {
+                    bookingCheckOut_tableview.getSelectionModel().getSelectedItem()
+                            .getRoom_booking(), bookingCheckOut_tableview.getSelectionModel().getSelectedItem().getDatak_booking(),
+                    prolog_date.getValue().toString())) {
                 ObjectManager.GetInstance().bookingservice.prologBooking(bookingCheckOut_tableview.
                         getSelectionModel().getSelectedItem().getId_booking(), prolog_date.getValue().toString());
                 Alert alert4 = new Alert(Alert.AlertType.INFORMATION);
@@ -514,6 +589,33 @@ public class FXMLDocumentController implements Initializable {
                 alert2.showAndWait();
             }
         }
+    }
+
+    @FXML//metoda usuń zadanie
+    private void cancelTask(ActionEvent event) {
+        if (task_tableview.getSelectionModel().getSelectedItem() != null) {
+            String room= task_tableview.getSelectionModel().getSelectedItem().getRoom_task();
+            if(ObjectManager.GetInstance().taskservice.deleteTask(
+                    task_tableview.getSelectionModel().getSelectedItem().getId_task())){
+            Alert alert1 = new Alert(Alert.AlertType.INFORMATION);
+            alert1.setHeaderText(null);
+            alert1.setContentText("Usunięto zadanie");
+            alert1.showAndWait();
+            refreshTaskTable();
+            if (ObjectManager.GetInstance().taskservice.checkRoomReady(
+                    Integer.parseInt(room))) {
+                ObjectManager.GetInstance().roomservice.updateRoomStatus(
+                        room, "0");
+                refreshRoomTable();
+            }
+            }
+        } else {
+            Alert alert1 = new Alert(Alert.AlertType.ERROR);
+            alert1.setHeaderText(null);
+            alert1.setContentText("Wybierz zadanie");
+            alert1.showAndWait();
+        }
+
     }
 
     //inicjalizacja tabel
@@ -542,7 +644,9 @@ public class FXMLDocumentController implements Initializable {
         employee_task.setCellValueFactory(new PropertyValueFactory<>("Employee_task"));
         client_task.setCellValueFactory(new PropertyValueFactory<>("Client_task"));
         data_task.setCellValueFactory(new PropertyValueFactory<>("Data_task"));
+        disc_task.setCellValueFactory(new PropertyValueFactory<>("Discription_task"));
         status_task.setCellValueFactory(new PropertyValueFactory<>("Status_task"));
+        id_task.setCellValueFactory(new PropertyValueFactory<>("Id_task"));
         task_tableview.getItems().setAll(ObjectManager.GetInstance().taskservice.getData());
     }
 
@@ -675,6 +779,7 @@ public class FXMLDocumentController implements Initializable {
         initTasks_Table();
         initBookingsCheckIn_Table();
         initBookingsCheckOut_Table();
-
+        tab_lock(-1);
+        ObjectManager.GetInstance().loginservice.logout();
     }
 }

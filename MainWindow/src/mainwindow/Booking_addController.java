@@ -172,7 +172,7 @@ public class Booking_addController implements Initializable {
 
     @FXML
     private void addBooking(ActionEvent event) throws SQLException {
-        int pracownik = 1;//po dodaniu logowania pojawi się tu zmienna z numerem zalogowanego pracownika
+        int pracownik = Integer.parseInt(ObjectManager.GetInstance().loginservice.employeeSessionId);//po dodaniu logowania pojawi się tu zmienna z numerem zalogowanego pracownika
         String datap = booking_datep.getValue().toString();
         String datak = booking_datek.getValue().toString();
         String komentarz = booking_comment.getText();
