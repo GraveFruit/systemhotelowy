@@ -24,7 +24,7 @@ import mainwindow.ObjectManager;
  * @author Grzesiek
  */
 public class TaskService {
-
+//wyswietalanie wszystkich zadań
     public ObservableList<Tasks> getData() {
         try {
             ObservableList<Tasks> tasks_list = FXCollections.observableArrayList();
@@ -54,7 +54,7 @@ public class TaskService {
         }
         return null;
     }
-
+//wyswietlanie zadań danego pracownika
      public ObservableList<Tasks> getDetailsData(String osoba) {
         try {
             ObservableList<Tasks> tasks_list = FXCollections.observableArrayList();
@@ -82,7 +82,7 @@ public class TaskService {
         }
         return null;
     }
-    
+     //dodawanie zadań z recepcji
     public boolean insertTask(int book, String opis) {
         int pokoj_id = 0;
         int klient_id = 0;
@@ -114,7 +114,7 @@ public class TaskService {
         }
         return true;
     }
-
+//dodawanie zadań przez manadzera, jesli pokoj pusty klient=system
     public boolean insertTask2(int book, String opis) {
         String klient_id ="";
         try {
@@ -143,7 +143,7 @@ public class TaskService {
         }
         return true;
     }
-
+ //dodawanie zadań do listy, pracownik wybierany jest ręcznie
     public boolean insertTaskWithEmployee(int pracownik) {
         int zadanie = 0;
         try {
@@ -164,7 +164,7 @@ public class TaskService {
         }
         return true;
     }
-
+    //dodawanie zadań do listy z recepcji,wybierany jest najmniej zajety pracownik
     public boolean insertList() {
         int zadanie = 0;
         try {
@@ -185,7 +185,8 @@ public class TaskService {
         }
         return true;
     }
-
+//sprawdzanie czy pokój gotowy do meldowanie(czy jest tam wykonywane jakies zadanie
+    //i czy pokoj jest zajety
     public boolean checkRoomReady(int pokoj) {
         String zadanie = "";
         String numer="";
@@ -213,7 +214,7 @@ public class TaskService {
         }
         return wynik;
     }
-
+//usuwanie zadania
     public boolean deleteTask(int numer) {
         try {
 
@@ -228,7 +229,23 @@ public class TaskService {
         }
         return true;
     }
-    
+ 
+    //usuwanie zadania z listy
+    public boolean deleteTaskFromList(int numer) {
+        try {
+
+            PreparedStatement prep = DataBase.getConnection().prepareStatement(
+                    "delete from lista where zadanie_id=?");
+            prep.setInt(1, numer);
+            prep.executeUpdate();
+
+        } catch (SQLException e) {
+            System.err.println("Błąd przy usuwaniu zadania");
+            return false;
+        }
+        return true;
+    }
+    //zmiana statusu zadania
      public boolean updateTaskStatus(int numer) {
         try {
 

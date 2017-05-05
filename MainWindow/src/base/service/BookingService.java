@@ -28,7 +28,7 @@ import mainwindow.ObjectManager;
 public class BookingService {
 
     Button edit_bookings;
-
+//wyswietlanie wszystkich rezerwacji
     public ObservableList<Bookings> getData() {
         try {
             ObservableList<Bookings> bookings_list = FXCollections.observableArrayList();
@@ -60,7 +60,7 @@ public class BookingService {
         }
         return null;
     }
-
+//wyswietlanie rezerwacji z dzisiejszego dnia
     public ObservableList<Bookings> getBookingCheckIn() {
         try {
             ObservableList<Bookings> bookingChceckin_list = FXCollections.observableArrayList();
@@ -91,7 +91,7 @@ public class BookingService {
         }
         return null;
     }
-
+//wyswietlanie zameldowanych rezerwacji
     public ObservableList<Bookings> getBookingCheckOut() {
         try {
             ObservableList<Bookings> bookingChceckin_list = FXCollections.observableArrayList();
@@ -121,7 +121,7 @@ public class BookingService {
         }
         return null;
     }
-
+//dodawanie rezerwacji
     public boolean insertBooking(String klient, int pracownik, int pokoj, String datap, String datak, String komentarz) {
         int klient_id = 0;
         try {
@@ -148,7 +148,7 @@ public class BookingService {
         }
         return true;
     }
-
+//meldowanie
     public boolean updateCheckin(int numer) {
         try {
 
@@ -163,7 +163,7 @@ public class BookingService {
         }
         return true;
     }
-
+//wymeldowywanie
     public boolean updateCheckout(int numer) {
         try {
 
@@ -179,7 +179,7 @@ public class BookingService {
         }
         return true;
     }
-
+//rezygnacja z rezerwacji
     public boolean cancelBooking(int numer) {
         try {
 
@@ -194,7 +194,7 @@ public class BookingService {
         }
         return true;
     }
-
+//przywracanie rezerwacji
     public boolean restoreBooking(int numer) {
         try {
 
@@ -209,7 +209,7 @@ public class BookingService {
         }
         return true;
     }
-
+//calkowite usuwanie rezerwacji
     public boolean deleteBooking(int numer) {
         try {
 
@@ -224,7 +224,7 @@ public class BookingService {
         }
         return true;
     }
-    
+    //przedluzanie rezerwacji
     public boolean prologBooking(int numer,String data) {
         try {
 

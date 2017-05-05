@@ -25,7 +25,7 @@ import mainwindow.FXMLDocumentController;
 public class RoomService {
 
     Button edit_rooms;
-
+//wyswietlanie pokoi
     public ObservableList<Rooms> getData() {
         try {
             ObservableList<Rooms> rooms_list = FXCollections.observableArrayList();
@@ -48,7 +48,7 @@ public class RoomService {
         }
         return null;
     }
-    
+    //wyswietlanie numerow pokoi
     public ObservableList<String> getRoomData() {
         try {
             ObservableList<String> rooms_list = FXCollections.observableArrayList();
@@ -65,7 +65,7 @@ public class RoomService {
         }
         return null;
     }
-
+//zmiana statusu pokoju
     public boolean updateRoomStatus(String numer, String status) {
         try {
 
@@ -81,7 +81,7 @@ public class RoomService {
         }
         return true;
     }
-  
+  //sprawdzanie czy pokoj jest gotowy do meldowania
       public boolean checkRoomStatus(String numer) {
        String status="";
         boolean wynik=false;

@@ -21,6 +21,8 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TreeTableColumn;
+import javafx.scene.control.TreeTableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 /**
@@ -59,8 +61,6 @@ DataBase base;
     private TableColumn<?, ?> disc_task;
     @FXML
     private TableColumn<?, ?> status_task;
-    @FXML
-    private Button change_task_status;
 
     private void initEmployeeTaskCount_Table() {
         task_employee_id.setCellValueFactory(new PropertyValueFactory<>("Id_employee"));
@@ -80,6 +80,7 @@ DataBase base;
         task_tableview.getItems().setAll(ObjectManager.GetInstance().taskservice.getDetailsData(
         Integer.toString(task_employee_tableview.getSelectionModel().getSelectedItem().getId_employee())));
     }
+    
     @FXML
     private void addTask(ActionEvent event) {
         String room = add_room.getValue();
@@ -131,6 +132,7 @@ DataBase base;
                 ObjectManager.GetInstance().roomservice.updateRoomStatus(
                         room, "0");
                 }
+              
                    initEmployeeTasks_Table();
                    initEmployeeTaskCount_Table();
 

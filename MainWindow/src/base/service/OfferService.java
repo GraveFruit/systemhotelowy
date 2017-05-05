@@ -23,7 +23,7 @@ import mainwindow.FXMLDocumentController;
  * @author Grzesiek
  */
 public class OfferService {
-
+//wyswietlanie dostepnych pokoi
     public ObservableList<Offer> getData(String typ, String stand, String datap, String datak) {
         try {
             ObservableList<Offer> offer_list = FXCollections.observableArrayList();
@@ -51,7 +51,7 @@ public class OfferService {
         }
         return null;
     }
-
+//wyswietlanie rezerwacji danych klientow
     public ObservableList<Offer> getReceptionData(String pesel) {
         int klient_id = 0;
         try {
@@ -88,7 +88,7 @@ public class OfferService {
         }
         return null;
     }
-
+//sprawdzanie mozliwosci przedluzenia rezerwacji
      public boolean getPrologData(String pokoj, String datap, String datak) {
         String standard="";
         boolean wynik=false;

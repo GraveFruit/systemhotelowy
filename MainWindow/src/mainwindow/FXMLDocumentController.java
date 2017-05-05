@@ -264,7 +264,7 @@ public class FXMLDocumentController implements Initializable {
     @FXML//podokno dodaj pracownika
     private void add_employeewindow(ActionEvent event) throws IOException {
         try {
-            Parent loader = FXMLLoader.load(getClass().getResource("Employee_add.fxml"));
+            Parent loader = FXMLLoader.load(getClass().getResource("EmployeeAdd.fxml"));
             Scene scene = new Scene(loader);
             Stage stage = new Stage();
             scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
@@ -324,7 +324,7 @@ public class FXMLDocumentController implements Initializable {
     @FXML//podokno dodawania rezerwacji
     private void add_ReceptionOfferWindow(ActionEvent event) throws IOException {
         try {
-            Parent loader = FXMLLoader.load(getClass().getResource("Booking_add.fxml"));
+            Parent loader = FXMLLoader.load(getClass().getResource("BookingAdd.fxml"));
             Scene scene = new Scene(loader);
             Stage stage = new Stage();
             scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
@@ -374,7 +374,7 @@ public class FXMLDocumentController implements Initializable {
     @FXML//podokno edycja zadań
     private void addTaskWindow(ActionEvent event) throws IOException {
         try {
-            Parent loader = FXMLLoader.load(getClass().getResource("Tasks_add.fxml"));
+            Parent loader = FXMLLoader.load(getClass().getResource("TasksAdd.fxml"));
             Scene scene = new Scene(loader);
             Stage stage = new Stage();
             scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
@@ -489,7 +489,8 @@ public class FXMLDocumentController implements Initializable {
                     && ObjectManager.GetInstance().roomservice.updateRoomStatus(
                             bookingCheckOut_tableview.getSelectionModel().getSelectedItem().getRoom_booking(), "2")
                     && ObjectManager.GetInstance().taskservice.insertTask(
-                            bookingCheckOut_tableview.getSelectionModel().getSelectedItem().getId_booking(), "sprzatanie")) {
+                            bookingCheckOut_tableview.getSelectionModel().getSelectedItem().getId_booking(), "sprzatanie")
+                    && ObjectManager.GetInstance().taskservice.insertList()) {
                 Alert alert4 = new Alert(Alert.AlertType.INFORMATION);
                 alert4.setHeaderText(null);
                 alert4.setContentText("Wymeldowano");

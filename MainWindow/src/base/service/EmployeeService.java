@@ -22,7 +22,7 @@ import mainwindow.FXMLDocumentController;
  * @author Grzesiek
  */
 public class EmployeeService {
-
+//wyswietlanie pracownikow
     public ObservableList<Employee> getData() {
         try {
             ObservableList<Employee> employee_list = FXCollections.observableArrayList();
@@ -47,7 +47,7 @@ public class EmployeeService {
         }
         return null;
     }
-
+//wyswietlanie ilosci zadan pracownikow
     public ObservableList<Employee> getTaskEmployeeData() {
         try {
             ObservableList<Employee> employee_list = FXCollections.observableArrayList();
@@ -75,7 +75,7 @@ public class EmployeeService {
         }
         return null;
     }
-
+//wybieranie pracownika o najmniejszej liczbie zadan
     public int getLazyTaskEmployee() {
         int wynik = 0;
         try {
@@ -97,7 +97,7 @@ public class EmployeeService {
         }
         return wynik;
     }
-
+//dodawanie pracownika
     public boolean insertEmployee(String imie, String nazwisko, String telefon, String pesel, String posada, String hasło) {
         int posada_nr = 0;
         try {
@@ -124,7 +124,7 @@ public class EmployeeService {
         }
         return true;
     }
-
+//edycja pracownika
     public boolean updateEmployeeData(String pesel, String telefon, String posada) {
         int posada_nr = 0;
         try {
@@ -148,7 +148,7 @@ public class EmployeeService {
         }
         return true;
     }
-
+//usuwanie pracownika
     public boolean deleteEmployee(String pesel) {
         try {
             PreparedStatement prep = DataBase.getConnection().prepareStatement(
