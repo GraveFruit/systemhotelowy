@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane id="AnchorPane" prefHeight="402.0" prefWidth="479.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mainwindow.Rooms_editController">
+   <children>
+      <AnchorPane layoutX="10.0" layoutY="10.0" minHeight="0.0" minWidth="0.0" prefHeight="536.0" prefWidth="479.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <GridPane prefHeight="419.0" prefWidth="479.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="238.0" minWidth="10.0" prefWidth="233.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="265.0" minWidth="10.0" prefWidth="246.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints maxHeight="611.0" minHeight="10.0" prefHeight="252.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="79.0" minHeight="10.0" prefHeight="59.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+               <children>
+                  <VBox prefHeight="253.0" prefWidth="246.0" spacing="50.0" GridPane.columnIndex="1">
+                     <children>
+                         
+                        <JFXComboBox fx:id="room_type" prefHeight="25.0" prefWidth="338.0" promptText="Typ" />
+                        <JFXComboBox fx:id="room_standard" prefHeight="25.0" prefWidth="338.0" promptText="Standard" />
+                        <JFXComboBox fx:id="room_status" prefHeight="25.0" prefWidth="338.0" promptText="Status" />
+                     </children>
+                     <padding>
+                        <Insets left="30.0" right="10.0" top="40.0" />
+                     </padding>
+                  </VBox>
+                  <VBox prefHeight="631.0" prefWidth="162.0" spacing="50.0">
+                     <children>
+                        <JFXTextField fx:id="room_number" alignment="CENTER" prefHeight="25.0" prefWidth="159.0" promptText="Pokój" />
+                        <JFXTextField fx:id="room_floor" alignment="CENTER" promptText="Piętro" />
+                     </children>
+                     <padding>
+                        <Insets bottom="10.0" left="30.0" right="30.0" top="40.0" />
+                     </padding>
+                  </VBox>
+                  <JFXButton onAction="#changeRoomsData" prefHeight="46.0" prefWidth="482.0" text="Edytuj pokój" GridPane.columnSpan="2" GridPane.rowIndex="1">
+                     <GridPane.margin>
+                        <Insets left="60.0" right="60.0" />
+                     </GridPane.margin>
+                  </JFXButton>
+               </children>
+            </GridPane>
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>
+

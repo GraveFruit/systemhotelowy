@@ -98,5 +98,26 @@ public class RoomService {
         }
         return !wynik;
     }
+      
+ //edycja pokoi
+ 
+      public boolean updateRoomsData(String pokoj, String typ, String standard, String status) {
+
+        try {
+           
+            PreparedStatement prep = DataBase.getConnection().prepareStatement(
+                    "Update pokoje set typ=?, standard=?, status=? where pokoj_id=?");
+            prep.setString(1, typ);
+            prep.setString(2, standard);
+            prep.setString(3, status);
+            prep.setString(4, pokoj);
+            prep.executeUpdate();
+
+        } catch (SQLException e) {
+            System.err.println("Błąd przy aktualizacji pokoju");
+            return false;
+        }
+        return true;
+    }
     
 }

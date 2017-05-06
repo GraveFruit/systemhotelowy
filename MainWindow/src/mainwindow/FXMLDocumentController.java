@@ -225,8 +225,6 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private Button show_task;
     @FXML
-    private Button change_task_status;
-    @FXML
     private TableColumn<?, ?> id_task;
 
     //inicialize windows
@@ -317,6 +315,50 @@ public class FXMLDocumentController implements Initializable {
             Alert alert1 = new Alert(Alert.AlertType.ERROR);
             alert1.setHeaderText(null);
             alert1.setContentText("Wybierz pracownika");
+            alert1.showAndWait();
+        }
+    }
+    @FXML//podokno edytuj pokoj
+    private void editRoomsWindow(ActionEvent event) throws IOException {
+        if (room_tableview.getSelectionModel().getSelectedItem() != null) {
+            if(room_tableview.getSelectionModel().getSelectedItem().getStatus_room().compareTo("0")==0){
+            try {
+                FXMLLoader loader = new FXMLLoader();
+                Parent root = loader.load(getClass().getResource("Rooms_edit.fxml").openStream());
+                Rooms_editController controller = (Rooms_editController) loader.getController();
+                controller.addRoomsData(room_tableview.getSelectionModel().getSelectedItem().getNumber_room(),
+                        room_tableview.getSelectionModel().getSelectedItem().getFloor_room(),
+                        room_tableview.getSelectionModel().getSelectedItem().getType_room(),
+                        room_tableview.getSelectionModel().getSelectedItem().getStandard_room(),
+                        room_tableview.getSelectionModel().getSelectedItem().getStatus_room());
+                Scene scene = new Scene(root);
+                Stage stage = new Stage();
+                scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
+                stage.setScene(scene);
+                stage.setTitle("Edytuj");
+                stage.initOwner(rooms_edition.getScene().getWindow());
+                stage.initModality(Modality.APPLICATION_MODAL);
+                stage.showAndWait();
+                stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+                    public void handle(WindowEvent we) {
+                        refreshRoomTable();
+                    }
+                });
+                stage.getOnCloseRequest().handle(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
+            } catch (IOException exc) {
+                System.out.print(" Error during making new window " + exc);
+            }
+            } else {
+            Alert alert1 = new Alert(Alert.AlertType.ERROR);
+            alert1.setHeaderText(null);
+            alert1.setContentText("Pokój nie jest gotowy");
+            alert1.showAndWait();
+        }
+            
+        } else {
+            Alert alert1 = new Alert(Alert.AlertType.ERROR);
+            alert1.setHeaderText(null);
+            alert1.setContentText("Wybierz pokoj");
             alert1.showAndWait();
         }
     }

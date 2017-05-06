@@ -327,7 +327,7 @@
                                                       <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                                                    </columnResizePolicy>
                                                 </TableView>
-                                                <Button fx:id="rooms_edition" mnemonicParsing="false" prefHeight="50.0" prefWidth="181.0" text="Edytuj" GridPane.columnIndex="1" />
+                                                <Button fx:id="rooms_edition" mnemonicParsing="false" onAction="#editRoomsWindow" prefHeight="50.0" prefWidth="181.0" text="Edytuj" GridPane.columnIndex="1" />
                                              </children>
                                           </GridPane>
                                        </children>
