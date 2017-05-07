@@ -95,4 +95,54 @@ public class GuestService {
         return true;
 
     }
+    
+//dodawanie goscia
+    public boolean insertGuest(String imie, String nazwisko, String telefon, String pesel) throws SQLException {
+        try{
+            PreparedStatement prep = DataBase.getConnection().prepareStatement(
+                    "Insert into goscie (imie,nazwisko,telefon,pesel) values (?,?,?,?,?)");
+            prep.setString(1, imie);
+            prep.setString(2, nazwisko);
+            prep.setString(3, telefon);
+            prep.setString(4, pesel);
+            prep.executeUpdate();
+        
+
+        } catch (SQLException e) {
+            System.err.println("Błąd przy dodawaniu goscia");
+            return false;
+        }
+        return true;
+    }
+//edycja goscia
+    public boolean updateGuestData(String pesel, String telefon) {
+        try{
+            PreparedStatement prep = DataBase.getConnection().prepareStatement(
+                    "Update klienci set tel=? where pesel=?");
+            prep.setString(1, telefon);            
+            prep.setString(2, pesel);
+            prep.executeUpdate();
+
+        } catch (SQLException e) {
+            System.err.println("Błąd przy aktualizacji goscia");
+            return false;
+        }
+        return true;
+    }
+//usuwanie pracownika
+    public boolean deleteGuest(String pesel) {
+        try {
+            PreparedStatement prep = DataBase.getConnection().prepareStatement(
+                    "Update klienci set status='-1' where pesel=?");
+            prep.setString(1, pesel);
+            prep.executeUpdate();
+
+        } catch (SQLException e) {
+            System.err.println("Błąd przy usuwaniu goscia");
+            return false;
+        }
+        return true;
+    }
+
+    
 }

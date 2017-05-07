@@ -59,6 +59,8 @@ public class FXMLDocumentController implements Initializable {
     private Button add_task;
     @FXML
     private Button add_employee;
+    @FXML
+    private Button add_guest;
 
     @FXML
     private Region region;
@@ -226,6 +228,10 @@ public class FXMLDocumentController implements Initializable {
     private Button show_task;
     @FXML
     private TableColumn<?, ?> id_task;
+    @FXML
+    private Button edit_guest;
+    @FXML
+    private Button delete_guest;
 
     //inicialize windows
     @FXML//okno informacji o aplikacji
@@ -460,6 +466,65 @@ public class FXMLDocumentController implements Initializable {
             System.out.print(" Error during making new window " + exc);
         }
     }
+    
+@FXML//podokno dodaj goscia
+    private void addGuestWindow(ActionEvent event) throws IOException {
+        try {
+            Parent loader = FXMLLoader.load(getClass().getResource("Guest_add.fxml"));
+            Scene scene = new Scene(loader);
+            Stage stage = new Stage();
+            scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
+            stage.setScene(scene);
+            stage.setTitle("Dodaj goscia");
+            stage.initOwner(add_guest.getScene().getWindow());
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.showAndWait();
+            stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+                public void handle(WindowEvent we) {
+                    refreshGuestTable();
+                }
+            });
+            stage.getOnCloseRequest().handle(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
+        } catch (IOException exc) {
+            System.out.print(" Error during making new window " + exc);
+        }
+    }
+
+    @FXML//podokno edytuj goscia
+    private void editGuestWindow(ActionEvent event) throws IOException {
+        if (guest_tableview.getSelectionModel().getSelectedItem() != null) {
+            try {
+                FXMLLoader loader = new FXMLLoader();
+                Parent root = loader.load(getClass().getResource("Guest_edit.fxml").openStream());
+                Guest_editController controller = (Guest_editController) loader.getController();
+                controller.addGuestData(guest_tableview.getSelectionModel().getSelectedItem().getName_guest(),
+                        guest_tableview.getSelectionModel().getSelectedItem().getSurname_guest(),
+                        guest_tableview.getSelectionModel().getSelectedItem().getPesel_guest(),
+                        guest_tableview.getSelectionModel().getSelectedItem().getPhone_guest());
+                Scene scene = new Scene(root);
+                Stage stage = new Stage();
+                scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
+                stage.setScene(scene);
+                stage.setTitle("Edytuj goscia");
+                stage.initOwner(edit_guest.getScene().getWindow());
+                stage.initModality(Modality.APPLICATION_MODAL);
+                stage.showAndWait();
+                stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+                    public void handle(WindowEvent we) {
+                        refreshGuestTable();
+                    }
+                });
+                stage.getOnCloseRequest().handle(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
+            } catch (IOException exc) {
+                System.out.print(" Error during making new window " + exc);
+            }
+        } else {
+            Alert alert1 = new Alert(Alert.AlertType.ERROR);
+            alert1.setHeaderText(null);
+            alert1.setContentText("Wybierz goscia");
+            alert1.showAndWait();
+        }
+    }
 
 
 //Methods
@@ -473,6 +538,21 @@ public class FXMLDocumentController implements Initializable {
             Alert alert1 = new Alert(Alert.AlertType.ERROR);
             alert1.setHeaderText(null);
             alert1.setContentText("Wybierz pracownika");
+            alert1.showAndWait();
+        }
+
+    }
+    
+    @FXML//metoda usuń goscia
+    private void cancelGuest(ActionEvent event) {
+        if (guest_tableview.getSelectionModel().getSelectedItem() != null) {
+            ObjectManager.GetInstance().guestservice.deleteGuest(
+                    guest_tableview.getSelectionModel().getSelectedItem().getPesel_guest());
+            refreshGuestTable();
+        } else {
+            Alert alert1 = new Alert(Alert.AlertType.ERROR);
+            alert1.setHeaderText(null);
+            alert1.setContentText("Wybierz goscia");
             alert1.showAndWait();
         }
 
