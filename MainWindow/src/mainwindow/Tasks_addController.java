@@ -91,6 +91,11 @@ DataBase base;
                 alert1.setContentText("Uzupełnij wszystkie dane");
                 alert1.showAndWait();
             } else {
+                if (ObjectManager.GetInstance().taskservice.checkRoomReady(
+                    Integer.parseInt(room))) {
+                    ObjectManager.GetInstance().roomservice.updateRoomStatus(
+                        room, "2");
+                    }
                 if (ObjectManager.GetInstance().taskservice.insertTask2(
                         Integer.parseInt(room), opis)
                 && ObjectManager.GetInstance().taskservice.insertTaskWithEmployee(
@@ -100,11 +105,7 @@ DataBase base;
                     alert4.setContentText("Dodano zadanie");
                     alert4.showAndWait();
                     initEmployeeTaskCount_Table();
-                    if (ObjectManager.GetInstance().taskservice.checkRoomReady(
-                    Integer.parseInt(room))) {
-                    ObjectManager.GetInstance().roomservice.updateRoomStatus(
-                        room, "2");
-                    }
+                    
 
                 } else {
                     Alert alert2 = new Alert(Alert.AlertType.ERROR);

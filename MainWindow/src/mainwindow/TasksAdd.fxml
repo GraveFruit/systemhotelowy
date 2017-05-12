@@ -28,7 +28,7 @@
             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="30.0">
                <children>
                   <JFXComboBox fx:id="add_room" labelFloat="true" prefHeight="25.0" prefWidth="405.0" promptText="Pokój" />
-                  <JFXTextField fx:id="add_comment" />
+                  <JFXTextField fx:id="add_comment" promptText="Opis" />
                   <JFXButton onAction="#addTask" prefHeight="59.0" prefWidth="119.0" text="Dodaj zadanie" />
                </children>
                <GridPane.margin>

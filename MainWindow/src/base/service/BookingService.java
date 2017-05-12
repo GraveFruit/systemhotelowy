@@ -28,7 +28,12 @@ import mainwindow.ObjectManager;
 public class BookingService {
 
     Button edit_bookings;
-//wyswietlanie wszystkich rezerwacji
+
+
+    /**
+     *method takes informactions about bookings from database
+     * @return ObservableList 
+     */
     public ObservableList<Bookings> getData() {
         try {
             ObservableList<Bookings> bookings_list = FXCollections.observableArrayList();
@@ -60,7 +65,12 @@ public class BookingService {
         }
         return null;
     }
-//wyswietlanie rezerwacji z dzisiejszego dnia
+
+
+    /**
+     *method takes informaction about current booking
+     * @return ObservableList
+     */
     public ObservableList<Bookings> getBookingCheckIn() {
         try {
             ObservableList<Bookings> bookingChceckin_list = FXCollections.observableArrayList();
@@ -91,7 +101,11 @@ public class BookingService {
         }
         return null;
     }
-//wyswietlanie zameldowanych rezerwacji
+
+    /**
+     *method takes informaction about checkin reservations
+     * @return ObservableList
+     */
     public ObservableList<Bookings> getBookingCheckOut() {
         try {
             ObservableList<Bookings> bookingChceckin_list = FXCollections.observableArrayList();
@@ -122,6 +136,17 @@ public class BookingService {
         return null;
     }
 //dodawanie rezerwacji
+
+    /**
+     * method inserts new booking into database
+     * @param klient guest's "pesel"
+     * @param pracownik employee id number
+     * @param pokoj room number
+     * @param datap checkin date
+     * @param datak checkout date
+     * @param komentarz guest wishes during stay
+     * @return boolean walue
+     */
     public boolean insertBooking(String klient, int pracownik, int pokoj, String datap, String datak, String komentarz) {
         int klient_id = 0;
         try {
@@ -149,6 +174,12 @@ public class BookingService {
         return true;
     }
 //meldowanie
+
+    /**
+     *metod changes booking status on checkin
+     * @param numer booking's number
+     * @return boolean value
+     */
     public boolean updateCheckin(int numer) {
         try {
 
@@ -164,6 +195,12 @@ public class BookingService {
         return true;
     }
 //wymeldowywanie
+
+    /**
+     *method changes booking's status on checkout
+     * @param numer booking's number
+     * @return boolean value
+     */
     public boolean updateCheckout(int numer) {
         try {
 
@@ -180,6 +217,12 @@ public class BookingService {
         return true;
     }
 //rezygnacja z rezerwacji
+
+    /**
+     *method change booking's status on cancel
+     * @param numer booking's number
+     * @return boolean value
+     */
     public boolean cancelBooking(int numer) {
         try {
 
@@ -195,6 +238,12 @@ public class BookingService {
         return true;
     }
 //przywracanie rezerwacji
+
+    /**
+     *method restore booking ( it changes booking's status on 1)
+     * @param numer booking's number
+     * @return boolean value
+     */
     public boolean restoreBooking(int numer) {
         try {
 
@@ -210,6 +259,12 @@ public class BookingService {
         return true;
     }
 //calkowite usuwanie rezerwacji
+
+    /**
+     *methods deletes bookings from database
+     * @param numer booking's number
+     * @return boolean value
+     */
     public boolean deleteBooking(int numer) {
         try {
 
@@ -225,6 +280,13 @@ public class BookingService {
         return true;
     }
     //przedluzanie rezerwacji
+
+    /**
+     *methods prologs booking
+     * @param numer booking's number
+     * @param data new checkout date
+     * @return boolean value
+     */
     public boolean prologBooking(int numer,String data) {
         try {
 

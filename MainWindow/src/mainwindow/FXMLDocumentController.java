@@ -324,43 +324,44 @@ public class FXMLDocumentController implements Initializable {
             alert1.showAndWait();
         }
     }
+
     @FXML//podokno edytuj pokoj
     private void editRoomsWindow(ActionEvent event) throws IOException {
         if (room_tableview.getSelectionModel().getSelectedItem() != null) {
-            if(room_tableview.getSelectionModel().getSelectedItem().getStatus_room().compareTo("0")==0){
-            try {
-                FXMLLoader loader = new FXMLLoader();
-                Parent root = loader.load(getClass().getResource("Rooms_edit.fxml").openStream());
-                Rooms_editController controller = (Rooms_editController) loader.getController();
-                controller.addRoomsData(room_tableview.getSelectionModel().getSelectedItem().getNumber_room(),
-                        room_tableview.getSelectionModel().getSelectedItem().getFloor_room(),
-                        room_tableview.getSelectionModel().getSelectedItem().getType_room(),
-                        room_tableview.getSelectionModel().getSelectedItem().getStandard_room(),
-                        room_tableview.getSelectionModel().getSelectedItem().getStatus_room());
-                Scene scene = new Scene(root);
-                Stage stage = new Stage();
-                scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
-                stage.setScene(scene);
-                stage.setTitle("Edytuj");
-                stage.initOwner(rooms_edition.getScene().getWindow());
-                stage.initModality(Modality.APPLICATION_MODAL);
-                stage.showAndWait();
-                stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-                    public void handle(WindowEvent we) {
-                        refreshRoomTable();
-                    }
-                });
-                stage.getOnCloseRequest().handle(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
-            } catch (IOException exc) {
-                System.out.print(" Error during making new window " + exc);
-            }
+            if (room_tableview.getSelectionModel().getSelectedItem().getStatus_room().compareTo("0") == 0) {
+                try {
+                    FXMLLoader loader = new FXMLLoader();
+                    Parent root = loader.load(getClass().getResource("Rooms_edit.fxml").openStream());
+                    Rooms_editController controller = (Rooms_editController) loader.getController();
+                    controller.addRoomsData(room_tableview.getSelectionModel().getSelectedItem().getNumber_room(),
+                            room_tableview.getSelectionModel().getSelectedItem().getFloor_room(),
+                            room_tableview.getSelectionModel().getSelectedItem().getType_room(),
+                            room_tableview.getSelectionModel().getSelectedItem().getStandard_room(),
+                            room_tableview.getSelectionModel().getSelectedItem().getStatus_room());
+                    Scene scene = new Scene(root);
+                    Stage stage = new Stage();
+                    scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
+                    stage.setScene(scene);
+                    stage.setTitle("Edytuj");
+                    stage.initOwner(rooms_edition.getScene().getWindow());
+                    stage.initModality(Modality.APPLICATION_MODAL);
+                    stage.showAndWait();
+                    stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+                        public void handle(WindowEvent we) {
+                            refreshRoomTable();
+                        }
+                    });
+                    stage.getOnCloseRequest().handle(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
+                } catch (IOException exc) {
+                    System.out.print(" Error during making new window " + exc);
+                }
             } else {
-            Alert alert1 = new Alert(Alert.AlertType.ERROR);
-            alert1.setHeaderText(null);
-            alert1.setContentText("Pokój nie jest gotowy");
-            alert1.showAndWait();
-        }
-            
+                Alert alert1 = new Alert(Alert.AlertType.ERROR);
+                alert1.setHeaderText(null);
+                alert1.setContentText("Pokój nie jest gotowy");
+                alert1.showAndWait();
+            }
+
         } else {
             Alert alert1 = new Alert(Alert.AlertType.ERROR);
             alert1.setHeaderText(null);
@@ -442,7 +443,7 @@ public class FXMLDocumentController implements Initializable {
             System.out.print(" Error during making new window " + exc);
         }
     }
-    
+
     @FXML//podokno wysietlania zadań dla pracowników
     private void showTaskWindow(ActionEvent event) throws IOException {
         try {
@@ -466,8 +467,8 @@ public class FXMLDocumentController implements Initializable {
             System.out.print(" Error during making new window " + exc);
         }
     }
-    
-@FXML//podokno dodaj goscia
+
+    @FXML//podokno dodaj goscia
     private void addGuestWindow(ActionEvent event) throws IOException {
         try {
             Parent loader = FXMLLoader.load(getClass().getResource("Guest_add.fxml"));
@@ -526,7 +527,6 @@ public class FXMLDocumentController implements Initializable {
         }
     }
 
-
 //Methods
     @FXML//metoda usuń pracownika
     private void cancelEmployee(ActionEvent event) {
@@ -542,7 +542,7 @@ public class FXMLDocumentController implements Initializable {
         }
 
     }
-    
+
     @FXML//metoda usuń goscia
     private void cancelGuest(ActionEvent event) {
         if (guest_tableview.getSelectionModel().getSelectedItem() != null) {
@@ -647,7 +647,7 @@ public class FXMLDocumentController implements Initializable {
                 alert4.setContentText("Dodano zadanie");
                 alert4.showAndWait();
                 refreshTaskTable();
-
+ 
             } else {
                 Alert alert2 = new Alert(Alert.AlertType.ERROR);
                 alert2.setHeaderText(null);
@@ -686,10 +686,11 @@ public class FXMLDocumentController implements Initializable {
 
     @FXML//przedłużanie rezerwacji
     private void prologBooking(ActionEvent event) throws SQLException {
-        if (bookingCheckOut_tableview.getSelectionModel().getSelectedItem() == null) {
+        if (bookingCheckOut_tableview.getSelectionModel().getSelectedItem() == null || prolog_date.getValue().toString()==null) {
+            System.out.println(prolog_date.getValue().toString());
             Alert alert1 = new Alert(Alert.AlertType.ERROR);
             alert1.setHeaderText(null);
-            alert1.setContentText("Wybierz pokój");
+            alert1.setContentText("Wybierz pokój i datę");
             alert1.showAndWait();
         } else {
             if (ObjectManager.GetInstance().offerservice.getPrologData(
@@ -717,20 +718,20 @@ public class FXMLDocumentController implements Initializable {
     @FXML//metoda usuń zadanie
     private void cancelTask(ActionEvent event) {
         if (task_tableview.getSelectionModel().getSelectedItem() != null) {
-            String room= task_tableview.getSelectionModel().getSelectedItem().getRoom_task();
-            if(ObjectManager.GetInstance().taskservice.deleteTask(
-                    task_tableview.getSelectionModel().getSelectedItem().getId_task())){
-            Alert alert1 = new Alert(Alert.AlertType.INFORMATION);
-            alert1.setHeaderText(null);
-            alert1.setContentText("Usunięto zadanie");
-            alert1.showAndWait();
-            refreshTaskTable();
-            if (ObjectManager.GetInstance().taskservice.checkRoomReady(
-                    Integer.parseInt(room))) {
-                ObjectManager.GetInstance().roomservice.updateRoomStatus(
-                        room, "0");
-                refreshRoomTable();
-            }
+            String room = task_tableview.getSelectionModel().getSelectedItem().getRoom_task();
+            if (ObjectManager.GetInstance().taskservice.deleteTask(
+                    task_tableview.getSelectionModel().getSelectedItem().getId_task())) {
+                Alert alert1 = new Alert(Alert.AlertType.INFORMATION);
+                alert1.setHeaderText(null);
+                alert1.setContentText("Usunięto zadanie");
+                alert1.showAndWait();
+                refreshTaskTable();
+                if (ObjectManager.GetInstance().taskservice.checkRoomReady(
+                        Integer.parseInt(room))) {
+                    ObjectManager.GetInstance().roomservice.updateRoomStatus(
+                            room, "0");
+                    refreshRoomTable();
+                }
             }
         } else {
             Alert alert1 = new Alert(Alert.AlertType.ERROR);
@@ -858,14 +859,21 @@ public class FXMLDocumentController implements Initializable {
         } catch (SQLException e) {
             loginprompt.setText("zly login lub haslo");
         }
+        if (ObjectManager.GetInstance().loginservice.permissions == null) {
+            loginprompt.setText("zly login lub haslo");
+        } else {
+            int permission_level = Integer.parseInt(ObjectManager.GetInstance().loginservice.permissions);
+            tab_lock(permission_level);
+            loginprompt.setText("");
 
-        int permission_level = Integer.parseInt(ObjectManager.GetInstance().loginservice.permissions);
-        tab_lock(permission_level);
+            ObjectManager.GetInstance().employeeservice.changeEmployeeStatus(ObjectManager.GetInstance().loginservice.employeeSessionId);
+        }
     }
 
     public void tab_lock(int permission_level) {
         switch (permission_level) {
             case 0:
+                edit_employee.setDisable(false);
             case 1:
                 tab_reports.setDisable(false);
                 tab_employee.setDisable(false);
@@ -889,12 +897,15 @@ public class FXMLDocumentController implements Initializable {
                 tab_tasks.setDisable(true);
                 tab_login.setDisable(false);
                 logout_button.setDisable(true);
+                edit_employee.setDisable(true);
         }
     }
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         base = DataBase.getInstance();
+        //ObjectManager.GetInstance().loginservice.makeStartBase();
+        ObjectManager.GetInstance().loginservice.makeStartQuery();
         initRooms_Table();
         initEmployee_Table();
         initBookings_Table();
@@ -902,6 +913,14 @@ public class FXMLDocumentController implements Initializable {
         initTasks_Table();
         initBookingsCheckIn_Table();
         initBookingsCheckOut_Table();
+        bookingCheckOut_tableview.getSelectionModel().selectedItemProperty().
+                addListener((obs, oldSelection, newSelection) -> {
+                    if (newSelection != null) {
+                        String comment = bookingCheckOut_tableview.getSelectionModel().getSelectedItem().getComment_booking();
+                        recepction_taskComment.setText(comment);
+                    }
+                });
+
         tab_lock(-1);
         ObjectManager.GetInstance().loginservice.logout();
     }

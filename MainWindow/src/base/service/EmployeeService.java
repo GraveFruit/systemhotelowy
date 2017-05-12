@@ -23,6 +23,11 @@ import mainwindow.FXMLDocumentController;
  */
 public class EmployeeService {
 //wyswietlanie pracownikow
+
+    /**
+     * method takes data about employee from database
+     * @return ObservableList
+     */
     public ObservableList<Employee> getData() {
         try {
             ObservableList<Employee> employee_list = FXCollections.observableArrayList();
@@ -48,6 +53,11 @@ public class EmployeeService {
         return null;
     }
 //wyswietlanie ilosci zadan pracownikow
+
+    /**
+     * method takes employee's tasks data from database
+     * @return ObservableList
+     */
     public ObservableList<Employee> getTaskEmployeeData() {
         try {
             ObservableList<Employee> employee_list = FXCollections.observableArrayList();
@@ -76,6 +86,11 @@ public class EmployeeService {
         return null;
     }
 //wybieranie pracownika o najmniejszej liczbie zadan
+
+    /**
+     *methodes choose employee who has currently the lowest number of tasks 
+     * @return int  employee id numer
+     */
     public int getLazyTaskEmployee() {
         int wynik = 0;
         try {
@@ -98,6 +113,17 @@ public class EmployeeService {
         return wynik;
     }
 //dodawanie pracownika
+
+    /**
+     *method inserts new employee into database
+     * @param imie employee's name
+     * @param nazwisko employee's surname
+     * @param telefon employee's phone number
+     * @param pesel employee's "pesel"
+     * @param posada employee's position
+     * @param hasło employee's acount password
+     * @return boolean value
+     */
     public boolean insertEmployee(String imie, String nazwisko, String telefon, String pesel, String posada, String hasło) {
         int posada_nr = 0;
         try {
@@ -124,7 +150,16 @@ public class EmployeeService {
         }
         return true;
     }
+    
 //edycja pracownika
+
+    /**
+     *method edits employee data
+     * @param pesel employee's "pesel"
+     * @param telefon employee's phone number
+     * @param posada employee's position
+     * @return boolean value
+     */
     public boolean updateEmployeeData(String pesel, String telefon, String posada) {
         int posada_nr = 0;
         try {
@@ -148,7 +183,14 @@ public class EmployeeService {
         }
         return true;
     }
+    
 //usuwanie pracownika
+
+    /**
+     *method deletes employee ( set status -1)
+     * @param pesel employee's 'pesel"
+     * @return boolean value
+     */
     public boolean deleteEmployee(String pesel) {
         try {
             PreparedStatement prep = DataBase.getConnection().prepareStatement(
@@ -163,4 +205,48 @@ public class EmployeeService {
         return true;
     }
 
+    //zmiana statusu pracownika
+
+    /**
+     *method changes employee's status
+     * @param id employee's "pesel"
+     * @return boolean value
+     */
+    public boolean changeEmployeeStatus(String id) {
+        try {
+            PreparedStatement prep = DataBase.getConnection().prepareStatement(
+                    "Update pracownicy set status='1' where pesel=?");
+            prep.setString(1, id);
+            prep.executeUpdate();
+
+        } catch (SQLException e) {
+            System.err.println("Błąd przy usuwaniu pracownika");
+            return false;
+        }
+        return true;
+    }
+    
+    //edycja hasła pracownika
+
+    /**
+     *method changes employee's password
+     * @param pass new employee's account password
+     * @param pesel employee's "pesel"
+     * @return boolean value
+     */
+    public boolean updateEmployeePassword(String pass,String pesel ) {
+        try {
+             PreparedStatement prep = DataBase.getConnection().prepareStatement(
+                    "Update pracownicy set haslo=? where pesel=?");
+            prep.setString(1,pass );
+            prep.setString(2, pesel);
+            prep.executeUpdate();
+
+        } catch (SQLException e) {
+            System.err.println("Błąd przy aktualizacji pracownika");
+            return false;
+        }
+        return true;
+    }
+    
 }

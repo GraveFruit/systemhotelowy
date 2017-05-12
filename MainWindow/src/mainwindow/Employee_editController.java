@@ -41,7 +41,11 @@ public class Employee_editController implements Initializable {
     private JFXTextField pesel;
 
     ObservableList<String> position_list = FXCollections.observableArrayList("Admin", "Menedżer", "Recepcja", "Obsługa");
-    
+    @FXML
+    private JFXPasswordField new_password;
+    @FXML
+    private JFXPasswordField confirmed_new_password;
+
     @FXML
     private void changeEmployeeData(ActionEvent event) throws SQLException {
         String phone_emp = phone.getText();
@@ -68,7 +72,39 @@ public class Employee_editController implements Initializable {
 
     }
 
-     void addEmployeeData(String name2, String surname2, String pesel2, String number, String profession) {
+    @FXML
+    private void changeEmployeePassword(ActionEvent event) throws SQLException {
+        String pass1 = new_password.getText();
+        String pass2 = confirmed_new_password.getText();
+        String pesel1 = pesel.getText();
+        if (pass1.isEmpty() || pesel1.isEmpty()) {
+            Alert alert1 = new Alert(Alert.AlertType.ERROR);
+            alert1.setHeaderText(null);
+            alert1.setContentText("Wypełnij wszystkie pola");
+            alert1.showAndWait();
+        }
+        else if (pass1.compareTo(pass2) != 0) {
+            Alert alert1 = new Alert(Alert.AlertType.ERROR);
+            alert1.setHeaderText(null);
+            alert1.setContentText("Różne hasła");
+            alert1.showAndWait();
+        } else {
+            if (ObjectManager.GetInstance().employeeservice.updateEmployeePassword(pass2, pesel1)) {
+                Alert alert4 = new Alert(Alert.AlertType.INFORMATION);
+                alert4.setHeaderText(null);
+                alert4.setContentText("Akutalizowano hasło pracownika");
+                alert4.showAndWait();
+            } else {
+                Alert alert2 = new Alert(Alert.AlertType.ERROR);
+                alert2.setHeaderText(null);
+                alert2.setContentText("Błąd przy akutalizacji hasła pracownika");
+                alert2.showAndWait();
+            }
+        }
+
+    }
+
+    void addEmployeeData(String name2, String surname2, String pesel2, String number, String profession) {
         name.setText(name2);
         surname.setText(surname2);
         pesel.setText(pesel2);
