@@ -1,16 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXTextArea?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="300.0" prefWidth="300.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.111" fx:controller="mainwindow.IconsController">
+<AnchorPane id="AnchorPane" prefHeight="300.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mainwindow.IconsController">
    <children>
-      <Label layoutX="40.0" layoutY="106.0" text="Info o hotelu">
+      <Label layoutX="25.0" layoutY="14.0" prefHeight="51.0" prefWidth="320.0" text="Informacje o hotelu">
          <font>
             <Font size="35.0" />
          </font>
       </Label>
+      <JFXTextArea layoutX="9.0" layoutY="66.0" prefHeight="234.0" prefWidth="353.0" text="Nazwa hotelu: HotelMaster 2000          Adres: Ulica Słoneczna 5, 26-607 Radom                                                      Ilość pokoi: 20                           Rezerwację proszę dokonać na miejscu, albo skontaktuj się telefonicznie z naszą recepcją pod numerem: 678-908-567.">
+         <font>
+            <Font size="19.0" />
+         </font>
+      </JFXTextArea>
    </children>
 </AnchorPane>
