@@ -25,6 +25,11 @@ import mainwindow.ObjectManager;
  */
 public class TaskService {
 //wyswietalanie wszystkich zadań
+
+    /**
+     *method gets data about tasks from database
+     * @return ObservableList contains query result
+     */
     public ObservableList<Tasks> getData() {
         try {
             ObservableList<Tasks> tasks_list = FXCollections.observableArrayList();
@@ -55,6 +60,12 @@ public class TaskService {
         return null;
     }
 //wyswietlanie zadań danego pracownika
+
+    /**
+     *methods gets data about selected employee's tasks from database
+     * @param osoba employee's id
+     * @return ObservableList contains query result
+     */
      public ObservableList<Tasks> getDetailsData(String osoba) {
         try {
             ObservableList<Tasks> tasks_list = FXCollections.observableArrayList();
@@ -83,6 +94,13 @@ public class TaskService {
         return null;
     }
      //dodawanie zadań z recepcji
+
+    /**
+     * method adds new task from reception into database
+     * @param book booking id
+     * @param opis task description
+     * @return true if success
+     */
     public boolean insertTask(int book, String opis) {
         int pokoj_id = 0;
         int klient_id = 0;
@@ -115,6 +133,13 @@ public class TaskService {
         return true;
     }
 //dodawanie zadań przez manadzera, jesli pokoj pusty klient=system
+
+    /**
+     *method adds new manager task into database
+     * @param book booking id
+     * @param opis task description
+     * @return true if success
+     */
     public boolean insertTask2(int book, String opis) {
         String klient_id ="";
         try {
@@ -144,6 +169,12 @@ public class TaskService {
         return true;
     }
  //dodawanie zadań do listy, pracownik wybierany jest ręcznie
+
+    /**
+     *methods adds task with employee(tasks from manager)
+     * @param pracownik pracownik id
+     * @return true if success
+     */
     public boolean insertTaskWithEmployee(int pracownik) {
         int zadanie = 0;
         try {
@@ -165,6 +196,11 @@ public class TaskService {
         return true;
     }
     //dodawanie zadań do listy z recepcji,wybierany jest najmniej zajety pracownik
+
+    /**
+     *method adds task on the list
+     * @return true if success
+     */
     public boolean insertList() {
         int zadanie = 0;
         try {
@@ -187,6 +223,12 @@ public class TaskService {
     }
 //sprawdzanie czy pokój gotowy do meldowanie(czy jest tam wykonywane jakies zadanie
     //i czy pokoj jest zajety
+
+    /**
+     *method checks rooms preparation (status=0)
+     * @param pokoj room number
+     * @return true if success
+     */
     public boolean checkRoomReady(int pokoj) {
         String zadanie = "";
         String numer="";
@@ -215,6 +257,12 @@ public class TaskService {
         return wynik;
     }
 //usuwanie zadania
+
+    /**
+     *method deletes task
+     * @param numer room number
+     * @return
+     */
     public boolean deleteTask(int numer) {
         try {
 
@@ -231,6 +279,12 @@ public class TaskService {
     }
  
     //usuwanie zadania z listy
+
+    /**
+     *method deletes task from list
+     * @param numer room number
+     * @return true if success
+     */
     public boolean deleteTaskFromList(int numer) {
         try {
 
@@ -246,6 +300,12 @@ public class TaskService {
         return true;
     }
     //zmiana statusu zadania
+
+    /**
+     *method changes task details
+     * @param numer room number
+     * @return true if success
+     */
      public boolean updateTaskStatus(int numer) {
         try {
 

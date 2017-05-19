@@ -25,8 +25,8 @@ public class EmployeeService {
 //wyswietlanie pracownikow
 
     /**
-     * method takes data about employee from database
-     * @return ObservableList
+     * method gets data about employee from database
+     * @return ObservableList contains query result
      */
     public ObservableList<Employee> getData() {
         try {
@@ -55,8 +55,8 @@ public class EmployeeService {
 //wyswietlanie ilosci zadan pracownikow
 
     /**
-     * method takes employee's tasks data from database
-     * @return ObservableList
+     * method gets employee's tasks data from database
+     * @return ObservableList contains query result
      */
     public ObservableList<Employee> getTaskEmployeeData() {
         try {
@@ -89,7 +89,7 @@ public class EmployeeService {
 
     /**
      *methodes choose employee who has currently the lowest number of tasks 
-     * @return int  employee id numer
+     * @return  employee id numer
      */
     public int getLazyTaskEmployee() {
         int wynik = 0;
@@ -122,7 +122,7 @@ public class EmployeeService {
      * @param pesel employee's "pesel"
      * @param posada employee's position
      * @param hasło employee's acount password
-     * @return boolean value
+     * @return  true if success
      */
     public boolean insertEmployee(String imie, String nazwisko, String telefon, String pesel, String posada, String hasło) {
         int posada_nr = 0;
@@ -158,7 +158,7 @@ public class EmployeeService {
      * @param pesel employee's "pesel"
      * @param telefon employee's phone number
      * @param posada employee's position
-     * @return boolean value
+     * @return  true if success
      */
     public boolean updateEmployeeData(String pesel, String telefon, String posada) {
         int posada_nr = 0;
@@ -189,7 +189,7 @@ public class EmployeeService {
     /**
      *method deletes employee ( set status -1)
      * @param pesel employee's 'pesel"
-     * @return boolean value
+     * @return true if success
      */
     public boolean deleteEmployee(String pesel) {
         try {
@@ -210,7 +210,7 @@ public class EmployeeService {
     /**
      *method changes employee's status
      * @param id employee's "pesel"
-     * @return boolean value
+     * @return  true if success
      */
     public boolean changeEmployeeStatus(String id) {
         try {
@@ -232,7 +232,7 @@ public class EmployeeService {
      *method changes employee's password
      * @param pass new employee's account password
      * @param pesel employee's "pesel"
-     * @return boolean value
+     * @return  true if success
      */
     public boolean updateEmployeePassword(String pass,String pesel ) {
         try {

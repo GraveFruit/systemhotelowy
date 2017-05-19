@@ -17,6 +17,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import mainwindow.FXMLDocumentController;
 import mainwindow.ObjectManager;
@@ -31,8 +32,8 @@ public class BookingService {
 
 
     /**
-     *method takes informactions about bookings from database
-     * @return ObservableList 
+     *method gets informactions about bookings from database
+     * @return ObservableList contains query result
      */
     public ObservableList<Bookings> getData() {
         try {
@@ -68,8 +69,8 @@ public class BookingService {
 
 
     /**
-     *method takes informaction about current booking
-     * @return ObservableList
+     *method gets informaction about current booking
+     * @return ObservableList contains query result
      */
     public ObservableList<Bookings> getBookingCheckIn() {
         try {
@@ -103,8 +104,8 @@ public class BookingService {
     }
 
     /**
-     *method takes informaction about checkin reservations
-     * @return ObservableList
+     *method gets informaction about checkin reservations
+     * @return ObservableList contains query result
      */
     public ObservableList<Bookings> getBookingCheckOut() {
         try {
@@ -145,7 +146,7 @@ public class BookingService {
      * @param datap checkin date
      * @param datak checkout date
      * @param komentarz guest wishes during stay
-     * @return boolean walue
+     * @return true if success
      */
     public boolean insertBooking(String klient, int pracownik, int pokoj, String datap, String datak, String komentarz) {
         int klient_id = 0;
@@ -178,7 +179,7 @@ public class BookingService {
     /**
      *metod changes booking status on checkin
      * @param numer booking's number
-     * @return boolean value
+     * @return  true if success
      */
     public boolean updateCheckin(int numer) {
         try {
@@ -199,7 +200,7 @@ public class BookingService {
     /**
      *method changes booking's status on checkout
      * @param numer booking's number
-     * @return boolean value
+     * @return  true if success
      */
     public boolean updateCheckout(int numer) {
         try {
@@ -221,7 +222,7 @@ public class BookingService {
     /**
      *method change booking's status on cancel
      * @param numer booking's number
-     * @return boolean value
+     * @return  true if success
      */
     public boolean cancelBooking(int numer) {
         try {
@@ -242,7 +243,7 @@ public class BookingService {
     /**
      *method restore booking ( it changes booking's status on 1)
      * @param numer booking's number
-     * @return boolean value
+     * @return  true if success
      */
     public boolean restoreBooking(int numer) {
         try {
@@ -263,7 +264,7 @@ public class BookingService {
     /**
      *methods deletes bookings from database
      * @param numer booking's number
-     * @return boolean value
+     * @return  true if success
      */
     public boolean deleteBooking(int numer) {
         try {
@@ -285,7 +286,7 @@ public class BookingService {
      *methods prologs booking
      * @param numer booking's number
      * @param data new checkout date
-     * @return boolean value
+     * @return  true if success
      */
     public boolean prologBooking(int numer,String data) {
         try {

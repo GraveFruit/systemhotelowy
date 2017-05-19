@@ -1,4 +1,4 @@
- /*
+/*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -7,6 +7,7 @@ package mainwindow;
 
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDatePicker;
+import hotel.base.Bookings;
 import hotel.base.DataBase;
 import hotel.base.Guests;
 import hotel.base.Offer;
@@ -97,16 +98,32 @@ public class Booking_addController implements Initializable {
     @FXML
     private Label booking_label2;
 
+    private  Guests clientTableSelected(){
+        return client_tableview.getSelectionModel().getSelectedItem();
+    }
+    private  Offer bookingTableSelected(){
+        return booking_tableview.getSelectionModel().getSelectedItem();
+    }
+    public void getAlertWindow(String alert) {
+        Alert alert1 = new Alert(Alert.AlertType.ERROR);
+        alert1.setHeaderText(null);
+        alert1.setContentText(alert);
+        alert1.showAndWait();
+    }
+
     private void initGuestsBooking_Table() {
+        String clientName = client_name.getText();
+        String clientSurname = client_surname.getText();
+        String clientPesel = client_pesel.getText();
+        String clientPhone = client_phone.getText();
         guest_name.setCellValueFactory(new PropertyValueFactory<>("Name_guest"));
         guest_surname.setCellValueFactory(new PropertyValueFactory<>("Surname_guest"));
         guest_pesel.setCellValueFactory(new PropertyValueFactory<>("Pesel_guest"));
         guest_phone.setCellValueFactory(new PropertyValueFactory<>("Phone_guest"));
         client_tableview.getItems().setAll(ObjectManager.GetInstance().guestservice.getGuest_Data(
-                client_name.getText(), client_surname.getText(),
-                client_pesel.getText(), client_phone.getText()));
-
+                clientName, clientSurname, clientPesel, clientPhone));
     }
+    
 
     @FXML//dodawanie klienta
     private void addClient(ActionEvent event) throws SQLException {
@@ -116,31 +133,19 @@ public class Booking_addController implements Initializable {
         String pesel_c = client_pesel.getText();
 
         if (name_c.isEmpty() || surname_c.isEmpty() || phone_c.isEmpty() || pesel_c.isEmpty()) {
-            Alert alert1 = new Alert(Alert.AlertType.ERROR);
-            alert1.setHeaderText(null);
-            alert1.setContentText("Wypełnij wszystkie pola");
-            alert1.showAndWait();
+            getAlertWindow("Wypełnij wszystkie pola");
         } else if (!name_c.matches("^[\\p{L} .'-]+$") || !surname_c.matches("^[\\p{L} .'-]+$")) {
-            Alert alert2 = new Alert(Alert.AlertType.ERROR);
-            alert2.setHeaderText(null);
-            alert2.setContentText("Błędne imię lub nazwisko");
-            alert2.showAndWait();
+            getAlertWindow("Błędne imię lub nazwisko");
         } else if (!pesel_c.matches("[0-9]{11}")) {
-            Alert alert3 = new Alert(Alert.AlertType.ERROR);
-            alert3.setHeaderText(null);
-            alert3.setContentText("Błędny pesel");
-            alert3.showAndWait();
+            getAlertWindow("Błędny pesel");
         } else if (!phone_c.matches("^[0-9]{7,15}$")) {
-            Alert alert3 = new Alert(Alert.AlertType.ERROR);
-            alert3.setHeaderText(null);
-            alert3.setContentText("Błędny telefon");
-            alert3.showAndWait();
+            getAlertWindow("Błędny telefon");
         } else {
             if (ObjectManager.GetInstance().guestservice.insertClient(name_c, surname_c, phone_c, pesel_c)) {
-                Alert alert4 = new Alert(Alert.AlertType.INFORMATION);
-                alert4.setHeaderText(null);
-                alert4.setContentText("Dodano klienta");
-                alert4.showAndWait();
+                Alert alert1 = new Alert(Alert.AlertType.INFORMATION);
+                alert1.setHeaderText(null);
+                alert1.setContentText("Dodano klienta");
+                alert1.showAndWait();
                 initGuestsBooking_Table();
                 client_name.clear();
                 client_surname.clear();
@@ -149,9 +154,7 @@ public class Booking_addController implements Initializable {
 
             } else {
                 Alert alert2 = new Alert(Alert.AlertType.ERROR);
-                alert2.setHeaderText(null);
-                alert2.setContentText("Błąd przy dodawaniu klienta");
-                alert2.showAndWait();
+                getAlertWindow("Błąd przy dodawaniu klienta");
             }
         }
     }
@@ -172,33 +175,23 @@ public class Booking_addController implements Initializable {
 
     @FXML
     private void addBooking(ActionEvent event) throws SQLException {
-        int pracownik = Integer.parseInt(ObjectManager.GetInstance().loginservice.employeeSessionId);//po dodaniu logowania pojawi się tu zmienna z numerem zalogowanego pracownika
+        int pracownik = Integer.parseInt(ObjectManager.GetInstance().loginservice.employeeSessionId);
         String datap = booking_datep.getValue().toString();
         String datak = booking_datek.getValue().toString();
         String komentarz = booking_comment.getText();
-        if (client_tableview.getSelectionModel().getSelectedItem() == null || booking_tableview.getSelectionModel().getSelectedItem() == null) {
-            Alert alert1 = new Alert(Alert.AlertType.ERROR);
-            alert1.setHeaderText(null);
-            alert1.setContentText("Wybierz gościa i pokój");
-            alert1.showAndWait();
-            return;
+        if (clientTableSelected() == null || bookingTableSelected() == null) {
+            getAlertWindow("Wybierz gościa i pokój");
         } else {
-            String klient = client_tableview.getSelectionModel().getSelectedItem().getPesel_guest();
-            int pokoj = booking_tableview.getSelectionModel().getSelectedItem().getNumber_offer();
+            String klient = clientTableSelected().getPesel_guest();
+            int pokoj = bookingTableSelected().getNumber_offer();
             if (ObjectManager.GetInstance().bookingservice.insertBooking(klient, pracownik, pokoj, datap, datak, komentarz)) {
-                Alert alert4 = new Alert(Alert.AlertType.INFORMATION);
-                alert4.setHeaderText(null);
-                alert4.setContentText("Dodano rezerwację");
-                alert4.showAndWait();
+                getAlertWindow("Dodano rezerwację");
                 booking_comment.clear();
-                if (booking_tableview.getSelectionModel().getSelectedItem() != null) {
-                    booking_tableview.getItems().remove(booking_tableview.getSelectionModel().getSelectedItem());
+                if (bookingTableSelected()!= null) {
+                    booking_tableview.getItems().remove(bookingTableSelected());
                 }
             } else {
-                Alert alert2 = new Alert(Alert.AlertType.ERROR);
-                alert2.setHeaderText(null);
-                alert2.setContentText("Błąd przy dodawaniu rezerwacji");
-                alert2.showAndWait();
+                getAlertWindow("Błąd przy dodawaniu rezerwacji");
             }
         }
 
@@ -215,8 +208,7 @@ public class Booking_addController implements Initializable {
                 addListener((obs, oldSelection, newSelection) -> {
                     if (newSelection != null) {
                         booking_label2.setText("is booking room "
-                                + booking_tableview.getSelectionModel().
-                                        getSelectedItem().getNumber_offer());
+                                + booking_tableview.getSelectionModel().getSelectedItem().getNumber_offer());
                     }
                 });
         client_tableview.getSelectionModel().selectedItemProperty().

@@ -53,6 +53,13 @@ public class Employee_addController implements Initializable {
 
     ObservableList<String> position_list = FXCollections.observableArrayList("Admin", "Menedżer", "Recepcja", "Obsługa");
 
+    public void getAlertWindow(String alert) {
+        Alert alert1 = new Alert(Alert.AlertType.ERROR);
+        alert1.setHeaderText(null);
+        alert1.setContentText(alert);
+        alert1.showAndWait();
+    }
+    
     @FXML
     private void addEmployee(ActionEvent event) throws SQLException {
         String name_emp = name.getText();
@@ -63,16 +70,10 @@ public class Employee_addController implements Initializable {
         String passwd1 = password1.getText();
         String passwd2 = password2.getText();
         if (name_emp.isEmpty() || surname_emp.isEmpty() || phone_emp.isEmpty() || pesel_emp.isEmpty() || position_emp.isEmpty() || passwd1.isEmpty() || passwd2.isEmpty()) {
-            Alert alert1 = new Alert(Alert.AlertType.ERROR);
-            alert1.setHeaderText(null);
-            alert1.setContentText("Wypełnij wszystkie pola");
-            alert1.showAndWait();
+            getAlertWindow("Wypełnij wszystkie pola");
             return;
         } else if (!passwd1.equals(passwd2)) {
-            Alert alert2 = new Alert(Alert.AlertType.ERROR);
-            alert2.setHeaderText(null);
-            alert2.setContentText("Różne hasła");
-            alert2.showAndWait();
+            getAlertWindow("Różne hasła");
             return;
         } else {
             if (ObjectManager.GetInstance().employeeservice.insertEmployee(name_emp, surname_emp, phone_emp, pesel_emp, position_emp, passwd2)) {
@@ -81,10 +82,7 @@ public class Employee_addController implements Initializable {
                 alert4.setContentText("Dodano element");
                 alert4.showAndWait();
             } else {
-                Alert alert2 = new Alert(Alert.AlertType.ERROR);
-                alert2.setHeaderText(null);
-                alert2.setContentText("Błąd przy dodawaniu pracownika");
-                alert2.showAndWait();
+                getAlertWindow("Błąd przy dodawaniu pracownika");
             }
         }
 

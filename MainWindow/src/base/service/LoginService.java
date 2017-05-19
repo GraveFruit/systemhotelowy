@@ -64,7 +64,7 @@ public class LoginService {
     }
 
     /**
-     *removes obsolete tasks
+     *removes previous tasks(which data is other then today)
      */
     public void makeStartQuery() {
         try {

@@ -9,8 +9,14 @@
 #AnchorPane
 {-fx-background-color :  #eaece5}
 
+.button{-fx-background-color :  #b2c2bf}
+.button:hover{-fx-background-color :  #a0b0ad}
+
 #button_new 
 {-fx-background-color :  #b2c2bf}
+#button_new:hover
+{-fx-background-color :  #a0b0ad}
+
 
 #field
 {-fx-background-color :  #eaece5;

@@ -39,14 +39,6 @@ public class Rooms_editController implements Initializable{
     @FXML
     private JFXComboBox<String> room_status;
     
-    @FXML
-    private JFXComboBox<String> position1;
-    @FXML
-    private JFXComboBox<String> position2;
-    @FXML
-    private JFXComboBox<String> position3;
-    
-    
     ObservableList<String> position_list1 = FXCollections.observableArrayList("1", "1+1", "2", "2+1");
     ObservableList<String> position_list2 = FXCollections.observableArrayList("biznesowy", "ekonomiczny", "vip");
     ObservableList<String> position_list3 = FXCollections.observableArrayList("0", "1", "2");
@@ -78,7 +70,6 @@ public class Rooms_editController implements Initializable{
                 alert2.showAndWait();
             }
         }
-
     }
 
      void addRoomsData(int room2, String floor2, String type2, String standard2, String status2) {

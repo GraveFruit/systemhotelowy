@@ -26,6 +26,11 @@ public class RoomService {
 
     Button edit_rooms;
 //wyswietlanie pokoi
+
+    /**
+     *method gets data about room from database
+     * @return ObservableList contains query result
+     */
     public ObservableList<Rooms> getData() {
         try {
             ObservableList<Rooms> rooms_list = FXCollections.observableArrayList();
@@ -49,6 +54,11 @@ public class RoomService {
         return null;
     }
     //wyswietlanie numerow pokoi
+
+    /**
+     *method gets rooms numbers from database
+     * @return ObservableList contains query result
+     */
     public ObservableList<String> getRoomData() {
         try {
             ObservableList<String> rooms_list = FXCollections.observableArrayList();
@@ -66,6 +76,13 @@ public class RoomService {
         return null;
     }
 //zmiana statusu pokoju
+
+    /**
+     *method changes selected room status
+     * @param numer room's number
+     * @param status room's status 
+     * @return true if success
+     */
     public boolean updateRoomStatus(String numer, String status) {
         try {
 
@@ -82,6 +99,12 @@ public class RoomService {
         return true;
     }
   //sprawdzanie czy pokoj jest gotowy do meldowania
+
+    /**
+     *method checks possibility for checkin into room
+     * @param numer room's number
+     * @return true if room is ready
+     */
       public boolean checkRoomStatus(String numer) {
        String status="";
         boolean wynik=false;
@@ -100,6 +123,15 @@ public class RoomService {
     }
       
  //edycja pokoi
+
+    /**
+     *method updates rooms data (possible only for type,standard and status if room is empty)
+     * @param pokoj room's number
+     * @param typ room's type
+     * @param standard room's standard
+     * @param status room's status
+     * @return true if success
+     */
  
       public boolean updateRoomsData(String pokoj, String typ, String standard, String status) {
 

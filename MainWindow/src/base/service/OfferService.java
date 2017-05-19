@@ -24,6 +24,15 @@ import mainwindow.FXMLDocumentController;
  */
 public class OfferService {
 //wyswietlanie dostepnych pokoi
+
+    /**
+     *method gets data about room's occupancy from database
+     * @param typ room's type
+     * @param stand room's standard
+     * @param datap date checkin into room
+     * @param datak date checkout from room
+     * @return ObservableList contains query result
+     */
     public ObservableList<Offer> getData(String typ, String stand, String datap, String datak) {
         try {
             ObservableList<Offer> offer_list = FXCollections.observableArrayList();
@@ -52,6 +61,12 @@ public class OfferService {
         return null;
     }
 //wyswietlanie rezerwacji danych klientow
+
+    /**
+     *method gets data about selected guest's bookings 
+     * @param pesel guest's "pesel"
+     * @return ObservableList contains query result
+     */
     public ObservableList<Offer> getReceptionData(String pesel) {
         int klient_id = 0;
         try {
@@ -89,6 +104,14 @@ public class OfferService {
         return null;
     }
 //sprawdzanie mozliwosci przedluzenia rezerwacji
+
+    /**
+     * method checks booking prolongation posibiliy
+     * @param pokoj room's number
+     * @param datap date checkout from seleted room
+     * @param datak prolongation's date
+     * @return true if 
+     */
      public boolean getPrologData(String pokoj, String datap, String datak) {
         String standard="";
         boolean wynik=false;

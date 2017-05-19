@@ -26,6 +26,10 @@ public class GuestService {
 
     Button edit_guests;
 
+    /**
+     * methods gets data about guests from database
+     * @return ObservableList contains query result
+     */
     public ObservableList<Guests> getData() {
         try {
             ObservableList<Guests> employee_list = FXCollections.observableArrayList();
@@ -49,6 +53,14 @@ public class GuestService {
         return null;
     }
 
+    /**
+     * method gets data about selected guest
+     * @param name guest's name
+     * @param surname guest's surname
+     * @param pes guest's 'pesel"
+     * @param phone guest's phone number
+     * @return ObservableList contains query result
+     */
     public ObservableList<Guests> getGuest_Data(String name, String surname, String pes, String phone) {
         try {
             ObservableList<Guests> employee_list = FXCollections.observableArrayList();
@@ -78,6 +90,14 @@ public class GuestService {
         return null;
     }
 
+    /**
+     * method adds new guest into database
+     * @param name guest's name
+     * @param surname guest's surname
+     * @param phone guest's phone number
+     * @param pesel guest's "pesel"
+     * @return true if success
+     */
     public boolean insertClient(String name, String surname, String phone, String pesel) {
         try {
             PreparedStatement prep = DataBase.getConnection().prepareStatement(
@@ -96,25 +116,14 @@ public class GuestService {
 
     }
     
-//dodawanie goscia
-    public boolean insertGuest(String imie, String nazwisko, String telefon, String pesel) throws SQLException {
-        try{
-            PreparedStatement prep = DataBase.getConnection().prepareStatement(
-                    "Insert into goscie (imie,nazwisko,telefon,pesel) values (?,?,?,?,?)");
-            prep.setString(1, imie);
-            prep.setString(2, nazwisko);
-            prep.setString(3, telefon);
-            prep.setString(4, pesel);
-            prep.executeUpdate();
-        
-
-        } catch (SQLException e) {
-            System.err.println("Błąd przy dodawaniu goscia");
-            return false;
-        }
-        return true;
-    }
 //edycja goscia
+
+    /**
+     * method updates selected guest's data (only phone number)
+     * @param pesel guest's "pesel"
+     * @param telefon guest's phone number
+     * @return true if success
+     */
     public boolean updateGuestData(String pesel, String telefon) {
         try{
             PreparedStatement prep = DataBase.getConnection().prepareStatement(
@@ -130,10 +139,16 @@ public class GuestService {
         return true;
     }
 //usuwanie pracownika
+
+    /**
+     * method deletes guest from database
+     * @param pesel guest "pesel"
+     * @return true if success
+     */
     public boolean deleteGuest(String pesel) {
         try {
             PreparedStatement prep = DataBase.getConnection().prepareStatement(
-                    "Update klienci set status='-1' where pesel=?");
+                    "delete klienci where pesel=?");
             prep.setString(1, pesel);
             prep.executeUpdate();
 

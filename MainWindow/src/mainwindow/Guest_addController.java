@@ -54,9 +54,8 @@ public class Guest_addController implements Initializable {
             alert1.setHeaderText(null);
             alert1.setContentText("Wypełnij wszystkie pola");
             alert1.showAndWait();
-            return;
         } else {
-            if (ObjectManager.GetInstance().guestservice.insertGuest(name_guest, surname_guest, phone_guest, pesel_guest)) {
+            if (ObjectManager.GetInstance().guestservice.insertClient(name_guest, surname_guest, phone_guest, pesel_guest)) {
                 Alert alert4 = new Alert(Alert.AlertType.INFORMATION);
                 alert4.setHeaderText(null);
                 alert4.setContentText("Dodano element");

@@ -62,6 +62,12 @@ DataBase base;
     @FXML
     private TableColumn<?, ?> status_task;
 
+    private Employee taskEmployeeTableSelected(){
+        return task_employee_tableview.getSelectionModel().getSelectedItem();
+    }
+    private Tasks taskTableSelected(){
+        return task_tableview.getSelectionModel().getSelectedItem();
+    }
     private void initEmployeeTaskCount_Table() {
         task_employee_id.setCellValueFactory(new PropertyValueFactory<>("Id_employee"));
         task_employee.setCellValueFactory(new PropertyValueFactory<>("Surname_employee"));
@@ -71,47 +77,40 @@ DataBase base;
                 employeeservice.getTaskEmployeeData());
     }
     public void initEmployeeTasks_Table() {
+        String employee=Integer.toString(taskEmployeeTableSelected().getId_employee());
         room_task.setCellValueFactory(new PropertyValueFactory<>("Room_task"));
         client_task.setCellValueFactory(new PropertyValueFactory<>("Client_task"));
         data_task.setCellValueFactory(new PropertyValueFactory<>("Data_task"));
         disc_task.setCellValueFactory(new PropertyValueFactory<>("Discription_task"));
         status_task.setCellValueFactory(new PropertyValueFactory<>("Status_task"));
         id_task.setCellValueFactory(new PropertyValueFactory<>("Id_task"));
-        task_tableview.getItems().setAll(ObjectManager.GetInstance().taskservice.getDetailsData(
-        Integer.toString(task_employee_tableview.getSelectionModel().getSelectedItem().getId_employee())));
+        task_tableview.getItems().setAll(ObjectManager.GetInstance().taskservice.getDetailsData(employee));
+    }
+    
+     public void getAlertWindow(String alert) {
+        Alert alert1 = new Alert(Alert.AlertType.ERROR);
+        alert1.setHeaderText(null);
+        alert1.setContentText(alert);
+        alert1.showAndWait();
     }
     
     @FXML
     private void addTask(ActionEvent event) {
         String room = add_room.getValue();
         String opis = add_comment.getText();
-         if ( room==null || task_employee_tableview.getSelectionModel().getSelectedItem()==null ) {
-                Alert alert1 = new Alert(Alert.AlertType.ERROR);
-                alert1.setHeaderText(null);
-                alert1.setContentText("Uzupełnij wszystkie dane");
-                alert1.showAndWait();
+         if ( room==null || taskEmployeeTableSelected()==null ) {
+                getAlertWindow("Uzupełnij wszystkie dane");
             } else {
-                if (ObjectManager.GetInstance().taskservice.checkRoomReady(
-                    Integer.parseInt(room))) {
-                    ObjectManager.GetInstance().roomservice.updateRoomStatus(
-                        room, "2");
+             int id=taskEmployeeTableSelected().getId_employee();
+                if (ObjectManager.GetInstance().taskservice.checkRoomReady(Integer.parseInt(room))) {
+                    ObjectManager.GetInstance().roomservice.updateRoomStatus(room, "2");
                     }
-                if (ObjectManager.GetInstance().taskservice.insertTask2(
-                        Integer.parseInt(room), opis)
-                && ObjectManager.GetInstance().taskservice.insertTaskWithEmployee(
-                task_employee_tableview.getSelectionModel().getSelectedItem().getId_employee())) {
-                    Alert alert4 = new Alert(Alert.AlertType.INFORMATION);
-                    alert4.setHeaderText(null);
-                    alert4.setContentText("Dodano zadanie");
-                    alert4.showAndWait();
+                if (ObjectManager.GetInstance().taskservice.insertTask2(Integer.parseInt(room), opis)
+                && ObjectManager.GetInstance().taskservice.insertTaskWithEmployee(id)) {
+                    getAlertWindow("Dodano zadanie");
                     initEmployeeTaskCount_Table();
-                    
-
                 } else {
-                    Alert alert2 = new Alert(Alert.AlertType.ERROR);
-                    alert2.setHeaderText(null);
-                    alert2.setContentText("Błąd przy dodawaniu zadania");
-                    alert2.showAndWait();
+                    getAlertWindow("Błąd przy dodawaniu zadania");
                 }
             }
          
@@ -120,28 +119,18 @@ DataBase base;
      @FXML
     private void changeTaskStatus(ActionEvent event) {
          if ( task_tableview.getSelectionModel().getSelectedItem()==null ) {
-                Alert alert1 = new Alert(Alert.AlertType.ERROR);
-                alert1.setHeaderText(null);
-                alert1.setContentText("Zaznacz zadanie");
-                alert1.showAndWait();
+                getAlertWindow("Zaznacz zadanie");
             } else {
-             if(ObjectManager.GetInstance().taskservice.updateTaskStatus(
-             task_tableview.getSelectionModel().getSelectedItem().getId_task())){
-             String room= task_tableview.getSelectionModel().getSelectedItem().getRoom_task();
-                if (ObjectManager.GetInstance().taskservice.checkRoomReady(
-                    Integer.parseInt(room))) {
-                ObjectManager.GetInstance().roomservice.updateRoomStatus(
-                        room, "0");
+             int id=taskTableSelected().getId_task();
+             if(ObjectManager.GetInstance().taskservice.updateTaskStatus(id)){
+             String room= taskTableSelected().getRoom_task();
+                if (ObjectManager.GetInstance().taskservice.checkRoomReady( Integer.parseInt(room))) {
+                ObjectManager.GetInstance().roomservice.updateRoomStatus(room, "0");
                 }
-              
                    initEmployeeTasks_Table();
                    initEmployeeTaskCount_Table();
-
                 } else {
-                    Alert alert2 = new Alert(Alert.AlertType.ERROR);
-                    alert2.setHeaderText(null);
-                    alert2.setContentText("Błąd przy dodawaniu zadania");
-                    alert2.showAndWait();
+                    getAlertWindow("Błąd przy dodawaniu zadania");
                 }
             
     }

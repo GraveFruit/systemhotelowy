@@ -42,6 +42,10 @@ public class Tasks_showController implements Initializable {
     @FXML
     private Button change_task_status;
     
+    private Tasks taskTableSelected(){
+        return task_tableview.getSelectionModel().getSelectedItem();
+    }
+    String  empId= ObjectManager.GetInstance().loginservice.employeeSessionId;
     DataBase base;
     public void initEmployeeTasks_Table() {
         room_task.setCellValueFactory(new PropertyValueFactory<>("Room_task"));
@@ -50,28 +54,24 @@ public class Tasks_showController implements Initializable {
         disc_task.setCellValueFactory(new PropertyValueFactory<>("Discription_task"));
         status_task.setCellValueFactory(new PropertyValueFactory<>("Status_task"));
         id_task.setCellValueFactory(new PropertyValueFactory<>("Id_task"));
-        task_tableview.getItems().setAll(ObjectManager.GetInstance().taskservice.getDetailsData(
-                ObjectManager.GetInstance().loginservice.employeeSessionId));
+        task_tableview.getItems().setAll(ObjectManager.GetInstance().taskservice.getDetailsData(empId));
     }
 
      @FXML
     private void changeTaskStatus(ActionEvent event) {
-         if ( task_tableview.getSelectionModel().getSelectedItem()==null ) {
+         if ( taskTableSelected()==null ) {
                 Alert alert1 = new Alert(Alert.AlertType.ERROR);
                 alert1.setHeaderText(null);
                 alert1.setContentText("Zaznacz zadanie");
                 alert1.showAndWait();
             } else {
-             if(ObjectManager.GetInstance().taskservice.updateTaskStatus(
-             task_tableview.getSelectionModel().getSelectedItem().getId_task())){
+             int id= taskTableSelected().getId_task();
+             if(ObjectManager.GetInstance().taskservice.updateTaskStatus(id)){
              String room= task_tableview.getSelectionModel().getSelectedItem().getRoom_task();
-                if (ObjectManager.GetInstance().taskservice.checkRoomReady(
-                    Integer.parseInt(room))) {
-                ObjectManager.GetInstance().roomservice.updateRoomStatus(
-                        room, "0");
+                if (ObjectManager.GetInstance().taskservice.checkRoomReady(Integer.parseInt(room))) {
+                ObjectManager.GetInstance().roomservice.updateRoomStatus(room, "0");
                 }
                    initEmployeeTasks_Table();
-
                 } else {
                     Alert alert2 = new Alert(Alert.AlertType.ERROR);
                     alert2.setHeaderText(null);
