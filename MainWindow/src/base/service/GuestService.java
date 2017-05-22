@@ -17,6 +17,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Button;
 import mainwindow.FXMLDocumentController;
+import mainwindow.ObjectManager;
 
 /**
  *
@@ -48,7 +49,7 @@ public class GuestService {
 
             return FXCollections.observableArrayList(employee_list);
         } catch (SQLException ex) {
-            Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
+            ObjectManager.GetInstance().dataservice.getAlertWindow("Błąd wczytywania gości");
         }
         return null;
     }
@@ -85,7 +86,7 @@ public class GuestService {
 
             return FXCollections.observableArrayList(employee_list);
         } catch (SQLException ex) {
-            Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
+            ObjectManager.GetInstance().dataservice.getAlertWindow("Błąd wczytywania danego gościa");
         }
         return null;
     }

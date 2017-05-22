@@ -43,6 +43,7 @@ import java.time.LocalDateTime;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
+import javafx.util.Callback;
 
 /**
  *
@@ -233,6 +234,10 @@ public class FXMLDocumentController implements Initializable {
     private Button delete_guest;
     @FXML
     private TabPane maintabpane;
+    @FXML
+    private JFXDatePicker statDateStart;
+    @FXML
+    private JFXDatePicker statDateEnd;
 
     //inicialize windows
     @FXML//okno informacji o aplikacji
@@ -272,20 +277,6 @@ public class FXMLDocumentController implements Initializable {
         stage.initOwner(button.getScene().getWindow());
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.showAndWait();
-    }
-
-    public void getAlertWindow(String alert) {
-        Alert alert1 = new Alert(Alert.AlertType.ERROR);
-        alert1.setHeaderText(null);
-        alert1.setContentText(alert);
-        alert1.showAndWait();
-    }
-
-    public void getInformactiontWindow(String informaction) {
-        Alert alert1 = new Alert(Alert.AlertType.INFORMATION);
-        alert1.setHeaderText(null);
-        alert1.setContentText(informaction);
-        alert1.showAndWait();
     }
 
     public Bookings getCheckInSeleted() {
@@ -404,7 +395,7 @@ public class FXMLDocumentController implements Initializable {
             String employeePosition = getEmployeeTableSeleted().getPosition_employee();
             makeEditEmployeeWindow(employeeName, employeeSurname, employeePesel, employeePhone, employeePosition);
         } else {
-            getAlertWindow("Zaznacz pracownika");
+            ObjectManager.GetInstance().dataservice.getAlertWindow("Zaznacz pracownika");
         }
     }
 
@@ -419,23 +410,23 @@ public class FXMLDocumentController implements Initializable {
             if (roomStatus.compareTo("0") == 0) {
                 makeEditRoomsWindow(roomNumber, roomFloor, roomType, roomStan, roomStatus);
             } else {
-                getAlertWindow("Pokój nie jest gotowy");
+                ObjectManager.GetInstance().dataservice.getAlertWindow("Pokój nie jest gotowy");
             }
         } else {
-            getAlertWindow("Wybierz pokoj");
+            ObjectManager.GetInstance().dataservice.getAlertWindow("Wybierz pokoj");
         }
     }
 
     @FXML//podokno edytuj goscia
     private void editGuestWindow(ActionEvent event) throws IOException {
         if (getGuestTableSeleted() != null) {
-        String guestName = getGuestTableSeleted().getName_guest();
-        String guestSurname = getGuestTableSeleted().getSurname_guest();
-        String guestPesel = getGuestTableSeleted().getPesel_guest();
-        String guestPhone = getGuestTableSeleted().getPhone_guest();
+            String guestName = getGuestTableSeleted().getName_guest();
+            String guestSurname = getGuestTableSeleted().getSurname_guest();
+            String guestPesel = getGuestTableSeleted().getPesel_guest();
+            String guestPhone = getGuestTableSeleted().getPhone_guest();
             makeEditGuestWindow(guestName, guestSurname, guestPesel, guestPhone);
         } else {
-            getAlertWindow("Wybierz gościa");
+            ObjectManager.GetInstance().dataservice.getAlertWindow("Wybierz gościa");
         }
     }
 
@@ -525,7 +516,7 @@ public class FXMLDocumentController implements Initializable {
             ObjectManager.GetInstance().employeeservice.deleteEmployee(pesel);
             refreshEmployeeTable();
         } else {
-            getAlertWindow("Wybierz pracownika");
+            ObjectManager.GetInstance().dataservice.getAlertWindow("Wybierz pracownika");
         }
     }
 
@@ -536,29 +527,29 @@ public class FXMLDocumentController implements Initializable {
             ObjectManager.GetInstance().guestservice.deleteGuest(usunPoPesel);
             refreshGuestTable();
         } else {
-            getAlertWindow("Wybierz goscia");
+            ObjectManager.GetInstance().dataservice.getAlertWindow("Wybierz goscia");
         }
     }
 
     @FXML//melodowanie gościa
     private void addCheckin(ActionEvent event) throws SQLException {
         if (getCheckInSeleted() == null) {
-            getAlertWindow("Wybierz pokój");
+            ObjectManager.GetInstance().dataservice.getAlertWindow("Wybierz pokój");
         } else {
             int bookingId = getCheckInSeleted().getId_booking();
             String room = getCheckInSeleted().getRoom_booking();
             if (checkRoomReady()) {
                 if (ObjectManager.GetInstance().bookingservice.updateCheckin(bookingId)
                         && ObjectManager.GetInstance().roomservice.updateRoomStatus(room, "1")) {
-                    getInformactiontWindow("Zameldowano");
+                    ObjectManager.GetInstance().dataservice.getInformactiontWindow("Zameldowano");
                     refreshBookingTable();
                     refreshReceptionTable();
                     refreshRoomTable();
                 } else {
-                    getAlertWindow("Błąd przy dodawaniu meldowania");
+                    ObjectManager.GetInstance().dataservice.getAlertWindow("Błąd przy dodawaniu meldowania");
                 }
             } else {
-                getAlertWindow("Pokój jest jeszcze niegotowy");
+                ObjectManager.GetInstance().dataservice.getAlertWindow("Pokój jest jeszcze niegotowy");
                 refreshBookingTable();
                 refreshReceptionTable();
             }
@@ -568,7 +559,7 @@ public class FXMLDocumentController implements Initializable {
     @FXML//wymeldowywanie gościa
     private void addCheckout(ActionEvent event) throws SQLException {
         if (getCheckOutSeleted() == null) {
-            getAlertWindow("Wybierz pokój");
+            ObjectManager.GetInstance().dataservice.getAlertWindow("Wybierz pokój");
         } else {
             int id = getCheckOutSeleted().getId_booking();
             String room = getCheckOutSeleted().getRoom_booking();
@@ -576,13 +567,13 @@ public class FXMLDocumentController implements Initializable {
                     && ObjectManager.GetInstance().roomservice.updateRoomStatus(room, "2")
                     && ObjectManager.GetInstance().taskservice.insertTask(id, "sprzatanie")
                     && ObjectManager.GetInstance().taskservice.insertList()) {
-                getAlertWindow("Wymeldowano");
+                ObjectManager.GetInstance().dataservice.getInformactiontWindow("Wymeldowano");
                 refreshRoomTable();
                 refreshBookingTable();
                 refreshReceptionTable();
                 refreshTaskTable();
             } else {
-                getAlertWindow("Błąd przy wymeldowywaniu");
+                ObjectManager.GetInstance().dataservice.getAlertWindow("Błąd przy wymeldowywaniu");
             }
         }
     }
@@ -591,35 +582,35 @@ public class FXMLDocumentController implements Initializable {
     private void addRecepctionTask(ActionEvent event) throws SQLException {
         String comment = recepction_taskComment.getText();
         if (getCheckOutSeleted() == null) {
-            getAlertWindow("Wybierz pokój");
+            ObjectManager.GetInstance().dataservice.getAlertWindow("Wybierz pokój");
         } else {
             int id = getCheckOutSeleted().getId_booking();
             if (ObjectManager.GetInstance().taskservice.insertTask(id, comment)
                     && ObjectManager.GetInstance().taskservice.insertList()) {
-                getAlertWindow("Dodano zadanie");
+                ObjectManager.GetInstance().dataservice.getInformactiontWindow("Dodano zadanie");
                 refreshTaskTable();
             } else {
-                getAlertWindow("Błąd przy dodawaniu zadania");
+                ObjectManager.GetInstance().dataservice.getAlertWindow("Błąd przy dodawaniu zadania");
             }
         }
     }
 
     @FXML//sprawdzanie możliwości przedłużenia rezerwacji
     private void checkBookingProlog(ActionEvent event) throws SQLException {
-        if (getCheckOutSeleted() == null) {
-            getAlertWindow("Wybierz pokój");
+        if (getCheckOutSeleted() == null || prolog_date.getValue()==null) {
+            ObjectManager.GetInstance().dataservice.getAlertWindow("Wybierz pokój i datę");
         } else {
             String prolongDateEnd = prolog_date.getValue().toString();
-            String prolongDateStart = bookingCheckOut_tableview.getSelectionModel().getSelectedItem().getDatak_booking();
+            String prolongDateStart = getCheckOutSeleted().getDatak_booking();
             if (prolongDateEnd.compareTo(prolongDateStart) > 0) {
-                String roomNumber = bookingCheckOut_tableview.getSelectionModel().getSelectedItem().getRoom_booking();
+                String roomNumber = getCheckOutSeleted().getRoom_booking();
                 if (ObjectManager.GetInstance().offerservice.getPrologData(roomNumber, prolongDateStart, prolongDateEnd)) {
                     prolog_info.setText("Dostępny");
                 } else {
                     prolog_info.setText("Niedostępny");
                 }
             } else {
-                getAlertWindow("Zła data");
+                ObjectManager.GetInstance().dataservice.getAlertWindow("Zła data");
             }
         }
     }
@@ -628,35 +619,32 @@ public class FXMLDocumentController implements Initializable {
     private void prologBooking(ActionEvent event) throws SQLException {
         String prolongDate = prolog_date.getValue().toString();
         if (getCheckOutSeleted() == null || prolongDate == null) {
-            getAlertWindow("Wybierz pokój i datę");
+            ObjectManager.GetInstance().dataservice.getAlertWindow("Wybierz pokój i datę");
         } else {
-            String roomNumber = bookingCheckOut_tableview.getSelectionModel().getSelectedItem().getRoom_booking();
-            String startDate=bookingCheckOut_tableview.getSelectionModel().getSelectedItem().getDatak_booking();
-            String endDate= prolog_date.getValue().toString();
-            if (ObjectManager.GetInstance().offerservice.getPrologData(roomNumber,startDate,endDate)) {
-                int id=bookingCheckOut_tableview.getSelectionModel().getSelectedItem().getId_booking();
-                String newEndDate=prolog_date.getValue().toString();
-                ObjectManager.GetInstance().bookingservice.prologBooking(id,newEndDate);
-                Alert alert4 = new Alert(Alert.AlertType.INFORMATION);
-                alert4.setHeaderText(null);
-                alert4.setContentText("Przedłużono rezerwację");
-                alert4.showAndWait();
+            String roomNumber = getCheckOutSeleted().getRoom_booking();
+            String startDate = getCheckOutSeleted().getDatak_booking();
+            String endDate = prolog_date.getValue().toString();
+            if (ObjectManager.GetInstance().offerservice.getPrologData(roomNumber, startDate, endDate)) {
+                int id = getCheckOutSeleted().getId_booking();
+                String newEndDate = prolog_date.getValue().toString();
+                ObjectManager.GetInstance().bookingservice.prologBooking(id, newEndDate);
+                ObjectManager.GetInstance().dataservice.getInformactiontWindow("Przedłużono rezerwację");
                 refreshReceptionTable();
                 refreshBookingTable();
 
             } else {
-                getAlertWindow("Błąd przy przedłużaniu rezerwacji");
+                ObjectManager.GetInstance().dataservice.getAlertWindow("Błąd przy przedłużaniu rezerwacji");
             }
         }
     }
 
     @FXML//metoda usuń zadanie
     private void cancelTask(ActionEvent event) {
-        if (getTaskTableSeleted()!= null) {
-            String room = task_tableview.getSelectionModel().getSelectedItem().getRoom_task();
-            int id=task_tableview.getSelectionModel().getSelectedItem().getId_task();
+        if (getTaskTableSeleted() != null) {
+            String room = getTaskTableSeleted().getRoom_task();
+            int id = getTaskTableSeleted().getId_task();
             if (ObjectManager.GetInstance().taskservice.deleteTask(id)) {
-                getAlertWindow("Usunięto zadanie");
+                ObjectManager.GetInstance().dataservice.getAlertWindow("Usunięto zadanie");
                 refreshTaskTable();
                 if (ObjectManager.GetInstance().taskservice.checkRoomReady(Integer.parseInt(room))) {
                     ObjectManager.GetInstance().roomservice.updateRoomStatus(room, "0");
@@ -664,9 +652,36 @@ public class FXMLDocumentController implements Initializable {
                 }
             }
         } else {
-            getAlertWindow("Wybierz zadanie");
+            ObjectManager.GetInstance().dataservice.getAlertWindow("Wybierz zadanie");
         }
 
+    }
+      
+    public void initCheckOutSelected(){
+        bookingCheckOut_tableview.getSelectionModel().selectedItemProperty().
+                addListener((obs, oldSelection, newSelection) -> {
+                    if (newSelection != null) {
+                        String comment = getCheckOutSeleted().getComment_booking();
+                        recepction_taskComment.setText(comment);
+                    }
+                });
+    }
+
+    @FXML//towrzenien raportu rezerwacji
+    private void makeRaport(ActionEvent event) {
+        ObjectManager.GetInstance().raportservice.generateRaport();
+
+    }
+
+    @FXML//towrzenien statystyk
+    private void makeStatistics(ActionEvent event) {
+        if (statDateStart.getValue() != null && statDateEnd.getValue() != null) {
+            String startDate = statDateStart.getValue().toString();
+            String endDate = statDateEnd.getValue().toString();
+                ObjectManager.GetInstance().raportservice.generateStatistic(startDate, endDate);
+        } else {
+            ObjectManager.GetInstance().dataservice.getAlertWindow("Zaznacz datę");
+        }
     }
 
     //inicjalizacja tabel
@@ -741,7 +756,7 @@ public class FXMLDocumentController implements Initializable {
         guest_pesel.setCellValueFactory(new PropertyValueFactory<>("Pesel_guest"));
         guest_tableview.getItems().setAll(ObjectManager.GetInstance().guestservice.getData());
     }
-
+    
     public void refreshEmployeeTable() {
         employee_tableview.getItems().setAll(ObjectManager.GetInstance().employeeservice.getData());
     }
@@ -828,18 +843,11 @@ public class FXMLDocumentController implements Initializable {
                 maintabpane.getSelectionModel().select(tab_login);
         }
     }
-
-    @FXML
-    public void openOffer(ActionEvent event) {
-
-    }
-
+  
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         base = DataBase.getInstance();
-        //ObjectManager.GetInstance().loginservice.makeStartBase();
         ObjectManager.GetInstance().loginservice.makeStartQuery();
-        //System.console().printf("Błąd");
         initRooms_Table();
         initEmployee_Table();
         initBookings_Table();
@@ -847,15 +855,8 @@ public class FXMLDocumentController implements Initializable {
         initTasks_Table();
         initBookingsCheckIn_Table();
         initBookingsCheckOut_Table();
-        System.out.println(LocalDateTime.now());
-        bookingCheckOut_tableview.getSelectionModel().selectedItemProperty().
-                addListener((obs, oldSelection, newSelection) -> {
-                    if (newSelection != null) {
-                        String comment = bookingCheckOut_tableview.getSelectionModel().getSelectedItem().getComment_booking();
-                        recepction_taskComment.setText(comment);
-                    }
-                });
-
+        initCheckOutSelected();
+        ObjectManager.GetInstance().dataservice.checkRaportDate(statDateStart, statDateEnd);
         tab_lock(-1);
         ObjectManager.GetInstance().loginservice.logout();
     }

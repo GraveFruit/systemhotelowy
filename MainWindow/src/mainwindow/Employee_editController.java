@@ -46,28 +46,18 @@ public class Employee_editController implements Initializable {
     @FXML
     private JFXPasswordField confirmed_new_password;
 
-    public void getAlertWindow(String alert) {
-        Alert alert1 = new Alert(Alert.AlertType.ERROR);
-        alert1.setHeaderText(null);
-        alert1.setContentText(alert);
-        alert1.showAndWait();
-    }
-    
     @FXML
     private void changeEmployeeData(ActionEvent event) throws SQLException {
         String phone_emp = phone.getText();
         String pesel_emp = pesel.getText();
         String position_emp = position.getValue();
         if (phone_emp.isEmpty() || position_emp.isEmpty()) {
-            getAlertWindow("Wypełnij wszystkie pola");
+            ObjectManager.GetInstance().dataservice.getAlertWindow("Wypełnij wszystkie pola");
         } else {
             if (ObjectManager.GetInstance().employeeservice.updateEmployeeData(pesel_emp, phone_emp, position_emp)) {
-                Alert alert4 = new Alert(Alert.AlertType.INFORMATION);
-                alert4.setHeaderText(null);
-                alert4.setContentText("Akutalizowano pracownika");
-                alert4.showAndWait();
+                ObjectManager.GetInstance().dataservice.getInformactiontWindow("Akutalizowano pracownika");
             } else {
-                getAlertWindow("Błąd przy akutalizacji danych pracownika");
+                ObjectManager.GetInstance().dataservice.getAlertWindow("Błąd przy akutalizacji danych pracownika");
             }
         }
     }
@@ -78,18 +68,14 @@ public class Employee_editController implements Initializable {
         String pass2 = confirmed_new_password.getText();
         String pesel1 = pesel.getText();
         if (pass1.isEmpty() || pesel1.isEmpty()) {
-            getAlertWindow("Wypełnij wszystkie pola");
-        }
-        else if (pass1.compareTo(pass2) != 0) {
-            getAlertWindow("Różne hasła");
+            ObjectManager.GetInstance().dataservice.getAlertWindow("Wypełnij wszystkie pola");
+        } else if (pass1.compareTo(pass2) != 0) {
+            ObjectManager.GetInstance().dataservice.getAlertWindow("Różne hasła");
         } else {
             if (ObjectManager.GetInstance().employeeservice.updateEmployeePassword(pass2, pesel1)) {
-                Alert alert4 = new Alert(Alert.AlertType.INFORMATION);
-                alert4.setHeaderText(null);
-                alert4.setContentText("Akutalizowano hasło pracownika");
-                alert4.showAndWait();
+                ObjectManager.GetInstance().dataservice.getInformactiontWindow("Akutalizowano hasło pracownika");
             } else {
-                getAlertWindow("Błąd przy akutalizacji hasła pracownika");
+                ObjectManager.GetInstance().dataservice.getAlertWindow("Błąd przy akutalizacji hasła pracownika");
             }
         }
     }
@@ -108,15 +94,7 @@ public class Employee_editController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         position.setItems(position_list);
-        phone.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                if (newValue.matches("\\d*")) {
-                } else {
-                    phone.setText(oldValue);
-                }
-            }
-        });
+        ObjectManager.GetInstance().dataservice.chechIsNumber(phone);
     }
 
 }

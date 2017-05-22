@@ -55,7 +55,7 @@ public class TaskService {
 
             return FXCollections.observableArrayList(tasks_list);
         } catch (SQLException ex) {
-            Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
+           ObjectManager.GetInstance().dataservice.getAlertWindow("Błąd wczytywania zadań");
         }
         return null;
     }
@@ -89,7 +89,7 @@ public class TaskService {
 
             return FXCollections.observableArrayList(tasks_list);
         } catch (SQLException ex) {
-            Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
+            ObjectManager.GetInstance().dataservice.getAlertWindow("Błąd wczytywania zadań pracownika");
         }
         return null;
     }

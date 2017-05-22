@@ -62,7 +62,7 @@ public class BookingService {
 
             return FXCollections.observableArrayList(bookings_list);
         } catch (SQLException ex) {
-            Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
+           ObjectManager.GetInstance().dataservice.getAlertWindow("Błąd wczytywania rezeracji");
         }
         return null;
     }
@@ -98,7 +98,7 @@ public class BookingService {
 
             return FXCollections.observableArrayList(bookingChceckin_list);
         } catch (SQLException ex) {
-            Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
+            ObjectManager.GetInstance().dataservice.getAlertWindow("Błąd wczytywania zalmeldowań");;
         }
         return null;
     }
@@ -132,7 +132,7 @@ public class BookingService {
 
             return FXCollections.observableArrayList(bookingChceckin_list);
         } catch (SQLException ex) {
-            Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
+            ObjectManager.GetInstance().dataservice.getAlertWindow("Błąd wczytywania wymeldowań");
         }
         return null;
     }

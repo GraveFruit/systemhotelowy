@@ -49,11 +49,8 @@ public class LoginService {
      */
     public void getlogged(String login, String pass) throws SQLException {
         PreparedStatement prep = DataBase.getConnection().prepareStatement(
-                "select p.pracownik_id, po.uprawnienia "
-                + "from pracownicy p, posady po "
-                + "where p.posada_id = po.posada_id "
-                + "and p.pesel =? "
-                + "and p.haslo =? ");
+                "select p.pracownik_id, po.uprawnienia from pracownicy p, posady po "
+                + "where p.posada_id = po.posada_id and p.pesel =? and p.haslo =? ");
         prep.setString(1, login);
         prep.setString(2, pass);
         ResultSet result = prep.executeQuery();
@@ -71,6 +68,9 @@ public class LoginService {
             PreparedStatement prep = DataBase.getConnection().prepareStatement(
                     "delete from zadania where status=0 and data!='" + ObjectManager.GetInstance().currentData + "'");
             prep.executeQuery();
+            PreparedStatement prep2 = DataBase.getConnection().prepareStatement(
+                    "update rezerwacje set status='-1' where data_p<'" + ObjectManager.GetInstance().currentData + "' and status=1");
+            prep2.executeQuery();
         } catch (SQLException e) {
             System.out.println("błąd wczytywania początkowej kwerendy");
         }

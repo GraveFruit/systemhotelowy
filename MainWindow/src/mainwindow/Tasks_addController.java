@@ -87,19 +87,12 @@ DataBase base;
         task_tableview.getItems().setAll(ObjectManager.GetInstance().taskservice.getDetailsData(employee));
     }
     
-     public void getAlertWindow(String alert) {
-        Alert alert1 = new Alert(Alert.AlertType.ERROR);
-        alert1.setHeaderText(null);
-        alert1.setContentText(alert);
-        alert1.showAndWait();
-    }
-    
     @FXML
     private void addTask(ActionEvent event) {
         String room = add_room.getValue();
         String opis = add_comment.getText();
          if ( room==null || taskEmployeeTableSelected()==null ) {
-                getAlertWindow("Uzupełnij wszystkie dane");
+                ObjectManager.GetInstance().dataservice.getAlertWindow("Uzupełnij wszystkie dane");
             } else {
              int id=taskEmployeeTableSelected().getId_employee();
                 if (ObjectManager.GetInstance().taskservice.checkRoomReady(Integer.parseInt(room))) {
@@ -107,10 +100,10 @@ DataBase base;
                     }
                 if (ObjectManager.GetInstance().taskservice.insertTask2(Integer.parseInt(room), opis)
                 && ObjectManager.GetInstance().taskservice.insertTaskWithEmployee(id)) {
-                    getAlertWindow("Dodano zadanie");
+                    ObjectManager.GetInstance().dataservice.getInformactiontWindow("Dodano zadanie");
                     initEmployeeTaskCount_Table();
                 } else {
-                    getAlertWindow("Błąd przy dodawaniu zadania");
+                    ObjectManager.GetInstance().dataservice.getAlertWindow("Błąd przy dodawaniu zadania");
                 }
             }
          
@@ -119,7 +112,7 @@ DataBase base;
      @FXML
     private void changeTaskStatus(ActionEvent event) {
          if ( task_tableview.getSelectionModel().getSelectedItem()==null ) {
-                getAlertWindow("Zaznacz zadanie");
+                ObjectManager.GetInstance().dataservice.getAlertWindow("Zaznacz zadanie");
             } else {
              int id=taskTableSelected().getId_task();
              if(ObjectManager.GetInstance().taskservice.updateTaskStatus(id)){
@@ -130,10 +123,19 @@ DataBase base;
                    initEmployeeTasks_Table();
                    initEmployeeTaskCount_Table();
                 } else {
-                    getAlertWindow("Błąd przy dodawaniu zadania");
+                    ObjectManager.GetInstance().dataservice.getAlertWindow("Błąd przy dodawaniu zadania");
                 }
             
     }
+    }
+    
+    private void initTableSelected(){
+                task_employee_tableview.getSelectionModel().selectedItemProperty().
+                addListener((obs, oldSelection, newSelection) -> {
+                    if (newSelection != null) {
+                        initEmployeeTasks_Table();
+                    }
+                });
     }
     
     @Override
@@ -141,12 +143,7 @@ DataBase base;
         base = DataBase.getInstance();
         initEmployeeTaskCount_Table();
         add_room.setItems(task_room);
-        task_employee_tableview.getSelectionModel().selectedItemProperty().
-                addListener((obs, oldSelection, newSelection) -> {
-                    if (newSelection != null) {
-                        initEmployeeTasks_Table();
-                    }
-                });
+        initTableSelected();
     }    
     
 }

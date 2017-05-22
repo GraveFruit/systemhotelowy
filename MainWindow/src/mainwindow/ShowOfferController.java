@@ -73,34 +73,8 @@ public class ShowOfferController implements Initializable {
         base = DataBase.getInstance();
         offer_typ.setItems(offer_typ_list);
         offer_standardbox.setItems(offer_standard_list);
-        offer_datep.setValue(LocalDate.now());
-        offer_datek.setValue(LocalDate.now().plusDays(1));
-         final Callback<DatePicker, DateCell> dateCalLabel1 = 
-            (final DatePicker datePicker) -> new DateCell() {
-                @Override
-                public void updateItem(LocalDate item, boolean empty) {
-                    super.updateItem(item, empty);
-                    
-                    if (item.isBefore(LocalDate.now()) || item.isAfter(offer_datek.getValue().minusDays(1))) {
-                        setDisable(true);
-                        setStyle("-fx-background-color: #ffc0cb;");   
-                    }
-                }
-            };
-        offer_datep.setDayCellFactory(dateCalLabel1);
-        final Callback<DatePicker, DateCell> dateCalLabel2 = 
-            (final DatePicker datePicker) -> new DateCell() {
-                @Override
-                public void updateItem(LocalDate item, boolean empty) {
-                    super.updateItem(item, empty);
-                    
-                    if (item.isBefore(offer_datep.getValue().plusDays(1))) {
-                        setDisable(true);
-                        setStyle("-fx-background-color: #ffc0cb;");   
-                    }
-                }
-            };
-        offer_datek.setDayCellFactory(dateCalLabel2);
+        ObjectManager.GetInstance().dataservice.checkBookingsDate(offer_datep, offer_datek);
+
     }    
 }
    

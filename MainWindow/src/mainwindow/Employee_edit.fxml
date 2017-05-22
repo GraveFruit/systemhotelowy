@@ -29,7 +29,7 @@
                   <VBox prefHeight="253.0" prefWidth="246.0" spacing="50.0" GridPane.columnIndex="1">
                      <children>
                         <JFXTextField fx:id="phone" alignment="CENTER" labelFloat="true" promptText="Telefon" />
-                        <JFXComboBox fx:id="position" prefHeight="25.0" prefWidth="338.0" promptText="Stanowisko" />
+                        <JFXComboBox fx:id="position" labelFloat="true" prefHeight="25.0" prefWidth="338.0" promptText="Stanowisko" />
                         <JFXButton onAction="#changeEmployeeData" prefHeight="46.0" prefWidth="482.0" text="Edytuj pracownika" />
                      </children>
                      <padding>
@@ -38,20 +38,20 @@
                   </VBox>
                   <VBox prefHeight="631.0" prefWidth="162.0" spacing="50.0">
                      <children>
-                        <JFXTextField fx:id="name" alignment="CENTER" prefHeight="25.0" prefWidth="159.0" promptText="Imię" />
-                        <JFXTextField fx:id="surname" alignment="CENTER" promptText="Nazwisko" />
-                        <JFXTextField fx:id="pesel" alignment="CENTER" promptText="Pesel" />
+                        <JFXTextField fx:id="name" alignment="CENTER" labelFloat="true" prefHeight="25.0" prefWidth="159.0" promptText="Imię" />
+                        <JFXTextField fx:id="surname" alignment="CENTER" labelFloat="true" promptText="Nazwisko" />
+                        <JFXTextField fx:id="pesel" alignment="CENTER" labelFloat="true" promptText="Pesel" />
                      </children>
                      <padding>
                         <Insets bottom="10.0" left="30.0" right="30.0" top="40.0" />
                      </padding>
                   </VBox>
-                  <JFXPasswordField fx:id="new_password" alignment="CENTER" promptText="Nowe hasło" GridPane.rowIndex="1">
+                  <JFXPasswordField fx:id="new_password" alignment="CENTER" labelFloat="true" promptText="Nowe hasło" GridPane.rowIndex="1">
                      <GridPane.margin>
                         <Insets left="30.0" right="30.0" />
                      </GridPane.margin>
                   </JFXPasswordField>
-                  <JFXPasswordField fx:id="confirmed_new_password" alignment="CENTER" promptText="Powierdź nowe hasło" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                  <JFXPasswordField fx:id="confirmed_new_password" alignment="CENTER" labelFloat="true" promptText="Powierdź nowe hasło" GridPane.columnIndex="1" GridPane.rowIndex="1">
                      <GridPane.margin>
                         <Insets left="30.0" right="30.0" />
                      </GridPane.margin>

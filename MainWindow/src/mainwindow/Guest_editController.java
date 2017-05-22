@@ -37,32 +37,25 @@ public class Guest_editController implements Initializable {
     private JFXTextField surname;
     @FXML
     private JFXTextField pesel;
+
     @FXML
     private void changeGuestData(ActionEvent event) throws SQLException {
         String phone_guest = phone.getText();
         String pesel_guest = pesel.getText();
         if (phone_guest.isEmpty() || pesel_guest.isEmpty()) {
-            Alert alert1 = new Alert(Alert.AlertType.ERROR);
-            alert1.setHeaderText(null);
-            alert1.setContentText("Wypełnij wszystkie pola");
-            alert1.showAndWait();
+            ObjectManager.GetInstance().dataservice.getAlertWindow("Wypełnij wszystkie pola");
+
         } else {
             if (ObjectManager.GetInstance().guestservice.updateGuestData(pesel_guest, phone_guest)) {
-                Alert alert4 = new Alert(Alert.AlertType.INFORMATION);
-                alert4.setHeaderText(null);
-                alert4.setContentText("Akutalizowano goscia");
-                alert4.showAndWait();
+                ObjectManager.GetInstance().dataservice.getInformactiontWindow("Akutalizowano goscia");
             } else {
-                Alert alert2 = new Alert(Alert.AlertType.ERROR);
-                alert2.setHeaderText(null);
-                alert2.setContentText("Błąd przy akutalizacji danych goscia");
-                alert2.showAndWait();
+                ObjectManager.GetInstance().dataservice.getAlertWindow("Błąd przy akutalizacji danych goscia");
             }
         }
 
     }
 
-     void addGuestData(String name2, String surname2, String pesel2, String number) {
+    void addGuestData(String name2, String surname2, String pesel2, String number) {
         name.setText(name2);
         surname.setText(surname2);
         pesel.setText(pesel2);
@@ -70,20 +63,11 @@ public class Guest_editController implements Initializable {
         surname.setDisable(true);
         pesel.setDisable(true);
         phone.setText(number);
-        
+
     }
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        
-        phone.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                if (newValue.matches("\\d*")) {
-                } else {
-                    phone.setText(oldValue);
-                }
-            }
-        });
+        ObjectManager.GetInstance().dataservice.chechIsNumber(phone);
     }
 }

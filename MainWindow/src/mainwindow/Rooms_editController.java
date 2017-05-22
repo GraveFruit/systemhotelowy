@@ -53,21 +53,13 @@ public class Rooms_editController implements Initializable{
         
         
         if (typ_pokoju.isEmpty() || standard_pokoju.isEmpty() || status_pokoju.isEmpty() ) {
-            Alert alert1 = new Alert(Alert.AlertType.ERROR);
-            alert1.setHeaderText(null);
-            alert1.setContentText("Wypełnij wszystkie pola");
-            alert1.showAndWait();
+           ObjectManager.GetInstance().dataservice.getAlertWindow("Wypełnij wszystkie pola");
         } else {
             if (ObjectManager.GetInstance().roomservice.updateRoomsData(nr_pokoju, typ_pokoju, standard_pokoju, status_pokoju )) {
-                Alert alert4 = new Alert(Alert.AlertType.INFORMATION);
-                alert4.setHeaderText(null);
-                alert4.setContentText("Zakutalizowano pokój");
-                alert4.showAndWait();
+                ObjectManager.GetInstance().dataservice.getInformactiontWindow("Zakutalizowano pokój");
             } else {
-                Alert alert2 = new Alert(Alert.AlertType.ERROR);
-                alert2.setHeaderText(null);
-                alert2.setContentText("Błąd przy akutalizacji pokoju");
-                alert2.showAndWait();
+                ObjectManager.GetInstance().dataservice.getAlertWindow("Błąd przy akutalizacji pokoju");
+
             }
         }
     }

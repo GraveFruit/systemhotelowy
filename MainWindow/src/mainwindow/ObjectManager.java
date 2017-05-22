@@ -6,10 +6,12 @@
 package mainwindow;
 
 import base.service.BookingService;
+import base.service.DataService;
 import base.service.EmployeeService;
 import base.service.GuestService;
 import base.service.LoginService;
 import base.service.OfferService;
+import base.service.RaportService;
 import base.service.RoomService;
 import base.service.TaskService;
 import java.sql.Date;
@@ -31,6 +33,8 @@ public class ObjectManager {
     public RoomService roomservice;
     public String currentData;
     public LoginService loginservice;
+    public RaportService raportservice;
+    public DataService dataservice;
 
     private ObjectManager() {
         offerservice = new OfferService();
@@ -38,9 +42,11 @@ public class ObjectManager {
         employeeservice = new EmployeeService();
         taskservice = new TaskService();
         bookingservice = new BookingService();
-        roomservice= new RoomService();
-        currentData=LocalDate.now().toString();
+        roomservice = new RoomService();
+        currentData = LocalDate.now().toString();
         loginservice = new LoginService();
+        raportservice = new RaportService();
+        dataservice= new DataService();
     }
 
     public static ObjectManager GetInstance() {

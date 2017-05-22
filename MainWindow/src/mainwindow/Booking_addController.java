@@ -7,6 +7,7 @@ package mainwindow;
 
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDatePicker;
+import com.jfoenix.controls.JFXTextField;
 import hotel.base.Bookings;
 import hotel.base.DataBase;
 import hotel.base.Guests;
@@ -98,17 +99,12 @@ public class Booking_addController implements Initializable {
     @FXML
     private Label booking_label2;
 
-    private  Guests clientTableSelected(){
+    private Guests clientTableSelected() {
         return client_tableview.getSelectionModel().getSelectedItem();
     }
-    private  Offer bookingTableSelected(){
+
+    private Offer bookingTableSelected() {
         return booking_tableview.getSelectionModel().getSelectedItem();
-    }
-    public void getAlertWindow(String alert) {
-        Alert alert1 = new Alert(Alert.AlertType.ERROR);
-        alert1.setHeaderText(null);
-        alert1.setContentText(alert);
-        alert1.showAndWait();
     }
 
     private void initGuestsBooking_Table() {
@@ -123,7 +119,6 @@ public class Booking_addController implements Initializable {
         client_tableview.getItems().setAll(ObjectManager.GetInstance().guestservice.getGuest_Data(
                 clientName, clientSurname, clientPesel, clientPhone));
     }
-    
 
     @FXML//dodawanie klienta
     private void addClient(ActionEvent event) throws SQLException {
@@ -133,28 +128,23 @@ public class Booking_addController implements Initializable {
         String pesel_c = client_pesel.getText();
 
         if (name_c.isEmpty() || surname_c.isEmpty() || phone_c.isEmpty() || pesel_c.isEmpty()) {
-            getAlertWindow("Wypełnij wszystkie pola");
+            ObjectManager.GetInstance().dataservice.getAlertWindow("Wypełnij wszystkie pola");
         } else if (!name_c.matches("^[\\p{L} .'-]+$") || !surname_c.matches("^[\\p{L} .'-]+$")) {
-            getAlertWindow("Błędne imię lub nazwisko");
+            ObjectManager.GetInstance().dataservice.getAlertWindow("Błędne imię lub nazwisko");
         } else if (!pesel_c.matches("[0-9]{11}")) {
-            getAlertWindow("Błędny pesel");
+            ObjectManager.GetInstance().dataservice.getAlertWindow("Błędny pesel");
         } else if (!phone_c.matches("^[0-9]{7,15}$")) {
-            getAlertWindow("Błędny telefon");
+            ObjectManager.GetInstance().dataservice.getAlertWindow("Błędny telefon");
         } else {
             if (ObjectManager.GetInstance().guestservice.insertClient(name_c, surname_c, phone_c, pesel_c)) {
-                Alert alert1 = new Alert(Alert.AlertType.INFORMATION);
-                alert1.setHeaderText(null);
-                alert1.setContentText("Dodano klienta");
-                alert1.showAndWait();
-                initGuestsBooking_Table();
+                ObjectManager.GetInstance().dataservice.getInformactiontWindow("Dodano klienta");
                 client_name.clear();
                 client_surname.clear();
                 client_phone.clear();
                 client_pesel.clear();
 
             } else {
-                Alert alert2 = new Alert(Alert.AlertType.ERROR);
-                getAlertWindow("Błąd przy dodawaniu klienta");
+                ObjectManager.GetInstance().dataservice.getAlertWindow("Błąd przy dodawaniu klienta");
             }
         }
     }
@@ -180,21 +170,51 @@ public class Booking_addController implements Initializable {
         String datak = booking_datek.getValue().toString();
         String komentarz = booking_comment.getText();
         if (clientTableSelected() == null || bookingTableSelected() == null) {
-            getAlertWindow("Wybierz gościa i pokój");
+            ObjectManager.GetInstance().dataservice.getAlertWindow("Wybierz gościa i pokój");
         } else {
             String klient = clientTableSelected().getPesel_guest();
             int pokoj = bookingTableSelected().getNumber_offer();
             if (ObjectManager.GetInstance().bookingservice.insertBooking(klient, pracownik, pokoj, datap, datak, komentarz)) {
-                getAlertWindow("Dodano rezerwację");
+                ObjectManager.GetInstance().dataservice.getInformactiontWindow("Dodano rezerwację");
                 booking_comment.clear();
-                if (bookingTableSelected()!= null) {
+                if (bookingTableSelected() != null) {
                     booking_tableview.getItems().remove(bookingTableSelected());
                 }
             } else {
-                getAlertWindow("Błąd przy dodawaniu rezerwacji");
+                ObjectManager.GetInstance().dataservice.getAlertWindow("Błąd przy dodawaniu rezerwacji");
             }
         }
+    }
+    
+    private void initTableEvent() {
+        booking_tableview.getSelectionModel().selectedItemProperty().
+                addListener((obs, oldSelection, newSelection) -> {
+                    if (newSelection != null) {
+                        booking_label2.setText("is booking room "
+                                + bookingTableSelected().getNumber_offer());
+                    }
+                });
+        client_tableview.getSelectionModel().selectedItemProperty().
+                addListener((obs, oldSelection, newSelection) -> {
+                    if (newSelection != null) {
+                        booking_label.setText("Guest "
+                                + clientTableSelected().getName_guest()
+                                + " " + clientTableSelected().getSurname_guest());
+                    }
+                });
+    }
 
+    private void searchGuest(TextField name) {
+        name.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                if (!newValue.isEmpty()) {
+                    initGuestsBooking_Table();
+
+                }
+            }
+        });
+       
     }
 
     @Override
@@ -202,85 +222,13 @@ public class Booking_addController implements Initializable {
         base = DataBase.getInstance();
         booking_typbox.setItems(booking_typ_list);
         booking_standardbox.setItems(booking_standard_list);
-        booking_datep.setValue(LocalDate.now());
-        booking_datek.setValue(LocalDate.now().plusDays(1));
-        booking_tableview.getSelectionModel().selectedItemProperty().
-                addListener((obs, oldSelection, newSelection) -> {
-                    if (newSelection != null) {
-                        booking_label2.setText("is booking room "
-                                + booking_tableview.getSelectionModel().getSelectedItem().getNumber_offer());
-                    }
-                });
-        client_tableview.getSelectionModel().selectedItemProperty().
-                addListener((obs, oldSelection, newSelection) -> {
-                    if (newSelection != null) {
-                        booking_label.setText("Guest "
-                                + client_tableview.getSelectionModel().getSelectedItem().getName_guest()
-                                + " " + client_tableview.getSelectionModel().getSelectedItem().getSurname_guest());
-                    }
-                });
-
-        final Callback<DatePicker, DateCell> dateCalLabel1
-                = (final DatePicker datePicker) -> new DateCell() {
-            @Override
-            public void updateItem(LocalDate item, boolean empty) {
-                super.updateItem(item, empty);
-
-                if (item.isBefore(LocalDate.now()) || item.isAfter(booking_datek.getValue().minusDays(1))) {
-                    setDisable(true);
-                    setStyle("-fx-background-color: #ffc0cb;");
-                }
-            }
-        };
-        booking_datep.setDayCellFactory(dateCalLabel1);
-        final Callback<DatePicker, DateCell> dateCalLabel2
-                = (final DatePicker datePicker) -> new DateCell() {
-            @Override
-            public void updateItem(LocalDate item, boolean empty) {
-                super.updateItem(item, empty);
-
-                if (item.isBefore(booking_datep.getValue().plusDays(1))) {
-                    setDisable(true);
-                    setStyle("-fx-background-color: #ffc0cb;");
-                }
-            }
-        };
-        booking_datek.setDayCellFactory(dateCalLabel2);
-        client_name.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                if (!newValue.isEmpty()) {
-                    initGuestsBooking_Table();
-
-                }
-            }
-        });
-        client_surname.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                if (!newValue.isEmpty()) {
-                    initGuestsBooking_Table();
-
-                }
-            }
-        });
-        client_pesel.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                if (!newValue.isEmpty()) {
-                    initGuestsBooking_Table();
-
-                }
-            }
-        });
-        client_phone.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                if (!newValue.isEmpty()) {
-                    initGuestsBooking_Table();
-
-                }
-            }
-        });
+        ObjectManager.GetInstance().dataservice.checkBookingsDate(booking_datep,booking_datek);
+        initTableEvent();
+        searchGuest(client_name);
+        searchGuest(client_surname);
+        searchGuest(client_pesel);
+        searchGuest(client_phone);
+        ObjectManager.GetInstance().dataservice.chechIsNumber(client_pesel);
+        ObjectManager.GetInstance().dataservice.chechIsNumber(client_phone);
     }
 }

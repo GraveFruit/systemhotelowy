@@ -105,22 +105,15 @@ public class Booking_editController implements Initializable {
     private TableColumn<?, ?> newbooking_number;
     @FXML
     private TableColumn<?, ?> booking_status;
-
-    public void getAlertWindow(String alert) {
-        Alert alert1 = new Alert(Alert.AlertType.ERROR);
-        alert1.setHeaderText(null);
-        alert1.setContentText(alert);
-        alert1.showAndWait();
-    }
     
     private  Guests clientTableSelected() {
             return client_tableview.getSelectionModel().getSelectedItem();  
         }
     private  Offer bookingTableSelected() {
-        return booking_tableview.getSelectionModel().getSelectedItem();
+            return booking_tableview.getSelectionModel().getSelectedItem();
     }
     private  Offer newBookkingTableSelected() {
-        return newbooking_tableview.getSelectionModel().getSelectedItem();
+             return newbooking_tableview.getSelectionModel().getSelectedItem();
     }
 
     private void initGuestsBooking_Table() {
@@ -154,7 +147,7 @@ public class Booking_editController implements Initializable {
     @FXML
     private void cancelBooking(ActionEvent event) {
         if (bookingTableSelected() == null) {
-            getAlertWindow("Wybierz rezerwacje, którą archiwizujesz");
+            ObjectManager.GetInstance().dataservice.getAlertWindow("Wybierz rezerwacje, którą archiwizujesz");
         } else {
             int id = bookingTableSelected().getId_booking();
             ObjectManager.GetInstance().bookingservice.cancelBooking(id);
@@ -165,7 +158,7 @@ public class Booking_editController implements Initializable {
     @FXML
     private void restoreBooking(ActionEvent event) {
         if (bookingTableSelected() == null) {
-            getAlertWindow("Wybierz rezerwację, którą przywracasz");
+            ObjectManager.GetInstance().dataservice.getAlertWindow("Wybierz rezerwację, którą przywracasz");
         } else {
             String roomNumber = Integer.toString(bookingTableSelected().getNumber_offer());
             String startDate = bookingTableSelected().getDatap_booking();
@@ -174,6 +167,8 @@ public class Booking_editController implements Initializable {
             if (ObjectManager.GetInstance().offerservice.getPrologData(roomNumber, startDate, endDate)) {
                 ObjectManager.GetInstance().bookingservice.restoreBooking(id);
                 refreshTable();
+            }else{
+                ObjectManager.GetInstance().dataservice.getAlertWindow("Termin już zajęty");
             }
         }
     }
@@ -199,37 +194,26 @@ public class Booking_editController implements Initializable {
         String datak = booking_datek.getValue().toString();
         String komentarz = booking_comment.getText();
         if (clientTableSelected() == null || newBookkingTableSelected() == null) {
-            getAlertWindow("Wybierz gościa i pokój");
+            ObjectManager.GetInstance().dataservice.getAlertWindow("Wybierz gościa i pokój");
         } else {
             String klient = clientTableSelected().getPesel_guest();
             int pokoj = newBookkingTableSelected().getNumber_offer();
             int id=bookingTableSelected().getId_booking();
             if (ObjectManager.GetInstance().bookingservice.insertBooking(klient, pracownik, pokoj, datap, datak, komentarz)
                     && ObjectManager.GetInstance().bookingservice.deleteBooking(id)) {
-                getAlertWindow("Zakutalizowano rezerwację");
+                ObjectManager.GetInstance().dataservice.getInformactiontWindow("Zakutalizowano rezerwację");
                 booking_comment.clear();
                 if (bookingTableSelected()!= null) {
                     booking_tableview.getItems().remove(bookingTableSelected());
                     initNewBooking_Table();
                 }
             } else {
-                getAlertWindow("Błąd przy dodawaniu rezerwacji");
+                ObjectManager.GetInstance().dataservice.getAlertWindow("Błąd przy dodawaniu rezerwacji");
             }
         }
     }
-
-    public void refreshTable() {
-        String pesel=clientTableSelected().getPesel_guest();
-        booking_tableview.getItems().setAll(ObjectManager.GetInstance().offerservice.getReceptionData(pesel));
-    }
-
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        base = DataBase.getInstance();
-        booking_typbox.setItems(booking_typ_list);
-        booking_standardbox.setItems(booking_standard_list);
-        booking_datep.setValue(LocalDate.now());
-        booking_datek.setValue(LocalDate.now().plusDays(1));
+    
+    private void initTableEvent(){
         client_tableview.getSelectionModel().selectedItemProperty().
                 addListener((obs, oldSelection, newSelection) -> {
                     if (newSelection != null) {
@@ -250,33 +234,14 @@ public class Booking_editController implements Initializable {
                     }
                 });
 
-        final Callback<DatePicker, DateCell> dateCalLabel1
-                = (final DatePicker datePicker) -> new DateCell() {
-            @Override
-            public void updateItem(LocalDate item, boolean empty) {
-                super.updateItem(item, empty);
-
-                if (item.isBefore(LocalDate.now()) || item.isAfter(booking_datek.getValue().minusDays(1))) {
-                    setDisable(true);
-                    setStyle("-fx-background-color: #ffc0cb;");
-                }
-            }
-        };
-        booking_datep.setDayCellFactory(dateCalLabel1);
-        final Callback<DatePicker, DateCell> dateCalLabel2
-                = (final DatePicker datePicker) -> new DateCell() {
-            @Override
-            public void updateItem(LocalDate item, boolean empty) {
-                super.updateItem(item, empty);
-
-                if (item.isBefore(booking_datep.getValue().plusDays(1))) {
-                    setDisable(true);
-                    setStyle("-fx-background-color: #ffc0cb;");
-                }
-            }
-        };
-        booking_datek.setDayCellFactory(dateCalLabel2);
-        client_name.textProperty().addListener(new ChangeListener<String>() {
+    }
+    public void refreshTable() {
+        String pesel=clientTableSelected().getPesel_guest();
+        booking_tableview.getItems().setAll(ObjectManager.GetInstance().offerservice.getReceptionData(pesel));
+    }
+    
+    private void searchGuest(TextField name){
+         name.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                 if (!newValue.isEmpty()) {
@@ -284,34 +249,21 @@ public class Booking_editController implements Initializable {
 
                 }
             }
-        });
-        client_surname.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                if (!newValue.isEmpty()) {
-                    initGuestsBooking_Table();
-
-                }
-            }
-        });
-        client_pesel.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                if (!newValue.isEmpty()) {
-                    initGuestsBooking_Table();
-
-                }
-            }
-        });
-        client_phone.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                if (!newValue.isEmpty()) {
-                    initGuestsBooking_Table();
-
-                }
-            }
-        });
+        });       
+    }
+    
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        base = DataBase.getInstance();
+        booking_typbox.setItems(booking_typ_list);
+        booking_standardbox.setItems(booking_standard_list);
+        initTableEvent();
+        ObjectManager.GetInstance().dataservice.checkBookingsDate(booking_datep,booking_datek);
+        searchGuest(client_name);
+        searchGuest(client_surname);
+        searchGuest(client_pesel);
+        searchGuest(client_phone);
+ 
     }
                     }
                     

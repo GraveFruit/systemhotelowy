@@ -24,6 +24,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
+
 /**
  *
  * @author Wiola
@@ -49,48 +50,24 @@ public class Guest_addController implements Initializable {
         String surname_guest = surname.getText();
         String phone_guest = phone.getText();
         String pesel_guest = pesel.getText();
-       if (name_guest.isEmpty() || surname_guest.isEmpty() || phone_guest.isEmpty() || pesel_guest.isEmpty()) {
-            Alert alert1 = new Alert(Alert.AlertType.ERROR);
-            alert1.setHeaderText(null);
-            alert1.setContentText("Wypełnij wszystkie pola");
-            alert1.showAndWait();
+        if (name_guest.isEmpty() || surname_guest.isEmpty() || phone_guest.isEmpty() || pesel_guest.isEmpty()) {
+            ObjectManager.GetInstance().dataservice.getAlertWindow("Wypełnij wszystkie pola");
+
         } else {
             if (ObjectManager.GetInstance().guestservice.insertClient(name_guest, surname_guest, phone_guest, pesel_guest)) {
-                Alert alert4 = new Alert(Alert.AlertType.INFORMATION);
-                alert4.setHeaderText(null);
-                alert4.setContentText("Dodano element");
-                alert4.showAndWait();
+                ObjectManager.GetInstance().dataservice.getInformactiontWindow("Dodano element");
             } else {
-                Alert alert2 = new Alert(Alert.AlertType.ERROR);
-                alert2.setHeaderText(null);
-                alert2.setContentText("Błąd przy dodawaniu pracownika");
-                alert2.showAndWait();
+                ObjectManager.GetInstance().dataservice.getAlertWindow("Błąd przy dodawaniu pracownika");
+
             }
         }
-
     }
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        
         base = DataBase.getInstance();
-        phone.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                if (newValue.matches("\\d*")) {
-                } else {
-                    phone.setText(oldValue);
-                }
-            }
-        });
-        pesel.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                if (newValue.matches("\\d*")) {
-                } else {
-                    pesel.setText(oldValue);
-                }
-            }
-        });
+        ObjectManager.GetInstance().dataservice.chechIsNumber(phone);
+         ObjectManager.GetInstance().dataservice.chechIsNumber(pesel);
     }
 
 }

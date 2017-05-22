@@ -17,6 +17,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Button;
 import mainwindow.FXMLDocumentController;
+import mainwindow.ObjectManager;
 
 /**
  *
@@ -49,7 +50,7 @@ public class RoomService {
 
             return FXCollections.observableArrayList(rooms_list);
         } catch (SQLException ex) {
-            Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
+            ObjectManager.GetInstance().dataservice.getAlertWindow("Błąd wczytywania pokoi");
         }
         return null;
     }
@@ -71,7 +72,7 @@ public class RoomService {
 
             return FXCollections.observableArrayList(rooms_list);
         } catch (SQLException ex) {
-            Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
+            ObjectManager.GetInstance().dataservice.getAlertWindow("Błąd wczytywania numerów pokoi");
         }
         return null;
     }

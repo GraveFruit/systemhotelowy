@@ -16,6 +16,7 @@ import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import mainwindow.FXMLDocumentController;
+import mainwindow.ObjectManager;
 
 /**
  *
@@ -48,7 +49,7 @@ public class EmployeeService {
 
             return FXCollections.observableArrayList(employee_list);
         } catch (SQLException ex) {
-            Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
+            ObjectManager.GetInstance().dataservice.getAlertWindow("Błąd wczytywania pracowników");
         }
         return null;
     }
@@ -81,7 +82,7 @@ public class EmployeeService {
 
             return FXCollections.observableArrayList(employee_list);
         } catch (SQLException ex) {
-            Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
+            ObjectManager.GetInstance().dataservice.getAlertWindow("Błąd wczytywania zadań pracowników");
         }
         return null;
     }
@@ -94,7 +95,6 @@ public class EmployeeService {
     public int getLazyTaskEmployee() {
         int wynik = 0;
         try {
-            ObservableList<Employee> employee_list = FXCollections.observableArrayList();
             Statement statement = DataBase.getConnection().createStatement();
             ResultSet result = statement.executeQuery("select distinct p.pracownik_id, "
                     + "count(l.zadanie_id) as ilosc_zadan, count(z.zadanie_id) as ilosc_skonczonych "
@@ -108,7 +108,7 @@ public class EmployeeService {
                 wynik = id;
             }
         } catch (SQLException ex) {
-            Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
+            ObjectManager.GetInstance().dataservice.getAlertWindow("Błąd wczytywania niezajętego pracownika");
         }
         return wynik;
     }

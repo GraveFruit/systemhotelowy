@@ -17,6 +17,7 @@ import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import mainwindow.FXMLDocumentController;
+import mainwindow.ObjectManager;
 
 /**
  *
@@ -43,7 +44,8 @@ public class OfferService {
                     + " (select distinct p.pokoj_id from pokoje p, rezerwacje r "
                     + " where p.pokoj_id = r.pokoj_id and r.status>0 and(('"
                     + datap + "' between r.data_p  and DATE_SUB(r.data_k,INTERVAL 1 DAY)) or ('" + datak + "' between DATE_ADD(r.data_p,INTERVAL 1 DAY) and r.data_k)"
-                    + " or ('" + datap + "' between r.data_p  and r.data_k and '" + datak + "' between r.data_p and r.data_k)))");
+                    + " or ('" + datap + "' between r.data_p  and r.data_k and '" + datak + "' between r.data_p and r.data_k) "
+                            + " or ('"+datap+ "' <=r.data_p and '"+datak+"' >=r.data_k )))");
             while (result.next()) {
                 int id = result.getInt("numer");
                 String floor = result.getString("pietro");
@@ -56,7 +58,7 @@ public class OfferService {
 
             return FXCollections.observableArrayList(offer_list);
         } catch (SQLException ex) {
-            Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
+            ObjectManager.GetInstance().dataservice.getAlertWindow("Błąd wczytywania oferty");
         }
         return null;
     }
@@ -99,7 +101,7 @@ public class OfferService {
 
             return FXCollections.observableArrayList(offer_list);
         } catch (SQLException ex) {
-            Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
+            ObjectManager.GetInstance().dataservice.getAlertWindow("Błąd wczytywania rezeracji danego pracownika");
         }
         return null;
     }
@@ -122,14 +124,15 @@ public class OfferService {
                     + " (select distinct p.pokoj_id from pokoje p, rezerwacje r "
                     + " where p.pokoj_id = r.pokoj_id and r.status>0 and(('"
                     + datap + "' between r.data_p  and DATE_SUB(r.data_k,INTERVAL 1 DAY)) or ('" + datak + "' between DATE_ADD(r.data_p,INTERVAL 1 DAY) and r.data_k)"
-                    + " or ('" + datap + "' between r.data_p  and r.data_k and '" + datak + "' between r.data_p and r.data_k)))");
+                    + " or ('" + datap + "' between r.data_p  and r.data_k and '" + datak + "' between r.data_p and r.data_k) "
+                            + " or ('"+datap+ "' <=r.data_p and '"+datak+"' >=r.data_k )))");
             while(result.next()){
              standard=result.getString("standard");
          }
              wynik=standard.isEmpty();
               //System.out.println("stan= "+standard+" wynik= "+wynik);
         } catch (SQLException ex) {
-            Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
+            ObjectManager.GetInstance().dataservice.getAlertWindow("Błąd wczytywania przedłużania rezerwacji");
         }
         return !wynik;
     }

@@ -60,10 +60,7 @@ public class Tasks_showController implements Initializable {
      @FXML
     private void changeTaskStatus(ActionEvent event) {
          if ( taskTableSelected()==null ) {
-                Alert alert1 = new Alert(Alert.AlertType.ERROR);
-                alert1.setHeaderText(null);
-                alert1.setContentText("Zaznacz zadanie");
-                alert1.showAndWait();
+                ObjectManager.GetInstance().dataservice.getAlertWindow("Zaznacz zadanie");
             } else {
              int id= taskTableSelected().getId_task();
              if(ObjectManager.GetInstance().taskservice.updateTaskStatus(id)){
@@ -73,12 +70,8 @@ public class Tasks_showController implements Initializable {
                 }
                    initEmployeeTasks_Table();
                 } else {
-                    Alert alert2 = new Alert(Alert.AlertType.ERROR);
-                    alert2.setHeaderText(null);
-                    alert2.setContentText("Błąd przy dodawaniu zadania");
-                    alert2.showAndWait();
-                }
-            
+                    ObjectManager.GetInstance().dataservice.getAlertWindow("Błąd przy dodawaniu zadania");
+                }   
     }
     }
     
