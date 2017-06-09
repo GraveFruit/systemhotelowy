@@ -210,17 +210,19 @@ public class EmployeeService {
     /**
      *method changes employee's status
      * @param id employee's "pesel"
+     * @param status employee's new status
      * @return  true if success
      */
-    public boolean changeEmployeeStatus(String id) {
+    public boolean changeEmployeeStatus( String status,String id) {
         try {
             PreparedStatement prep = DataBase.getConnection().prepareStatement(
-                    "Update pracownicy set status='1' where pesel=?");
-            prep.setString(1, id);
+                    "Update pracownicy set status=? where pracownik_id=?");
+            prep.setString(1, status);
+            prep.setString(2,id);
             prep.executeUpdate();
 
         } catch (SQLException e) {
-            System.err.println("Błąd przy usuwaniu pracownika");
+            System.err.println("Błąd przy zmianie statusu pracownika");
             return false;
         }
         return true;

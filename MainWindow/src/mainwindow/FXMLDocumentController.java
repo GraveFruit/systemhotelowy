@@ -255,6 +255,13 @@ public class FXMLDocumentController implements Initializable {
         makeWindow("ShowOffer.fxml", "Wybierz pokój idealny dla ciebie", guest_offer);
     }
 
+    /**
+     *methods creates new window
+     * @param file resource to fxml file
+     * @param name window title
+     * @param button initialization button
+     * @throws IOException
+     */
     public void makeWindow(String file, String name, Button button) throws IOException {
         Parent loader = FXMLLoader.load(getClass().getResource(file));
         Scene scene = new Scene(loader);
@@ -267,6 +274,14 @@ public class FXMLDocumentController implements Initializable {
         stage.showAndWait();
     }
 
+     /**
+     *methods creates new window
+     * @param file resource to fxml file
+     * @param name window title
+     * @param button initialization button
+     * @param stage initialization stage
+     * @throws IOException
+     */
     public void makeWindow(String file, String name, Button button, Stage stage) throws IOException {
         Parent loader = FXMLLoader.load(getClass().getResource(file));
         Scene scene = new Scene(loader);
@@ -279,31 +294,59 @@ public class FXMLDocumentController implements Initializable {
         stage.showAndWait();
     }
 
+    /**
+     *methods returns selected data from checkin table
+     * @return Bookings class object
+     */
     public Bookings getCheckInSeleted() {
         return bookingCheckIn_tableview.getSelectionModel().getSelectedItem();
     }
 
+     /**
+     *methods checks if rooms is ready
+     * @return true if room is ready (status 0)
+     */
     public boolean checkRoomReady() {
         String status = getCheckInSeleted().getRoom_booking();
         return ObjectManager.GetInstance().roomservice.checkRoomStatus(status);
     }
 
+     /**
+     *methods returns selected data from checkout table
+     * @return Bookings class object
+     */
     public Bookings getCheckOutSeleted() {
         return bookingCheckOut_tableview.getSelectionModel().getSelectedItem();
     }
 
+     /**
+     *methods returns selected data from employees table
+     * @return Employee class object
+     */
     public Employee getEmployeeTableSeleted() {
         return employee_tableview.getSelectionModel().getSelectedItem();
     }
 
+    /**
+     *methods returns selected data from rooms table
+     * @return Rooms class object
+     */
     public Rooms getRoomTableSeleted() {
         return room_tableview.getSelectionModel().getSelectedItem();
     }
 
+     /**
+     *methods returns selected data from tasks table
+     * @return Tasks class object
+     */
     public Tasks getTaskTableSeleted() {
         return task_tableview.getSelectionModel().getSelectedItem();
     }
 
+     /**
+     *methods returns selected data from guest table
+     * @return Guests class object
+     */
     public Guests getGuestTableSeleted() {
         return guest_tableview.getSelectionModel().getSelectedItem();
     }
@@ -657,6 +700,9 @@ public class FXMLDocumentController implements Initializable {
 
     }
       
+    /**
+     *methods initializes  reception_taskComment textfield if checkout table data is selected
+     */
     public void initCheckOutSelected(){
         bookingCheckOut_tableview.getSelectionModel().selectedItemProperty().
                 addListener((obs, oldSelection, newSelection) -> {
@@ -667,13 +713,13 @@ public class FXMLDocumentController implements Initializable {
                 });
     }
 
-    @FXML//towrzenien raportu rezerwacji
+    @FXML//tworzenien raportu rezerwacji
     private void makeRaport(ActionEvent event) {
         ObjectManager.GetInstance().raportservice.generateRaport();
 
     }
 
-    @FXML//towrzenien statystyk
+    @FXML//tworzenien statystyk
     private void makeStatistics(ActionEvent event) {
         if (statDateStart.getValue() != null && statDateEnd.getValue() != null) {
             String startDate = statDateStart.getValue().toString();
@@ -685,6 +731,10 @@ public class FXMLDocumentController implements Initializable {
     }
 
     //inicjalizacja tabel
+
+    /**
+     *method inicializes rooms table
+     */
     public void initRooms_Table() {
         room_number.setCellValueFactory(new PropertyValueFactory<>("Number_room"));
         room_floor.setCellValueFactory(new PropertyValueFactory<>("Floor_room"));
@@ -694,6 +744,9 @@ public class FXMLDocumentController implements Initializable {
         room_tableview.getItems().setAll(ObjectManager.GetInstance().roomservice.getData());
     }
 
+    /**
+     *method inicializes employees table
+     */
     public void initEmployee_Table() {
         employee_name.setCellValueFactory(new PropertyValueFactory<>("Name_employee"));
         employee_surname.setCellValueFactory(new PropertyValueFactory<>("Surname_employee"));
@@ -704,6 +757,9 @@ public class FXMLDocumentController implements Initializable {
         employee_tableview.getItems().setAll(ObjectManager.GetInstance().employeeservice.getData());
     }
 
+    /**
+     *methods inicializes tasks table
+     */
     public void initTasks_Table() {
         room_task.setCellValueFactory(new PropertyValueFactory<>("Room_task"));
         employee_task.setCellValueFactory(new PropertyValueFactory<>("Employee_task"));
@@ -715,6 +771,9 @@ public class FXMLDocumentController implements Initializable {
         task_tableview.getItems().setAll(ObjectManager.GetInstance().taskservice.getData());
     }
 
+    /**
+     *method inicializes bookings table
+     */
     public void initBookings_Table() {
         booking_id.setCellValueFactory(new PropertyValueFactory<>("Id_booking"));
         booking_client.setCellValueFactory(new PropertyValueFactory<>("Client_booking"));
@@ -727,6 +786,9 @@ public class FXMLDocumentController implements Initializable {
         booking_tableview.getItems().setAll(ObjectManager.GetInstance().bookingservice.getData());
     }
 
+    /**
+     *methods inicializes checkin table
+     */
     public void initBookingsCheckIn_Table() {
         bookingCheckIn_id.setCellValueFactory(new PropertyValueFactory<>("Id_booking"));
         bookingCheckIn_client.setCellValueFactory(new PropertyValueFactory<>("Client_booking"));
@@ -738,6 +800,9 @@ public class FXMLDocumentController implements Initializable {
         bookingCheckIn_tableview.getItems().setAll(ObjectManager.GetInstance().bookingservice.getBookingCheckIn());
     }
 
+    /**
+     *methods inicializes checkout table
+     */
     public void initBookingsCheckOut_Table() {
         bookingCheckOut_id.setCellValueFactory(new PropertyValueFactory<>("Id_booking"));
         bookingCheckOut_client.setCellValueFactory(new PropertyValueFactory<>("Client_booking"));
@@ -749,6 +814,9 @@ public class FXMLDocumentController implements Initializable {
         bookingCheckOut_tableview.getItems().setAll(ObjectManager.GetInstance().bookingservice.getBookingCheckOut());
     }
 
+    /**
+     *methods initializes guest table
+     */
     public void initGuests_Table() {
         guest_name.setCellValueFactory(new PropertyValueFactory<>("Name_guest"));
         guest_surname.setCellValueFactory(new PropertyValueFactory<>("Surname_guest"));
@@ -757,37 +825,64 @@ public class FXMLDocumentController implements Initializable {
         guest_tableview.getItems().setAll(ObjectManager.GetInstance().guestservice.getData());
     }
     
+    /**
+     *methods refresh employee table
+     */
     public void refreshEmployeeTable() {
         employee_tableview.getItems().setAll(ObjectManager.GetInstance().employeeservice.getData());
     }
 
+    /**
+     *methods refresh bookings table
+     */
     public void refreshBookingTable() {
         booking_tableview.getItems().setAll(ObjectManager.GetInstance().bookingservice.getData());
     }
 
+    /**
+     *methods refresh rooms table
+     */
     public void refreshRoomTable() {
         room_tableview.getItems().setAll(ObjectManager.GetInstance().roomservice.getData());
     }
 
+    /**
+     *methods refresh guests table
+     */
     public void refreshGuestTable() {
         guest_tableview.getItems().setAll(ObjectManager.GetInstance().guestservice.getData());
     }
 
+    /**
+     *methods refresh tasks table
+     */
     public void refreshTaskTable() {
         task_tableview.getItems().setAll(ObjectManager.GetInstance().taskservice.getData());
     }
 
+    /**
+     *methods refresh tables from reception module
+     */
     public void refreshReceptionTable() {
         bookingCheckIn_tableview.getItems().setAll(ObjectManager.GetInstance().bookingservice.getBookingCheckIn());
         bookingCheckOut_tableview.getItems().setAll(ObjectManager.GetInstance().bookingservice.getBookingCheckOut());
     }
 
+    /**
+     *methods initializes log out sequence
+     * @param event
+     */
     @FXML
     public void logoutsequence(ActionEvent event) {
         tab_lock(-1);
         ObjectManager.GetInstance().loginservice.logout();
     }
 
+    /**
+     *methods innicializes log in sequence
+     * @param event
+     * @throws SQLException
+     */
     @FXML
     public void loginsequence(ActionEvent event) throws SQLException {
         try {
@@ -806,11 +901,16 @@ public class FXMLDocumentController implements Initializable {
             int permission_level = Integer.parseInt(ObjectManager.GetInstance().loginservice.permissions);
             tab_lock(permission_level);
             loginprompt.setText("");
-
-            ObjectManager.GetInstance().employeeservice.changeEmployeeStatus(ObjectManager.GetInstance().loginservice.employeeSessionId);
+            ObjectManager.GetInstance().employeeservice.changeEmployeeStatus("1",
+            ObjectManager.GetInstance().loginservice.employeeSessionId);
+            initEmployee_Table();
         }
     }
 
+    /**
+     *methods inicializes modules depends of user's permissions 
+     * @param permission_level
+     */
     public void tab_lock(int permission_level) {
         switch (permission_level) {
             case 0:

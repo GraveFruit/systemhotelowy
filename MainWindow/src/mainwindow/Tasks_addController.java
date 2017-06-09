@@ -111,9 +111,10 @@ DataBase base;
     
      @FXML
     private void changeTaskStatus(ActionEvent event) {
-         if ( task_tableview.getSelectionModel().getSelectedItem()==null ) {
+         if ( task_tableview.getSelectionModel().getSelectedItem()==null || taskEmployeeTableSelected()==null ) {
                 ObjectManager.GetInstance().dataservice.getAlertWindow("Zaznacz zadanie");
             } else {
+            
              int id=taskTableSelected().getId_task();
              if(ObjectManager.GetInstance().taskservice.updateTaskStatus(id)){
              String room= taskTableSelected().getRoom_task();

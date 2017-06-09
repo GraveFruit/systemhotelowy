@@ -42,6 +42,12 @@ public class RaportService {
     private static final String RAPORTPATH = "C:\\Users\\Grzesiek\\Documents\\NetBeansProjects\\systemhotelowy\\MainWindow\\Rooms raport.pdf";
     private static final String STATISTICPATH = "C:\\Users\\Grzesiek\\Documents\\NetBeansProjects\\systemhotelowy\\MainWindow\\Statistics.pdf";
 
+    /**
+     *
+     * @param document
+     * @param pdfTable
+     * @param query
+     */
     public void makeRoomTable(Document document, PdfPTable pdfTable, String query) {
         try {
             pdfTable = new PdfPTable(4);
@@ -72,7 +78,13 @@ public class RaportService {
         }
     }
 
-     public void countAverageForSingleDay(Document document, List list, String query) {
+    /**
+     *
+     * @param document
+     * @param list
+     * @param query
+     */
+    public void countAverageForSingleDay(Document document, List list, String query) {
         double count;
         double average;
         try {
@@ -91,6 +103,14 @@ public class RaportService {
         }
     }
 
+    /**
+     *
+     * @param document
+     * @param list
+     * @param query
+     * @param listName
+     * @param column
+     */
     public void makePdfList(Document document, List list, String query, String listName,String column) {
         try {
             Statement statement = DataBase.getConnection().createStatement();
@@ -104,6 +124,10 @@ public class RaportService {
         }
     }
 
+    /**
+     *
+     * @param alert
+     */
     public void getAlertWindow(String alert) {
         Alert alert1 = new Alert(Alert.AlertType.ERROR);
         alert1.setHeaderText(null);
@@ -125,6 +149,9 @@ public class RaportService {
         }
     }
 
+    /**
+     *
+     */
     public void generateRaport() {
         try {
             Document document = new Document();
@@ -198,6 +225,11 @@ public class RaportService {
         openPdf(RAPORTPATH);
     }
 
+    /**
+     *
+     * @param startDate
+     * @param endDate
+     */
     public void generateStatistic(String startDate,String endDate) {
         try {
             Document document = new Document();

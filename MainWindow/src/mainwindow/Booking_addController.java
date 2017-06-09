@@ -129,7 +129,7 @@ public class Booking_addController implements Initializable {
 
         if (name_c.isEmpty() || surname_c.isEmpty() || phone_c.isEmpty() || pesel_c.isEmpty()) {
             ObjectManager.GetInstance().dataservice.getAlertWindow("Wypełnij wszystkie pola");
-        } else if (!name_c.matches("^[\\p{L} .'-]+$") || !surname_c.matches("^[\\p{L} .'-]+$")) {
+        } else if (!name_c.matches("\\p{L}") || !surname_c.matches("^[\\p{L} .'-]+$")) {
             ObjectManager.GetInstance().dataservice.getAlertWindow("Błędne imię lub nazwisko");
         } else if (!pesel_c.matches("[0-9]{11}")) {
             ObjectManager.GetInstance().dataservice.getAlertWindow("Błędny pesel");
@@ -138,11 +138,12 @@ public class Booking_addController implements Initializable {
         } else {
             if (ObjectManager.GetInstance().guestservice.insertClient(name_c, surname_c, phone_c, pesel_c)) {
                 ObjectManager.GetInstance().dataservice.getInformactiontWindow("Dodano klienta");
+                 initGuestsBooking_Table();
                 client_name.clear();
                 client_surname.clear();
                 client_phone.clear();
                 client_pesel.clear();
-
+               
             } else {
                 ObjectManager.GetInstance().dataservice.getAlertWindow("Błąd przy dodawaniu klienta");
             }

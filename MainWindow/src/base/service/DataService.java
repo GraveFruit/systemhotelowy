@@ -22,6 +22,11 @@ import javafx.util.Callback;
  */
 public class DataService {
 
+    /**
+     *methods selects correct data dor booking
+     * @param startDate booking start date
+     * @param endDate booking end date
+     */
     public void checkBookingsDate(JFXDatePicker startDate, JFXDatePicker endDate) {
         startDate.setValue(LocalDate.now());
         endDate.setValue(LocalDate.now().plusDays(1));
@@ -53,6 +58,11 @@ public class DataService {
         endDate.setDayCellFactory(dateCalLabel2);
     }
 
+    /**
+     * method selects correct date for booking prolongation 
+     * @param startDate booking end date
+     * @param endDate prolongation date
+     */
     public void checkRaportDate(JFXDatePicker startDate, JFXDatePicker endDate) {
         startDate.setValue(LocalDate.now().minusDays(2));
         endDate.setValue(LocalDate.now().minusDays(1));
@@ -84,6 +94,10 @@ public class DataService {
         endDate.setDayCellFactory(dateCalLabel2);
     }
 
+    /**
+     *methods creates alert window
+     * @param alert alert information
+     */
     public void getAlertWindow(String alert) {
         Alert alert1 = new Alert(Alert.AlertType.ERROR);
         alert1.setHeaderText(null);
@@ -91,6 +105,10 @@ public class DataService {
         alert1.showAndWait();
     }
 
+    /**
+     *methods creates information window
+     * @param informaction alert information
+     */
     public void getInformactiontWindow(String informaction) {
         Alert alert1 = new Alert(Alert.AlertType.INFORMATION);
         alert1.setHeaderText(null);
@@ -98,6 +116,10 @@ public class DataService {
         alert1.showAndWait();
     }
 
+    /**
+     *methods checks if input data is number
+     * @param text data from JFX textfield
+     */
     public void chechIsNumber(JFXTextField text) {
         text.textProperty().addListener(new ChangeListener<String>() {
             @Override
@@ -110,6 +132,10 @@ public class DataService {
         });
     }
 
+   /**
+     *methods checks if input data is number
+     * @param text data from textfield
+     */
     public void chechIsNumber(TextField text) {
         text.textProperty().addListener(new ChangeListener<String>() {
             @Override

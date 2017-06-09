@@ -66,7 +66,7 @@ public class Employee_addController implements Initializable {
             ObjectManager.GetInstance().dataservice.getAlertWindow("Wypełnij wszystkie pola");
         } else if (!passwd1.equals(passwd2)) {
             ObjectManager.GetInstance().dataservice.getAlertWindow("Różne hasła");
-        } else if (!name_emp.matches("^[\\p{L} .'-]+$") || !surname_emp.matches("^[\\p{L} .'-]+$")) {
+        } else if (!name_emp.matches("\\p{L}*") || !surname_emp.matches("\\p{L}*")) {
             ObjectManager.GetInstance().dataservice.getAlertWindow("Błędne imię lub nazwisko");
         } else if (!pesel_emp.matches("[0-9]{11}")) {
             ObjectManager.GetInstance().dataservice.getAlertWindow("Błędny pesel");
