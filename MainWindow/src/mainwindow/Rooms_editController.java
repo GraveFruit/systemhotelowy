@@ -63,6 +63,17 @@ public class Rooms_editController implements Initializable{
             }
         }
     }
+    
+    @FXML
+    private void deletRoom(ActionEvent event) throws SQLException {
+        String nr_pokoju = room_number.getText();
+            if (ObjectManager.GetInstance().roomservice.deleteRoom(nr_pokoju )) {
+                ObjectManager.GetInstance().dataservice.getInformactiontWindow("Usunięto pokój");
+            } else {
+                ObjectManager.GetInstance().dataservice.getAlertWindow("Błąd przy usuwaniu pokoju");
+            }
+    }
+    
 
      void addRoomsData(int room2, String floor2, String type2, String standard2, String status2) {
         room_number.setText(Integer.toString(room2));

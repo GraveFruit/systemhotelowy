@@ -231,6 +231,8 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private Button edit_guest;
     @FXML
+    private Button rooms_add;
+    @FXML
     private Button delete_guest;
     @FXML
     private TabPane maintabpane;
@@ -551,6 +553,18 @@ public class FXMLDocumentController implements Initializable {
         stage.getOnCloseRequest().handle(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
     }
 
+    @FXML//podokno dodaj pokój
+    private void addRoomsWindow(ActionEvent event) throws IOException {
+        Stage stage = new Stage();
+        makeWindow("Rooms_add.fxml", "Dodaj pokój", rooms_add, stage);
+        stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            public void handle(WindowEvent we) {
+                refreshRoomTable();
+            }
+        });
+        stage.getOnCloseRequest().handle(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
+    }
+    
 //Methods
     @FXML//metoda usuń pracownika
     private void cancelEmployee(ActionEvent event) {;
@@ -915,9 +929,17 @@ public class FXMLDocumentController implements Initializable {
         switch (permission_level) {
             case 0:
                 edit_employee.setDisable(false);
+                rooms_edition.setDisable(false);
+                add_task.setDisable(false);
+                delete_task.setDisable(false);
+                delete_guest.setDisable(false);
+                delete_employee.setDisable(false);
+                rooms_add.setDisable(false);
             case 1:
                 tab_reports.setDisable(false);
                 tab_employee.setDisable(false);
+                add_task.setDisable(false);
+                delete_task.setDisable(false);
             case 2:
                 tab_guest.setDisable(false);
                 tab_reserv.setDisable(false);
@@ -940,6 +962,12 @@ public class FXMLDocumentController implements Initializable {
                 tab_login.setDisable(false);
                 logout_button.setDisable(true);
                 edit_employee.setDisable(true);
+                rooms_edition.setDisable(true);
+                add_task.setDisable(true);
+                delete_task.setDisable(true);
+                delete_guest.setDisable(true);
+                delete_employee.setDisable(true);
+                rooms_add.setDisable(true);
                 maintabpane.getSelectionModel().select(tab_login);
         }
     }

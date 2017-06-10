@@ -62,7 +62,7 @@
                <children>
                   <Button fx:id="booking_offer" mnemonicParsing="false" onAction="#showOffer" prefHeight="41.0" prefWidth="190.0" text="Wyświetl dostępne pokoje" />
                   <TextField fx:id="booking_comment" prefHeight="41.0" prefWidth="421.0" promptText="Uwagi" GridPane.rowIndex="1" />
-                  <Button fx:id="booking_add" mnemonicParsing="false" onAction="#updateBooking" prefHeight="38.0" prefWidth="190.0" text="Eytuj rezerwację" GridPane.rowIndex="2" />
+                  <Button fx:id="booking_add" mnemonicParsing="false" onAction="#updateBooking" prefHeight="38.0" prefWidth="190.0" text="Edytuj rezerwację" GridPane.rowIndex="2" />
                </children>
             </GridPane>
             <GridPane alignment="CENTER" hgap="15.0" minHeight="250.0" prefHeight="250.0" prefWidth="449.0" GridPane.rowSpan="2">

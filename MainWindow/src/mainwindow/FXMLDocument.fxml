@@ -326,7 +326,12 @@
                                                       <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                                                    </columnResizePolicy>
                                                 </TableView>
-                                                <Button fx:id="rooms_edition" mnemonicParsing="false" onAction="#editRoomsWindow" prefHeight="50.0" prefWidth="181.0" text="Edytuj" GridPane.columnIndex="1" />
+                                                <VBox alignment="CENTER" spacing="80.0" GridPane.columnIndex="1">
+                                                   <children>
+                                                      <Button fx:id="rooms_edition" mnemonicParsing="false" onAction="#editRoomsWindow" prefHeight="50.0" prefWidth="181.0" text="Edytuj" />
+                                                      <Button fx:id="rooms_add" mnemonicParsing="false" onAction="#addRoomsWindow" prefHeight="50.0" prefWidth="181.0" text="Dodaj" />
+                                                   </children>
+                                                </VBox>
                                              </children>
                                           </GridPane>
                                        </children>

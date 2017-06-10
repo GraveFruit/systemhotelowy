@@ -61,13 +61,16 @@ public class ShowOfferController implements Initializable {
         String datak = offer_datek.getValue().toString();//new SimpleDateFormat(offer_datek);
         String typ = offer_typ.getValue();
         String stand = offer_standardbox.getValue();
+        if(typ!=null && stand!=null){
         offer_number.setCellValueFactory(new PropertyValueFactory<>("Number_offer"));
         offer_floor.setCellValueFactory(new PropertyValueFactory<>("Floor_offer"));
         offer_type.setCellValueFactory(new PropertyValueFactory<>("Type_offer"));
         offer_standard.setCellValueFactory(new PropertyValueFactory<>("Standard_offer"));
         offer_tableview.getItems().setAll(ObjectManager.GetInstance().offerservice.getData(typ, stand, datap, datak));  
+    }else{
+        ObjectManager.GetInstance().dataservice.getAlertWindow("Wybierz typ i standard");
+        }
     }
-    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         base = DataBase.getInstance();

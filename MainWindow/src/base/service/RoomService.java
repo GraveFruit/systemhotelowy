@@ -29,7 +29,8 @@ public class RoomService {
 //wyswietlanie pokoi
 
     /**
-     *method gets data about room from database
+     * method gets data about room from database
+     *
      * @return ObservableList contains query result
      */
     public ObservableList<Rooms> getData() {
@@ -57,14 +58,15 @@ public class RoomService {
     //wyswietlanie numerow pokoi
 
     /**
-     *method gets rooms numbers from database
+     * method gets rooms numbers from database
+     *
      * @return ObservableList contains query result
      */
     public ObservableList<String> getRoomData() {
         try {
             ObservableList<String> rooms_list = FXCollections.observableArrayList();
             Statement statement = DataBase.getConnection().createStatement();
-            ResultSet result = statement.executeQuery("Select pokoj_id from pokoje");
+            ResultSet result = statement.executeQuery("Select pokoj_id from pokoje where status>=0");
             while (result.next()) {
                 int id = result.getInt("pokoj_id");
                 rooms_list.add(Integer.toString(new Rooms(id).getNumber_room()));
@@ -79,9 +81,10 @@ public class RoomService {
 //zmiana statusu pokoju
 
     /**
-     *method changes selected room status
+     * method changes selected room status
+     *
      * @param numer room's number
-     * @param status room's status 
+     * @param status room's status
      * @return true if success
      */
     public boolean updateRoomStatus(String numer, String status) {
@@ -99,45 +102,44 @@ public class RoomService {
         }
         return true;
     }
-  //sprawdzanie czy pokoj jest gotowy do meldowania
+    //sprawdzanie czy pokoj jest gotowy do meldowania
 
     /**
-     *method checks possibility for checkin into room
+     * method checks possibility for checkin into room
+     *
      * @param numer room's number
      * @return true if room is ready
      */
-      public boolean checkRoomStatus(String numer) {
-       String status="";
-        boolean wynik=false;
-         try {
+    public boolean checkRoomStatus(String numer) {
+        String status = "";
+        boolean wynik = false;
+        try {
             Statement statement = DataBase.getConnection().createStatement();
             ResultSet result = statement.executeQuery(
-                    "Select status from pokoje where pokoj_id='"+ numer+"'");
-            while(result.next()){
-             status=result.getString("status");
-         }
-            wynik=status.compareTo("2")==0;
+                    "Select status from pokoje where pokoj_id='" + numer + "'");
+            while (result.next()) {
+                status = result.getString("status");
+            }
+            wynik = status.compareTo("2") == 0;
         } catch (SQLException e) {
             System.err.println("Błąd przy sprawdzaniu statusu pokoju");
         }
         return !wynik;
     }
-      
- //edycja pokoi
 
+    //edycja pokoi
     /**
-     *method updates rooms data (possible only for type,standard and status if room is empty)
+     * method updates rooms data (possible only for type,standard and status if
+     * room is empty)
+     *
      * @param pokoj room's number
      * @param typ room's type
      * @param standard room's standard
      * @param status room's status
      * @return true if success
      */
- 
-      public boolean updateRoomsData(String pokoj, String typ, String standard, String status) {
-
+    public boolean updateRoomsData(String pokoj, String typ, String standard, String status) {
         try {
-           
             PreparedStatement prep = DataBase.getConnection().prepareStatement(
                     "Update pokoje set typ=?, standard=?, status=? where pokoj_id=?");
             prep.setString(1, typ);
@@ -152,5 +154,53 @@ public class RoomService {
         }
         return true;
     }
+
+    /**
+     * method creates new room
+     * @param pokoj room number
+     * @param pietro floor number
+     * @param typ room type
+     * @param standard room standard
+     * @param status room status
+     * @return true if success
+     */
+    public boolean addRoomsData(String pokoj, String pietro, String typ, String standard, String status) {
+        try {
+            PreparedStatement prep = DataBase.getConnection().prepareStatement(
+                    "Insert into pokoje values (?,?,?,?,?,?)");
+            prep.setString(1, pokoj);
+            prep.setString(2, pokoj);
+            prep.setString(3, pietro);
+            prep.setString(4, typ);
+            prep.setString(5, standard);
+            prep.setString(6, status);
+            prep.executeUpdate();
+
+        } catch (SQLException e) {
+            System.err.println("Błąd przy dodawaniu pokoju");
+            return false;
+        }
+        return true;
+    }
     
+    /**
+     * method deletes room
+     * @param room room number
+     * @return true if success
+     */
+    public boolean deleteRoom(String room) {
+        try {
+            PreparedStatement prep = DataBase.getConnection().prepareStatement(
+                    "delete from pokoje where numer=?");
+            prep.setString(1, room);
+        
+            prep.executeUpdate();
+
+        } catch (SQLException e) {
+            System.err.println("Błąd przy usuwaniu pokoju");
+            return false;
+        }
+        return true;
+    }
+
 }

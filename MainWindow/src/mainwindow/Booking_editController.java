@@ -193,8 +193,8 @@ public class Booking_editController implements Initializable {
         String datap = booking_datep.getValue().toString();
         String datak = booking_datek.getValue().toString();
         String komentarz = booking_comment.getText();
-        if (clientTableSelected() == null || newBookkingTableSelected() == null) {
-            ObjectManager.GetInstance().dataservice.getAlertWindow("Wybierz gościa i pokój");
+        if (clientTableSelected() == null || newBookkingTableSelected() == null || bookingTableSelected()==null) {
+            ObjectManager.GetInstance().dataservice.getAlertWindow("Wybierz gościa, rezerwację i pokój");
         } else {
             String klient = clientTableSelected().getPesel_guest();
             int pokoj = newBookkingTableSelected().getNumber_offer();
