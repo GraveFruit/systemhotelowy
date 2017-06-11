@@ -52,7 +52,12 @@ public class Guest_addController implements Initializable {
         String pesel_guest = pesel.getText();
         if (name_guest.isEmpty() || surname_guest.isEmpty() || phone_guest.isEmpty() || pesel_guest.isEmpty()) {
             ObjectManager.GetInstance().dataservice.getAlertWindow("Wypełnij wszystkie pola");
-
+        } else if (!ObjectManager.GetInstance().checkdata.isName(name_guest) || !ObjectManager.GetInstance().checkdata.isName(surname_guest)) {
+            ObjectManager.GetInstance().dataservice.getAlertWindow("Błędne imię lub nazwisko");
+        } else if (!ObjectManager.GetInstance().checkdata.isPesel(pesel_guest)) {
+            ObjectManager.GetInstance().dataservice.getAlertWindow("Błędny pesel");
+        } else if (!ObjectManager.GetInstance().checkdata.isPhone(phone_guest)) {
+            ObjectManager.GetInstance().dataservice.getAlertWindow("Błędny telefon");
         } else {
             if (ObjectManager.GetInstance().guestservice.insertClient(name_guest, surname_guest, phone_guest, pesel_guest)) {
                 ObjectManager.GetInstance().dataservice.getInformactiontWindow("Dodano element");
@@ -67,7 +72,7 @@ public class Guest_addController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         base = DataBase.getInstance();
         ObjectManager.GetInstance().dataservice.chechIsNumber(phone);
-         ObjectManager.GetInstance().dataservice.chechIsNumber(pesel);
+        ObjectManager.GetInstance().dataservice.chechIsNumber(pesel);
     }
 
 }

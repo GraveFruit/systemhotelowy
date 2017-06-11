@@ -39,14 +39,11 @@ import mainwindow.ObjectManager;
  */
 public class RaportService {
 
-    private static final String RAPORTPATH = "C:\\Users\\Grzesiek\\Documents\\NetBeansProjects\\systemhotelowy\\MainWindow\\Rooms raport.pdf";
-    private static final String STATISTICPATH = "C:\\Users\\Grzesiek\\Documents\\NetBeansProjects\\systemhotelowy\\MainWindow\\Statistics.pdf";
-
     /**
-     *
-     * @param document
-     * @param pdfTable
-     * @param query
+     * method creates new roomtable using query
+     * @param document new object Document
+     * @param pdfTable new object pdfTable
+     * @param query database query
      */
     public void makeRoomTable(Document document, PdfPTable pdfTable, String query) {
         try {
@@ -79,23 +76,75 @@ public class RaportService {
     }
 
     /**
-     *
-     * @param document
-     * @param list
-     * @param query
+     * method performs query
+     * @param query new query
+     * @return ResultSet object created using query
      */
-    public void countAverageForSingleDay(Document document, List list, String query) {
-        double count;
-        double average;
+    public ResultSet makeQuery(String query) {
+        ResultSet result = null;
         try {
             Statement statement = DataBase.getConnection().createStatement();
-            //list = new List(true, false, 10);
-            ResultSet result = statement.executeQuery(query);
+            result = statement.executeQuery(query);
+        } catch (SQLException e) {
+            getAlertWindow("Wystąpił problem przy generowaniu zapytania");
+        }
+        return result;
+    }
+
+    /**
+     * method creates new roomtable using query
+     * @param document new Pdf Document
+     * @param pdfTable new Pdf Table
+     * @param query new query using to fill table
+     * @param columns name of table columns and also name columns of data creates
+     * using query
+     * @param size Pdf Table size
+     */
+    public void makeRoomTable(Document document, PdfPTable pdfTable, String query, ArrayList<String> columns, int size) {
+        try {
+            pdfTable = new PdfPTable(size);
+            for (int i = 0; i < columns.size(); i++) {
+                PdfPCell cell1 = new PdfPCell(new Phrase(columns.get(i)));
+                cell1.setHorizontalAlignment(Element.ALIGN_CENTER);
+                pdfTable.addCell(cell1);
+            }
+            pdfTable.setHeaderRows(1);
+            ResultSet result = makeQuery(query);
             while (result.next()) {
-                list.add(new ListItem("Rooms occupied: " + result.getString("ilosc")));
-                count=Double.parseDouble(result.getString("ilosc"));
-                average=count/20.0*100;
-                list.add(new ListItem("Occupaction average= "+average+"%"));
+                for (int i = 0; i < columns.size(); i++) {
+                    pdfTable.addCell(result.getString(columns.get(i)));
+                }
+            }
+            document.add(pdfTable);
+        } catch (DocumentException | SQLException e) {
+            getAlertWindow("Wystąpił problem przy generowaniu tabeli");
+        }
+    }
+
+    /**
+     * method counts averange of daily occupation
+     * @param document new object Document
+     * @param list new object List
+     * @param query database query
+     * @param column name column from query 
+     */
+    public void countAverageForSingleDay(Document document, List list, String query, String column) {
+        double count;
+        double average;
+        double rooms=1;
+        try {
+            String query1 = "select count(pokoj_id) as liczba from pokoje";
+            ResultSet res = makeQuery(query1);
+             while (res.next()) {
+             rooms = Double.parseDouble(res.getString("liczba"));
+             }
+            ResultSet result = makeQuery(query);
+            while (result.next()) {
+                list.add(new ListItem("Rooms occupied: " + result.getString(column)));
+                count = Double.parseDouble(result.getString(column));
+                average = ObjectManager.GetInstance().checkdata.countAverage(count, rooms);
+
+                list.add(new ListItem("Occupaction average= " + ObjectManager.GetInstance().checkdata.roundNumber(average) + "%"));
             }
 
         } catch (SQLException e) {
@@ -104,18 +153,16 @@ public class RaportService {
     }
 
     /**
-     *
-     * @param document
-     * @param list
-     * @param query
-     * @param listName
-     * @param column
+     * method create new roomtable using query
+     * @param document Pdf Document
+     * @param list new List name
+     * @param query database query
+     * @param listName List's new object name
+     * @param column name of column use to perform query
      */
-    public void makePdfList(Document document, List list, String query, String listName,String column) {
+    public void makePdfList(Document document, List list, String query, String listName, String column) {
         try {
-            Statement statement = DataBase.getConnection().createStatement();
-            //list = new List(true, false, 10);
-            ResultSet result = statement.executeQuery(query);
+            ResultSet result = makeQuery(query);
             while (result.next()) {
                 list.add(new ListItem(listName + result.getString(column)));
             }
@@ -125,8 +172,8 @@ public class RaportService {
     }
 
     /**
-     *
-     * @param alert
+     * methods creates new AlertWindow
+     * @param alert comment which Alert will show
      */
     public void getAlertWindow(String alert) {
         Alert alert1 = new Alert(Alert.AlertType.ERROR);
@@ -135,7 +182,11 @@ public class RaportService {
         alert1.showAndWait();
     }
 
-    private void openPdf(String path) {
+    /**
+     * method opens pdf file
+     * @param path path to pdf file
+     */
+    public void openPdf(String path) {
         try {
             if ((new File(path)).exists()) {
                 Process process = Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler " + path);
@@ -150,7 +201,19 @@ public class RaportService {
     }
 
     /**
-     *
+     * methods return application path
+     * @param name of file which will be create in this location
+     * @return path to object which will be creates
+     */
+    public String findPath(String name) {
+        File f = new File(System.getProperty("java.class.path"));
+        File dir = f.getAbsoluteFile().getParentFile();
+        String path = dir.toString();
+        return path.concat("\\" + name);
+    }
+
+    /**
+     * methods creates new daily raport
      */
     public void generateRaport() {
         try {
@@ -170,7 +233,12 @@ public class RaportService {
             //wolne pokoje
             String query1 = "Select numer, standard, typ, pietro from pokoje where status='0'";
             PdfPTable pdfTable1 = new PdfPTable(4);
-            makeRoomTable(document, pdfTable1, query1);
+            ArrayList<String> emptyRooms = new ArrayList<>();
+            emptyRooms.add("numer");
+            emptyRooms.add("standard");
+            emptyRooms.add("typ");
+            emptyRooms.add("pietro");
+            makeRoomTable(document, pdfTable1, query1, emptyRooms, 4);
             //Nowy paragraf
             Paragraph paragraph2 = new Paragraph("Occupied rooms");
             paragraph2.add(new Paragraph(" "));
@@ -178,7 +246,7 @@ public class RaportService {
             //zajęte pokoje
             PdfPTable pdfTable2 = new PdfPTable(4);
             String query2 = "Select numer, standard, typ , pietro from pokoje where status='1'";
-            makeRoomTable(document, pdfTable2, query2);
+            makeRoomTable(document, pdfTable2, query2, emptyRooms, 4);
             //Nowy paragraf
             Paragraph paragraph3 = new Paragraph("Dirty rooms");
             paragraph3.add(new Paragraph(" "));
@@ -186,7 +254,7 @@ public class RaportService {
             //brudne pokoje
             PdfPTable pdfTable3 = new PdfPTable(4);
             String query3 = "Select numer, standard, typ , pietro from pokoje where status='2'";
-            makeRoomTable(document, pdfTable3, query3);
+            makeRoomTable(document, pdfTable3, query3, emptyRooms, 4);
             //Nowy paragraf
             Paragraph paragraph4 = new Paragraph("Departures");
             paragraph4.add(new Paragraph(" "));
@@ -196,7 +264,7 @@ public class RaportService {
             String query4 = "Select p.numer, p.standard, p.typ , p.pietro from "
                     + "pokoje p, rezerwacje r where r.status=2 and r.data_k='"
                     + ObjectManager.GetInstance().currentData + "' and r.pokoj_id=p.pokoj_id";
-            makeRoomTable(document, pdfTable4, query4);
+            makeRoomTable(document, pdfTable4, query4, emptyRooms, 4);
             //Nowy paragraf
             Paragraph paragraph5 = new Paragraph("Arrivals");
             paragraph5.add(new Paragraph(" "));
@@ -207,7 +275,7 @@ public class RaportService {
                     + " p.typ , p.pietro from pokoje p, rezerwacje r where "
                     + "r.status=1 and r.data_p='" + ObjectManager.GetInstance().currentData
                     + "' and r.pokoj_id=p.pokoj_id";
-            makeRoomTable(document, pdfTable5, query5);
+            makeRoomTable(document, pdfTable5, query5, emptyRooms, 4);
             //nowy paragraf 
             Paragraph paragraph6 = new Paragraph("Employee working");
             paragraph6.add(new Paragraph(" "));
@@ -215,22 +283,22 @@ public class RaportService {
             //pracownicy w pracy
             List list = new List(true, false, 10);
             String query6 = "Select nazwisko from pracownicy where status=1";
-            makePdfList(document, list, query6, "","nazwisko");
+            makePdfList(document, list, query6, "", "nazwisko");
             document.add(list);
             document.close();
             file.close();
         } catch (DocumentException | IOException e) {
             getAlertWindow("Wystąpił problem przy tworzeniu raportu");
         }
-        openPdf(RAPORTPATH);
+        openPdf(findPath("Rooms raport.pdf"));
     }
 
     /**
-     *
-     * @param startDate
-     * @param endDate
+     * methods creates new statistics raport
+     * @param startDate statistics raport start date
+     * @param endDate statistics raport end date
      */
-    public void generateStatistic(String startDate,String endDate) {
+    public void generateStatistic(String startDate, String endDate) {
         try {
             Document document = new Document();
             OutputStream file = new FileOutputStream(new File("Statistics.pdf"));
@@ -242,53 +310,53 @@ public class RaportService {
             document.addAuthor("HotelMaster 2000");
             document.addCreationDate();
             document.addTitle("Statistics");
-            Paragraph paragraph0 = new Paragraph("Statistics for days: "+ startDate + " - "+endDate);
+            Paragraph paragraph0 = new Paragraph("Statistics for days: " + startDate + " - " + endDate);
             paragraph0.add(new Paragraph(" "));
             document.add(paragraph0);
-            
-            LocalDate dateS= LocalDate.parse(startDate);
-            LocalDate dateK= LocalDate.parse(endDate);
-            
-            while(dateK.plusDays(1).compareTo(dateS)!=0){
-            startDate=dateS.toString();
-            //rooms statistics paragraph
-            Paragraph paragraph = new Paragraph("");
-            paragraph.add(new Paragraph("Statistics for day: "+startDate));
-            document.add(paragraph);
-            List list = new List(true, false, 10);
-            //wszystkie zajete pokoje w danym daniu
-            String query1 = "Select count( r.rezerwacja_id) as ilosc "
-                    + "from rezerwacje r where '" + startDate + "' between r.data_p and r.data_k "
-                    + "and (r.status=0 or r.status=2)";
-            countAverageForSingleDay(document, list, query1);
-            //wszystkie odwołane rezerwacje w danym dniu
-            String query2 = "Select count( r.rezerwacja_id) as ilosc "
-                    + "from rezerwacje r where '" + startDate + "'=r.data_p "
-                    +"and r.status='-1'";
-            makePdfList(document, list, query2, "Bookings canceled: ","ilosc");
-            //wszystkie rezerwacje w danym dniu
-            String query3 = "Select count( r.rezerwacja_id) as ilosc "
-                    + "from rezerwacje r where '" + startDate + "'=r.data_p "
-                    + " and (r.status=0 or r.status=2)";
-            makePdfList(document, list, query3, "Check-in: ","ilosc");
-            //wszystkie wymeldowaniew danym dniu
-            String query4 = "Select count( r.rezerwacja_id) as ilosc "
-                    + "from rezerwacje r where '" + startDate + "'=r.data_k "
-                    + " and r.status=0";
-            makePdfList(document, list, query4, "Check-out : ","ilosc");
-            document.add(list);
-            Paragraph paragraph2 = new Paragraph("");
-            paragraph2.add(new Paragraph(" "));
-            document.add(paragraph2);
-            dateS=dateS.plusDays(1);
-            System.out.println(dateS);
+
+            LocalDate dateS = LocalDate.parse(startDate);
+            LocalDate dateK = LocalDate.parse(endDate);
+
+            while (dateK.plusDays(1).compareTo(dateS) != 0) {
+                startDate = dateS.toString();
+                //rooms statistics paragraph
+                Paragraph paragraph = new Paragraph("");
+                paragraph.add(new Paragraph("Statistics for day: " + startDate));
+                document.add(paragraph);
+                List list = new List(true, false, 10);
+                //wszystkie zajete pokoje w danym daniu
+                String query1 = "Select count( r.rezerwacja_id) as ilosc "
+                        + "from rezerwacje r where '" + startDate + "' between r.data_p and r.data_k "
+                        + "and (r.status=0 or r.status=2)";
+                countAverageForSingleDay(document, list, query1, "ilosc");
+                //wszystkie odwołane rezerwacje w danym dniu
+                String query2 = "Select count( r.rezerwacja_id) as ilosc "
+                        + "from rezerwacje r where '" + startDate + "'=r.data_p "
+                        + "and r.status='-1'";
+                makePdfList(document, list, query2, "Bookings canceled: ", "ilosc");
+                //wszystkie rezerwacje w danym dniu
+                String query3 = "Select count( r.rezerwacja_id) as ilosc "
+                        + "from rezerwacje r where '" + startDate + "'=r.data_p "
+                        + " and (r.status=0 or r.status=2)";
+                makePdfList(document, list, query3, "Check-in: ", "ilosc");
+                //wszystkie wymeldowaniew danym dniu
+                String query4 = "Select count( r.rezerwacja_id) as ilosc "
+                        + "from rezerwacje r where '" + startDate + "'=r.data_k "
+                        + " and r.status=0";
+                makePdfList(document, list, query4, "Check-out : ", "ilosc");
+                document.add(list);
+                Paragraph paragraph2 = new Paragraph("");
+                paragraph2.add(new Paragraph(" "));
+                document.add(paragraph2);
+                dateS = dateS.plusDays(1);
+                System.out.println(dateS);
             }
             document.close();
             file.close();
         } catch (DocumentException | IOException e) {
             getAlertWindow("Wystąpił problem przy tworzeniu statystyk");
         }
-        openPdf(STATISTICPATH);
+        openPdf(findPath("Statistics.pdf"));
     }
 
 }

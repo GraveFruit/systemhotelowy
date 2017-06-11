@@ -64,13 +64,13 @@ public class Employee_addController implements Initializable {
         String passwd2 = password2.getText();
         if (name_emp.isEmpty() || surname_emp.isEmpty() || phone_emp.isEmpty() || pesel_emp.isEmpty() || position_emp.isEmpty() || passwd1.isEmpty() || passwd2.isEmpty()) {
             ObjectManager.GetInstance().dataservice.getAlertWindow("Wypełnij wszystkie pola");
-        } else if (!passwd1.equals(passwd2)) {
+        } else if (ObjectManager.GetInstance().checkdata.checkPasswords(passwd1, passwd2)!=0) {
             ObjectManager.GetInstance().dataservice.getAlertWindow("Różne hasła");
-        } else if (!name_emp.matches("\\p{L}*") || !surname_emp.matches("\\p{L}*")) {
+        } else if (!ObjectManager.GetInstance().checkdata.isName(name_emp) || !ObjectManager.GetInstance().checkdata.isName(surname_emp)) {
             ObjectManager.GetInstance().dataservice.getAlertWindow("Błędne imię lub nazwisko");
-        } else if (!pesel_emp.matches("[0-9]{11}")) {
+        } else if (!ObjectManager.GetInstance().checkdata.isPesel(pesel_emp)) {
             ObjectManager.GetInstance().dataservice.getAlertWindow("Błędny pesel");
-        } else if (!phone_emp.matches("^[0-9]{7,15}$")) {
+        } else if (!ObjectManager.GetInstance().checkdata.isPhone(phone_emp)) {
             ObjectManager.GetInstance().dataservice.getAlertWindow("Błędny telefon");
         } else {
             if (ObjectManager.GetInstance().employeeservice.insertEmployee(name_emp, surname_emp, phone_emp, pesel_emp, position_emp, passwd2)) {

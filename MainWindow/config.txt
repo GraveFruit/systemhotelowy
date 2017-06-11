@@ -1,0 +1,3 @@
+basename=hotelmaster
+basepass=admin1
+baselink=jdbc:mariadb://localhost:3306/

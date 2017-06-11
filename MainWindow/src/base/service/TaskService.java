@@ -250,7 +250,6 @@ public class TaskService {
                 return false;
             }
             wynik = zadanie.isEmpty();
-            //System.out.println("stan= "+standard+" wynik= "+wynik);
         } catch (SQLException ex) {
             Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
         }

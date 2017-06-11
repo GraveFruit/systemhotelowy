@@ -6,6 +6,7 @@
 package mainwindow;
 
 import base.service.BookingService;
+import base.service.CheckData;
 import base.service.DataService;
 import base.service.EmployeeService;
 import base.service.GuestService;
@@ -35,6 +36,7 @@ public class ObjectManager {
     public LoginService loginservice;
     public RaportService raportservice;
     public DataService dataservice;
+    public CheckData checkdata;
 
     private ObjectManager() {
         offerservice = new OfferService();
@@ -47,6 +49,7 @@ public class ObjectManager {
         loginservice = new LoginService();
         raportservice = new RaportService();
         dataservice= new DataService();
+        checkdata= new CheckData();
     }
 
     public static ObjectManager GetInstance() {

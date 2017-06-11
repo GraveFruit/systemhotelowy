@@ -5,11 +5,16 @@
  */
 package hotel.base;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.sql.Statement;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -17,20 +22,51 @@ import java.sql.SQLException;
  */
 public final class DataBase {
     private static DataBase base = null;
-    private static final String base_name = "hotelmaster";
-    private static final String base_password = "resovia9";
-    private static final String DRIVER = "org.mariadb.jdbc.Driver";
-    private static final String DB_URL = "jdbc:mariadb://localhost:3306/" + base_name + "?user=root&password=" + base_password;
+    private static String base_name = "hotelmaster";
+    private static String base_password = "admin";
+    private static String DRIVER = "org.mariadb.jdbc.Driver";
+    private static String baselink = "jdbc:mariadb://localhost:3306/";
+    private static String DB_URL = baselink + base_name + "?user=root&password=" + base_password;
     private static Connection connection = null;
      private static Statement statement = null;
 
-    public DataBase(){
+    public DataBase() throws FileNotFoundException, IOException{
+        String[] params = new String[3];
+
+        int i = 0;
+
+        BufferedReader br = null;
+        FileReader fr = null;
+
+        fr = new FileReader("config.txt");
+        br = new BufferedReader(fr);
+        String sCurrentLine;
+        br = new BufferedReader(new FileReader("config.txt"));
+        while ((sCurrentLine = br.readLine()) != null) {
+            System.out.println(sCurrentLine.split("=")[1]);
+            params[i] = sCurrentLine;
+            i++;
+        }
+        if (br != null) {
+            br.close();
+        }
+        if (fr != null) {
+            fr.close();
+        }
+
+        this.base_name = params[0];
+        this.base_password = params[1];
+        this.baselink = params[2];
         createConnection();
     }
 
     public static DataBase getInstance(){
         if(base==null)
-            base = new DataBase();
+            try {
+                base = new DataBase();
+        } catch (IOException ex) {
+            Logger.getLogger(DataBase.class.getName()).log(Level.SEVERE, null, ex);
+        }
         return base;  
 }
     
@@ -80,8 +116,5 @@ public final class DataBase {
         }
 
     }
-    
-  
-    
-    
 }
+
