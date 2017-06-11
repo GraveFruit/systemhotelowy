@@ -23,7 +23,7 @@ import java.util.logging.Logger;
 public final class DataBase {
     private static DataBase base = null;
     private static String base_name = "hotelmaster";
-    private static String base_password = "admin";
+    private static String base_password = "inus33";
     private static String DRIVER = "org.mariadb.jdbc.Driver";
     private static String baselink = "jdbc:mariadb://localhost:3306/";
     private static String DB_URL = baselink + base_name + "?user=root&password=" + base_password;
